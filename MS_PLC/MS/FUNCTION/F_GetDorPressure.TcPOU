@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_GetDorPressure" Id="{d5eb6636-a4af-417e-be51-f91c045e6ee3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_GetDorPressure : real
+VAR_INPUT
+	nPressurePV:INT;
+END_VAR
+
+VAR
+	Value:REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Value:= (10.0 / 32767.0) * nPressurePV;
+F_GetDorPressure := (190* (Value) ) - 190;]]></ST>
+    </Implementation>
+    <LineIds Name="F_GetDorPressure">
+      <LineId Id="24" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

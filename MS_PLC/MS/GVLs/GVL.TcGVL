@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL" Id="{e340ee81-5494-473b-9de9-ef2cd602603a}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	MainModule:ST_MAIN_MODULE;
+	fbLineHeater_Manager:FB_LINE_HEATER_MANAGER;
+	
+	RotationResetTon: TON;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

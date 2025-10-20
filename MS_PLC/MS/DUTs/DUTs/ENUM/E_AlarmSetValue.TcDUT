@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_AlarmSetValue" Id="{cbfd5130-ddea-4c97-9a63-cb5a5e66bf6b}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_AlarmSetValue :
+(
+//	E_AS_Alarm_Deviation:=1,
+//	E_AS_Warning_Deviation,
+//	E_AS_DelayTime_Analog,
+//	E_AS_DelayTime_Digital,
+//	E_AS_Process_Gas_Pressure_Alarm,
+//	E_AS_Process_Gas_Pressure_Warning,
+//	E_AS_CWTemp_SH_ALARM,
+//	E_AS_CWTemp_SH_WARNING,
+//	E_AS_CWTemp_COIL_ALARM,
+//	E_AS_CWTemp_COIL_WARNING,
+//	E_AS_SUSCEPTOR_OVER_TEMP,
+//	E_AS_REACTOR_OVRE_PRESSURE,
+//	E_AS_CAN_OPEN_TEMP,
+//	E_AS_CAN_OPEN_REACTOR_PRESSURE,
+//	E_AS_DOR_Pressure_Limit,
+//	E_AS_DOR_RerayCount,
+	E_AS_END
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

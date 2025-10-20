@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="E_WarningList" Id="{0aa973bd-d6fa-46de-abfd-5cf0bf3bd1dd}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_WarningList :
+(
+	E_WarningList_GasPressure_Low_N2:=1,
+	E_WarningList_GasPressureLowN2,
+	E_WarningList_GasPressureLowH2,
+	E_WarningList_GasPressureLowNH3,
+	E_WarningList_GasPressureLowSiH4,
+	E_WarningList_CWTemperatureHighSH,
+	E_WarningList_CWTemperatureHighCoil,
+	E_WarningList_SusceptorOverTemperature,
+	E_WarningList_ReactorOverPressure,
+	E_WarningList_PneumaticPressureLow,
+	E_WarningList_CoolingWaterLow,
+	E_WarningList_InductionHeaterFault,
+	E_WarningList_RotationMotorFault,
+	E_WarningList_VacuumPumpFault,
+	E_WarningList_GasCabinetDoorOpen,
+	E_WarningList_ReactorCabinetDoorOpen,
+	E_WarningList_SusceptorTemperatureDeviation,
+	E_WarningList_ReactorPressureDeviation,
+	E_WarningList_SusceptorRotationDeviation,
+	E_WarningList_MORunDeviation,
+	E_WarningList_HydRunDeviation,
+	E_WarningList_NH3LargeINDeviation,
+	E_WarningList_NH3SmallINDeviation,
+	E_WarningList_SiHINDeviation,
+	E_WarningList_SiHDilutionDeviation,
+	E_WarningList_SiHDilutedDeviation,
+	E_WarningList_TEBBubblingDeviation,
+	E_WarningList_TMAlBubblingDeviation,
+	E_WarningList_TMInBubblingDeviation,
+	E_WarningList_TMGaBubblingDeviation,
+	E_WarningList_DTMGaBubblingDeviation,
+	E_WarningList_DTMGaDilutionDeviation,
+	E_WarningList_DTMGaDilutedDeviation,
+	E_WarningList_Cp2MgBubblingDeviation,
+	E_WarningList_ReactorPurgeDeviation,
+	E_WarningList_RotationSealPurgeDeviation,
+	E_WarningList_MOVentDeviation,
+	E_WarningList_HydVentDeviation,
+	E_WarningList_SiH4PressureDeviation,
+	E_WarningList_TEBPressureDeviation,
+	E_WarningList_TMAlPressureDeviation,
+	E_WarningList_TMInPressureDeviation,
+	E_WarningList_TMGaPressureDeviation,
+	E_WarningList_DTMGaPressureDeviation,
+	E_WarningList_Cp2MgPressureDeviation,
+	E_WarningList_END
+
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_TEMP_RAMPING" Id="{463f0852-df29-41f2-9dc5-474adfb67d41}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TEMP_RAMPING
+VAR_INPUT
+	bExecute:BOOL;
+	StartTemp:REAL;
+	RampingTargetTemp:REAL;
+	RampingTime:REAL;
+END_VAR
+VAR_OUTPUT
+	OutputSetTemp:INT;
+	bTempChangeFlag:BOOL;
+	bBusy: BOOL;
+END_VAR
+VAR
+	RingEdge: R_TRIG;
+	fallEdge: F_TRIG;
+	StartTemp_Bak:REAL;
+	RampingTargetTemp_Bak:REAL;
+	RampingTime_Bak:REAL;
+	SeqStep: INT;
+	nCycleCountms: INT;
+	nCycleCountSec: INT;
+	RampingTempPerSec:REAL;
+
+	nDelayCount: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[RingEdge(CLK:=bExecute);
+fallEdge(CLK:=bExecute);
+
+IF RingEdge.Q THEN
+	(*Ramping Start*)
+	StartTemp_Bak:=StartTemp;
+	RampingTargetTemp_Bak  := RampingTargetTemp;
+	RampingTime_Bak := RampingTime;
+	bBusy := TRUE;
+	SeqStep:=10;
+END_IF
+
+IF fallEdge.Q THEN
+	SeqStep:=0;
+	bBusy := FALSE;
+	bTempChangeFlag:=FALSE;
+END_IF
+
+
+CASE SeqStep OF
+	0:(*IDE*)
+		nCycleCountms:=0;
+		nCycleCountSec:=0;
+		nDelayCount:=0;
+
+	10:(*Ramping Start*)
+		IF RampingTime_Bak <=0 THEN
+			RampingTime_Bak:=1;
+		END_IF
+		
+		RampingTempPerSec := (RampingTargetTemp_Bak - StartTemp_Bak) / RampingTime_Bak;
+		SeqStep:= 20;
+		
+	20:
+		nCycleCountms :=  nCycleCountms+1;
+		IF nCycleCountSec >= RampingTime_Bak THEN
+			OutputSetTemp:=REAL_TO_INT(RampingTargetTemp_Bak);
+			SeqStep:= 100;
+		END_IF
+		
+		IF nCycleCountms >= 200 THEN
+			nCycleCountms:=0;
+			nCycleCountSec := nCycleCountSec+2;
+			
+			OutputSetTemp:= REAL_TO_INT(StartTemp + REAL_TO_INT( RampingTempPerSec * nCycleCountSec));
+			
+			IF RampingTime_Bak <= 1 THEN
+				OutputSetTemp:=REAL_TO_INT(RampingTargetTemp_Bak);
+			END_IF
+			
+			bTempChangeFlag:=TRUE;
+		END_IF
+		
+		IF bTempChangeFlag = TRUE AND nCycleCountms >10 THEN
+			bTempChangeFlag:=FALSE;
+		END_IF
+		
+		
+		
+	100:
+		nDelayCount:=nDelayCount+1;
+		IF nDelayCount > 100 THEN
+			bExecute:=FALSE;	
+			SeqStep:=0;			
+		END_IF
+
+	
+END_CASE
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

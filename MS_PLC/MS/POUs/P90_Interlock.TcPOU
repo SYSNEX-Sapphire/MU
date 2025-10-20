@@ -1,0 +1,785 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P90_Interlock
+VAR
+	bRecipeRunning 		: BOOL;
+	RecipeStopped 		: BOOL;
+	ManualOperation 	: BOOL;
+	bInductionHeaterMC	: BOOL;
+	bThermalBathMC		: BOOL;
+	bVacuumPumpMC 		: BOOL;
+	bLineHeaterMC 		: BOOL; 
+
+	bRecipeStartAvailable	: BOOL;
+	bReactorOpenEnable		: BOOL;
+	bHeaterOnEnable			: BOOL;
+	bPumpOnEnable			: BOOL;
+	
+	bDorOnEnable			: BOOL;
+	bDorOffEnable			: BOOL;
+	bOpenEnableTemp			: BOOL;
+	bOpenEnablePress		: BOOL;	
+	
+	bPowerResetSwitch		: BOOL;
+	bMainPowerMonitor		: BOOL;
+
+	AlarmTrig				: BOOL;
+	WarningTrig				: BOOL;
+	bMaintKey				: BOOL;
+	bGasStateProcess		: BOOL; // True가 모든 벨브가 닫힌 상태
+	bGasStateSource			: BOOL;// True가 모든 벨브가 닫힌 상태
+	bGasStateVent			: BOOL;// True가 모든 벨브가 닫힌 상태
+
+	bPowerResetLED			: BOOL;
+	bUPSMode				: BOOL;
+	tAlarmDelay_A			: TIME; //아날로그 디바이스 지연시간
+	tAlarmDelay_D			: TIME; //디지털 디바이스 지연시간
+	
+	fbDeviationCheck		:ARRAY[1..29] OF FB_DeviationCheck;
+	wDeviceAlarmEnable		: DWORD;
+	wDeviceWarningEnable	: DWORD;
+	bDeviationAlarm			: BOOL;
+	bDeviationWarning		: BOOL;
+	wDeviationAlarm			: DWORD;
+	wDeviationWarning		: DWORD;
+
+	wLimitAlarmEnable		: DWORD;
+	wLimitWarningEnable		: DWORD;
+	bLimitAlarm				: BOOL;
+	bLimitWarning			: BOOL;
+	wLimitAlarm				: DWORD;
+	wLimitWarning			: DWORD;
+	
+	wAlarmEnable			: DWORD;
+	wWarningEnable			: DWORD;
+
+	bFaultAlarm				: BOOL;
+	bFaultWarning			: BOOL;
+	wAlarm					: DWORD;
+	wWarning				: DWORD;
+		
+	bAlarmEnable			: BOOL;
+	bWarningEnable			: BOOL;
+	bDeviceCurrentAlarmState	: BOOL;
+	bDeviceCurrentWarningState 	: BOOL;
+	fDeviceCurrentValue			: REAL;
+	fDeviceAlarmTreshold		: REAL;
+	fDeviceWarningTreshold		: REAL;
+	
+	i	: INT;
+	j 	: INT;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Read from Device*)
+_DigitalInput();
+
+bGasStateProcess := F_StateValve_Process();  // True 가  Close 상태
+bGasStateSource := F_StateValve_Process_Source(); // Process gas safety / Source Carier Gas
+bGasStateVent := F_State_All_Valve_Vent();//벤트 가능 조건
+
+GVL_IO.aInterlock[1].10 := bRecipeStartAvailable;
+GVL_IO.aInterlock[1].11 := bReactorOpenEnable;
+GVL_IO.aInterlock[1].12 := bPumpOnEnable;
+//알람 지연 시간 변환
+tAlarmDelay_A := REAL_TO_TIME(GVL_IO.aInterlockSet[3]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
+tAlarmDelay_D := REAL_TO_TIME(GVL_IO.aInterlockSet[4]*1000); // UI Setting Analog Delay Time Value(Miliseconde)
+
+IF bMaintKey THEN //bMaintKey 변경
+	GVL_IO.nCaseSignalTower	:= 4; //Signal Tower Blue - Maintenance
+	GVL_COMMAND_FROM_UI.CMD_HEATER_MAIN_MC_ON := GVL_IO.aOutputCmd[1].0;
+	GVL_COMMAND_FROM_UI.CMD_THERMAL_BACH_MC_ON:=GVL_IO.aOutputCmd[1].1;
+	GVL_COMMAND_FROM_UI.CMD_VACUUM_PUMP_MC_ON:=GVL_IO.aOutputCmd[1].2;
+	GVL_COMMAND_FROM_UI.CMD_LINE_HEATER_MC_ON:=GVL_IO.aOutputCmd[1].3;
+ELSE
+	_100_Alarm_Pressure_Low();
+	_101_Alarm_MFC_EPC();
+	_102_Alarm_Reactor_Temp_Pre_Rotation();
+	_103_Alarm_Reactor_OverPre_Temp();
+	_104_Alarm_Utility();	
+	_105_Alarm_Utility_Parts();
+	_Button_Reset_Warning();
+END_IF
+
+_01_Enable_RunRecipe();
+_02_Enable_Reactor_Open_Dor_Off();
+_03_Enable_DOR_ON();
+_04_Enable_Heater_ON();
+_05_Enable_OpenPressure();
+_06_Enable_OpenTemp();
+_07_Enable_PumpTurnOn();
+
+
+(* Out to Device*)
+GVL_IO.aDigitalOutputIO[3].7 := bPowerResetLED;
+GVL_IO.aDigitalOutputIO[2].4 := bUPSMode;
+]]></ST>
+    </Implementation>
+    <Action Name="_01_Enable_RunRecipe" Id="{d3eac737-19db-4a7f-9faa-c97873096da5}">
+      <Implementation>
+        <ST><![CDATA[ bRecipeStartAvailable := //레시피 가능한 상태이면 TRUE
+ 	(AlarmTrig = FALSE) AND
+ 	(WarningTrig = FALSE) AND
+ 	(bMaintKey = FALSE ) AND
+	(GVL_IO.bDORState = TRUE) AND //DOR ON 상태
+// 	(RCP.userState <> 10) AND //Not Recipe Run State
+ 	(GVL_IO_REACTOR_CABINET.DI_03_ReactorDoorDownLimitSensor = TRUE ) AND //Cover Lower Limt
+ 	(bGasStateProcess = TRUE ) AND //Safety Process Gas : TRUE
+ 	(bGasStateSource = TRUE ) AND //Safety Source Gas : TRUE
+ 	(bGasStateVent = TRUE ) AND  //safety Vent Vlave : true
+	(GVL_IO_VALVE.DO_00_V21PumpByPass = TRUE) AND
+ 	GVL_IO.nE3508_nInputManAutoBytes.0 = FALSE AND //Temperature Controller Auto : false
+	GVL_DEVICE_NET_IQ_PLUS.nOutputSetType = 1 AND
+	GVL_IO_REACTOR_CABINET.DI_03_CylinderAutoSwitch_Closed = TRUE ; 
+	 
+//jhkang 임시  on
+bRecipeStartAvailable:=TRUE; 
+
+
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.0:=(AlarmTrig = FALSE); //알람 상태 아닐것
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.1:=(WarningTrig = FALSE); // 어닝 상태 사닐것
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.2:=(bMaintKey = FALSE); // 메인트키 
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.3:=(GVL_IO.bDORState = TRUE ); //DOR ON
+//GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.4:=RCP.userState <> 10; // Recipe Not Running
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.4:=GVL_IO_REACTOR_CABINET.DI_03_ReactorDoorDownLimitSensor = TRUE;  //Chamber Close
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.5:=bGasStateProcess;  // Gas Valve Close
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.6:=bGasStateSource; // Source Valve Close
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.7:=bGasStateVent;//Vent Valve Close
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.8:=(GVL_IO_VALVE.DO_00_V21PumpByPass = TRUE);  // Valve 21 open
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.9:=GVL_IO.nE3508_nInputManAutoBytes.0 = FALSE;  // Temp Auto Mode
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.10:=GVL_DEVICE_NET_IQ_PLUS.nOutputSetType = 1;  // Temp Auto Mode
+GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE.11:=GVL_IO_REACTOR_CABINET.DI_03_CylinderAutoSwitch_Closed = TRUE;  // Chamber Clamp Close
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_02_Enable_Reactor_Open_Dor_Off" Id="{fd40fb3f-6f9b-44f1-ab24-bf988a26340f}">
+      <Implementation>
+        <ST><![CDATA[// DOR Off Conditions
+//jhkang (GVL_IO.aInterlockEnable[1].3 = FALSE ) AND //Can Open Temperature Check
+//왜 UI 에서 설정되는 Can OPen Temp / Pressure 를 확인 하는지 ? 
+ 
+bReactorOpenEnable :=
+	(AlarmTrig = FALSE) AND
+	bOpenEnableTemp = TRUE AND
+	bOpenEnablePress= TRUE AND
+	(GVL_IO.bDORState = FALSE) AND  // DOR oFF
+	(RCP.userState <> 10) AND //Not Recipe Run State
+	(bGasStateProcess = TRUE ) AND //Safety Process Gas : TRUE
+ 	(bGasStateSource = TRUE ) AND //Safety Source Gas : TRUE
+ 	(bGasStateVent = TRUE ) AND  //safety Vent Vlave : true
+	(GVL_IO.aInterlockEnable[1].3 = TRUE ) AND //Can Open Temperature Check
+	(GVL_IO.aInterlockEnable[1].4 = TRUE ); //Can Open Pressure Check
+
+bDorOffEnable:=
+	(AlarmTrig = FALSE) AND
+	bOpenEnableTemp = TRUE AND
+	bOpenEnablePress= TRUE AND
+//	(GVL_IO.bDORState = FALSE) AND  // DOR oFF
+	(RCP.userState <> 10) AND //Not Recipe Run State
+	(bGasStateProcess = TRUE ) AND //Safety Process Gas : TRUE
+ 	(bGasStateSource = TRUE ) AND //Safety Source Gas : TRUE
+ 	(bGasStateVent = TRUE ) AND  //safety Vent Vlave : true
+	(GVL_IO.aInterlockEnable[1].3 = TRUE ) AND //Can Open Temperature Check
+	(GVL_IO.aInterlockEnable[1].4 = TRUE ); //Can Open Pressure Check
+
+
+	
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.0 := (AlarmTrig = FALSE);  //알람 상태 아닐것
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.1 := bOpenEnableTemp;  // Open Temp
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.2 := bOpenEnablePress;// Open Pressure
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.3 := GVL_IO.bDORState = FALSE; // Dor False
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.4 := RCP.userState <> 10; // Recipe Not Running
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.5 := bGasStateProcess;// Gas Valve Close
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.6 := bGasStateSource;// Source Valve Close
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.7 := bGasStateVent;// Vent Valve Close
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.8 := GVL_IO.aInterlockEnable[1].3 = TRUE; // UI 에서 Temp Interlock 설정
+GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR.9 := GVL_IO.aInterlockEnable[1].4 = TRUE;// UI 에서 Pressure Interlock 설정
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_03_Enable_DOR_ON" Id="{9aa2df21-d253-4c98-a825-e11376eacac2}">
+      <Implementation>
+        <ST><![CDATA[//jhkang Dor ON 조건 다시 확인 필요
+bDorOnEnable :=	(AlarmTrig = FALSE ) AND 
+				GVL_IO.isCoverClosed AND 
+//				GVL_IO.bDorState = FALSE AND
+				(RCP.userState <> 10) AND //Not Recipe Run State 
+				GVL_IO.isPumpRunning;
+
+GVL_IO.bDorOnEnable := bDorOnEnable;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_04_Enable_Heater_ON" Id="{79ca0e4f-56e9-4d95-8d74-462d31bebf61}">
+      <Implementation>
+        <ST><![CDATA[bHeaterOnEnable := (AlarmTrig = FALSE ) AND 
+				(GVL_IO_REACTOR_CABINET.DI_03_ReactorDoorDownLimitSensor = TRUE ) AND //Cover Lower Limt;
+				GVL_IO.bDorState = TRUE AND
+				(RCP.userState <> 10); //Not Recipe Run State]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_05_Enable_OpenPressure" Id="{6e95fe0e-f951-426e-903c-9832afe36f99}">
+      <Implementation>
+        <ST><![CDATA[IF  GVL_IO.wIqPlus_CDG1_PV > GVL_IO.aInterlockSet[10] THEN  //Can Open Reactor Pressure
+	bOpenEnablePress := TRUE;
+ELSE
+	bOpenEnablePress := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_06_Enable_OpenTemp" Id="{98bf05bc-fd49-4f54-8490-b1f51f88199e}">
+      <Implementation>
+        <ST><![CDATA[//jhkang Can Open Temp 가 3508 온도 맞는지?
+IF  P11_E3508.wE3508_PV < GVL_IO.aInterlockSet[9] THEN  // Can Open Temp
+	bOpenEnableTemp := TRUE;
+ELSE
+	bOpenEnableTemp := FALSE;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_07_Enable_PumpTurnOn" Id="{9d78f92c-7a91-492a-8572-3c34eff3f233}">
+      <Implementation>
+        <ST><![CDATA[bPumpOnEnable :=  // Pump ON 
+	(AlarmTrig = FALSE) AND
+	(GVL_IO_REACTOR_CABINET.DI_03_ReactorDoorDownLimitSensor = TRUE );
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_100_Alarm_Pressure_Low" Id="{489a92bb-80c7-428c-bf86-308900773682}">
+      <Implementation>
+        <ST><![CDATA[//Gas Pressure Alarm N2, H2, H2S, H2Se
+FOR i := 1 TO 4 DO
+	wLimitAlarmEnable := SHR(GVL_IO.aInterlockEnable[4], (i-1)); 
+	wLimitWarningEnable := SHR(GVL_IO.aInterlockEnable[5], (i-1));
+	GVL_SEQUENCE.fbSensorLimitCheck[i](
+		bAlarmEnable := wLimitAlarmEnable.0,  // Enable 
+		bWarningEnable := wLimitWarningEnable.0,
+		fCurrentValue := GVL_IO.aMonitoring_PV[(i+3)], // 현재 값 
+		fAlarmTreshold := GVL_IO.aInterlockSet[5],
+		fWarningTreshold := GVL_IO.aInterlockSet[6],
+		tAlarmDelay := tAlarmDelay_D,
+		bLimitAlarm => bLimitAlarm, //알람 출력
+		bLimitWarning => bLimitWarning //주의(Warning) 출력
+		);	
+	IF bLimitAlarm THEN		
+		GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+		GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+		//팝업 표시
+		wLimitAlarm := ROR(GVL_IO.aInterlock[2], (i-1));
+		wLimitAlarm.0 := TRUE;
+		GVL_IO.aInterlock[2] := ROL(wLimitAlarm, (i-1));
+		//대시보드 표시
+		wLimitAlarm := ROR(GVL_IO.aInterlock[1], (i*2));
+		wLimitAlarm.0 := TRUE;
+		GVL_IO.aInterlock[1] := ROL(wLimitAlarm, (i*2));
+	ELSE
+		//팝업 표시
+		wLimitAlarm := ROR(GVL_IO.aInterlock[2], (i-1));
+		wLimitAlarm.0 := FALSE;
+		GVL_IO.aInterlock[2] := ROL(wLimitAlarm, (i-1));
+		//대시보드 표시
+		wLimitAlarm := ROR(GVL_IO.aInterlock[1], (i*2));
+		wLimitAlarm.0 := FALSE;
+		GVL_IO.aInterlock[1] := ROL(wLimitAlarm, (i*2));
+	END_IF
+	
+	IF bLimitWarning THEN		
+		GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
+		GVL_IO.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
+		//팝업 표시
+		wLimitWarning := ROR(GVL_IO.aInterlock[4], (i-1));
+		wLimitWarning.0 := TRUE;
+		GVL_IO.aInterlock[4] := ROL(wLimitWarning, (i-1));
+		//대시보드 표시
+		wLimitWarning := ROR(GVL_IO.aInterlock[1], (i*2)+1);
+		wLimitWarning.0 := TRUE;
+		GVL_IO.aInterlock[1] := ROL(wLimitWarning, (i*2)+1);
+	ELSE
+		//팝업 표시
+		wLimitWarning := ROR(GVL_IO.aInterlock[4], (i-1));
+		wLimitWarning.0 := FALSE;
+		GVL_IO.aInterlock[4] := ROL(wLimitWarning, (i-1));
+		//대시보드 표시
+		wLimitWarning := ROR(GVL_IO.aInterlock[1], (i*2)+1);
+		wLimitWarning.0 := FALSE;
+		GVL_IO.aInterlock[1] := ROL(wLimitWarning, (i*2)+1);
+	END_IF
+END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_101_Alarm_MFC_EPC" Id="{8202243e-b333-45ee-ace8-e6ff9df10a7f}">
+      <Implementation>
+        <ST><![CDATA[//jhkang MFC ,EPC
+FOR i := 1 TO 16 DO
+		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i+2)); //오늘쪽 쉬프트 연산
+		wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i+2));
+		
+		GVL_SEQUENCE.fbDeviationCheck[i](
+			bAlarmEnable := wDeviceAlarmEnable.0,
+			bWarningEnable := wDeviceWarningEnable.0,
+			fCurrentValue := GVL_IO.aController_PV[i],
+			fControlValue := GVL_IO.aController_CV[i],
+			fMaxValue := GVL_IO.aMaxValueController[i],
+			fAlarmTreshold := GVL_IO.aInterlockSet[1],
+			fWarningTreshold := GVL_IO.aInterlockSet[2],
+			tAlarmDelay := tAlarmDelay_A,
+			bDeviationAlarm => bDeviationAlarm, //알람 출력
+			bDeviationWarning => bDeviationWarning // 주의(Warning) 출력
+			);
+			
+		IF bDeviationAlarm THEN
+			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
+			wDeviationAlarm.0 := TRUE;
+			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i+2));
+		ELSE
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i+2));
+			wDeviationAlarm.0 := FALSE;
+			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i+2));	
+		END_IF
+		
+		IF bDeviationWarning THEN
+			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i+2));
+			wDeviationWarning.0 := TRUE;
+			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i+2));
+		ELSE
+			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i+2));
+			wDeviationWarning.0 := FALSE;
+			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i+2));
+		END_IF
+	END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_102_Alarm_Reactor_Temp_Pre_Rotation" Id="{31bdc5a0-4b33-45de-8fca-f777681cc537}">
+      <Implementation>
+        <ST><![CDATA[//jhkang Reactor Temp , Pressure ,Rotation
+
+FOR i := 1 TO 3 DO
+		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i-1)); //오늘쪽 쉬프트 연산
+		wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i-1));
+		
+		GVL_SEQUENCE.fbDeviationCheck_Reactor[i](
+			bAlarmEnable := wDeviceAlarmEnable.0,
+			bWarningEnable := wDeviceWarningEnable.0,
+			fCurrentValue := GVL_IO.aController_PV[i+16],
+			fControlValue := GVL_IO.aController_CV[i+16],
+			fMaxValue := GVL_IO.aMaxValueController[i+16],
+			fAlarmTreshold := GVL_IO.aInterlockSet[1],
+			fWarningTreshold := GVL_IO.aInterlockSet[2],
+			tAlarmDelay := tAlarmDelay_A,
+			bDeviationAlarm => bDeviationAlarm, //알람 출력
+			bDeviationWarning => bDeviationWarning // 주의(Warning) 출력
+			);
+			
+		IF bDeviationAlarm THEN
+			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i-1));
+			wDeviationAlarm.0 := TRUE;
+			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i-1));
+		ELSE
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[3], (i-1));
+			wDeviationAlarm.0 := FALSE;
+			GVL_IO.aInterlock[3] := ROL(wDeviationAlarm, (i-1));	
+		END_IF
+		
+		IF bDeviationWarning THEN
+			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i-1));
+			wDeviationWarning.0 := TRUE;
+			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i-1));
+		ELSE
+			wDeviationWarning := ROR(GVL_IO.aInterlock[5], (i-1));
+			wDeviationWarning.0 := FALSE;
+			GVL_IO.aInterlock[5] := ROL(wDeviationWarning, (i-1));
+		END_IF
+	END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_103_Alarm_Reactor_OverPre_Temp" Id="{f66dfa94-0ab4-41d0-adb0-a183715c7f0f}">
+      <Implementation>
+        <ST><![CDATA[
+//Over Temp Over Pressure
+FOR i := 1 TO 2 DO
+	CASE i OF
+		
+		1: //Susceptor Over Temperature
+			bAlarmEnable := GVL_IO.aInterlockEnable[4].4;
+			bWarningEnable := GVL_IO.aInterlockEnable[5].4;
+			fDeviceCurrentValue := P11_E3508.wE3508_PV;
+			fDeviceAlarmTreshold := GVL_IO.aInterlockSet[7];
+			fDeviceWarningTreshold := (GVL_IO.aInterlockSet[7] * 0.9); // 90% 이상 warning 
+		
+		2: //Reactor Over Pressure Alarm
+			bAlarmEnable := GVL_IO.aInterlockEnable[4].5;
+			bWarningEnable := GVL_IO.aInterlockEnable[5].5;
+			fDeviceCurrentValue := GVL_IO.wIqPlus_CDG1_PV;
+			fDeviceAlarmTreshold := GVL_IO.aInterlockSet[8];
+			fDeviceWarningTreshold := (GVL_IO.aInterlockSet[8] * 0.9); //
+			
+	END_CASE
+	
+	GVL_SEQUENCE.fbSensorOverLimitCheck[i](
+		bAlarmEnable	 := bAlarmEnable,  // Enable 
+		bWarningEnable	 := bWarningEnable,
+		fCurrentValue  := fDeviceCurrentValue, // 현재 값 
+		fAlarmTreshold	 := fDeviceAlarmTreshold,
+		fWarningTreshold  := fDeviceWarningTreshold,
+		tAlarmDelay := tAlarmDelay_D,
+		bAlarm => bLimitAlarm, //알람 출력
+		bWarning => bLimitWarning //주의(Warning) 출력
+		);
+	
+		IF bLimitAlarm THEN
+			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[2], (i+3));
+			wDeviationAlarm.0 := TRUE;
+			GVL_IO.aInterlock[2] := ROL(wDeviationAlarm, (i+3));
+		ELSE
+			wDeviationAlarm := ROR(GVL_IO.aInterlock[2], (i+3));
+			wDeviationAlarm.0 := FALSE;
+			GVL_IO.aInterlock[2] := ROL(wDeviationAlarm, (i+3));	
+		END_IF
+		
+		IF bLimitWarning THEN
+			GVL_IO.aInterlock[1].1 := TRUE; // Warning Trig
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower Yellow - Warning
+			wDeviationWarning := ROR(GVL_IO.aInterlock[4], (i+3));
+			wDeviationWarning.0 := TRUE;
+			GVL_IO.aInterlock[4] := ROL(wDeviationWarning, (i+3));
+		ELSE
+			wDeviationWarning := ROR(GVL_IO.aInterlock[4], (i+3));
+			wDeviationWarning.0 := FALSE;
+			GVL_IO.aInterlock[4] := ROL(wDeviationWarning, (i+3));
+		END_IF
+END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_104_Alarm_Utility" Id="{2f8bb936-9007-4196-95d8-8b3b7512b562}">
+      <Implementation>
+        <ST><![CDATA[	//Device Fault Check - Pneumatic, Heater, Pump, Motor, GC Door, RC Door
+	FOR i := 1 TO 7 DO
+		CASE i OF
+			1: //CDA Alarm Switch (Pneumatic)
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].6;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].6;
+				bDeviceCurrentAlarmState := NOT GVL_IO.aInputState[1].3;
+				bDeviceCurrentWarningState := NOT GVL_IO.aInputState[1].3;
+				
+			2: //Cooling Water Switch
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].7;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].7;
+				bDeviceCurrentAlarmState := NOT GVL_IO.aInputState[1].4;
+				bDeviceCurrentWarningState := NOT GVL_IO.aInputState[1].4;
+				
+			3: //Rotatin Motor Fault
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].8;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].8;
+				bDeviceCurrentAlarmState :=  GVL_IO.aInputState[1].7;
+				bDeviceCurrentWarningState :=  GVL_IO.aInputState[1].7;
+				
+			4: //Vacuum Pump Fault
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].9;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].9;
+				bDeviceCurrentAlarmState := NOT GVL_IO.aInputState[1].10;
+				bDeviceCurrentWarningState := NOT GVL_IO.aInputState[1].9;
+				
+			5: //Gas Cabinet Door Open
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].10;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].10;
+				bDeviceCurrentAlarmState := NOT GVL_IO.aInputState[1].15;
+				bDeviceCurrentWarningState := NOT GVL_IO.aInputState[1].15;
+			6: //Reactor Cabinet Door Open
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].11;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].11;
+				bDeviceCurrentAlarmState := NOT GVL_IO.aInputState[1].13;
+				bDeviceCurrentWarningState := NOT GVL_IO.aInputState[1].13;
+				
+			7: //DOR Fault
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].12;
+				bWarningEnable := GVL_IO.aInterlockEnable[5].12;
+				
+				IF (GVL_IO.nDorOperationError = 1) THEN
+					bDeviceCurrentAlarmState := TRUE;
+				ELSE
+					bDeviceCurrentAlarmState := FALSE;
+				END_IF
+				IF (GVL_IO.nDorOperationError = 2) OR (GVL_IO.nDorOperationError = 3) THEN
+					bDeviceCurrentWarningState := TRUE;
+					bDeviceCurrentAlarmState:=TRUE;
+				ELSE
+					bDeviceCurrentWarningState := FALSE;
+					bDeviceCurrentAlarmState:=FALSE;
+				END_IF
+		END_CASE
+
+		GVL_SEQUENCE.fbFaultCheck[i](
+			bAlarmEnable := bAlarmEnable,
+			bWarningEnable := bWarningEnable,
+			bCurrentAlarmState := bDeviceCurrentAlarmState,
+			bCurrentWarningState := bDeviceCurrentWarningState,
+			tAlarmDelay := tAlarmDelay_D,
+			bAlarm => bFaultAlarm,
+			bWarning => bFaultWarning
+			);
+			
+		IF bFaultAlarm THEN
+			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//팝업 표시
+			wAlarm := ROR(GVL_IO.aInterlock[2], (i+5));
+			wAlarm.0 := TRUE;
+			GVL_IO.aInterlock[2] := ROL(wAlarm, (i+5));
+		END_IF
+		IF bFaultWarning THEN
+			GVL_IO.aInterlock[1].1 := TRUE; //Warning Trig
+			GVL_IO.nCaseSignalTower := 2; // Signal Tower YELLOW - Warning
+			//팝업 표시
+			wAlarm := ROR(GVL_IO.aInterlock[4], (i+5));
+			wAlarm.0 := TRUE;
+			GVL_IO.aInterlock[4] := ROL(wAlarm, (i+5));
+		END_IF
+	END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_105_Alarm_Utility_Parts" Id="{9a2dacee-2e4c-4b78-a14f-4fa3c303bb8d}">
+      <Implementation>
+        <ST><![CDATA[//SMPS,Circuit Power , Gas Detector ,
+	FOR i := 1 TO 4 DO
+		CASE i OF
+			1: //SMPS
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].13;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[2].5 OR 
+											GVL_IO.aInputState[2].6 OR 
+											GVL_IO.aInputState[2].7 OR 
+											GVL_IO.aInputState[2].8;
+			2: //Circuit Power
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].14;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[2].13 = FALSE  OR  
+											GVL_IO.aInputState[2].14 = FALSE  OR
+											GVL_IO.aInputState[2].15 = FALSE  OR
+											GVL_IO.aInputState[3].0 = FALSE  OR 
+											GVL_IO.aInputState[3].1 = FALSE  OR
+											GVL_IO.aInputState[3].2  = FALSE;
+				//bDeviceCurrentAlarmState 가 true 면 알람 상태 
+				
+		//GVL_IO.aInputState[2].13:= GVL_IO_GAS_CABINET.DI_02_RotationMotorCP;
+		//GVL_IO.aInputState[2].14:= GVL_IO_GAS_CABINET.DI_02_CoverLiftMotorCP;
+		//GVL_IO.aInputState[2].15:= GVL_IO_GAS_CABINET.DI_02_T_VCP;
+		
+		//GVL_IO.aInputState[3].0:= GVL_IO_GAS_CABINET.DI_03_GasDetectorCP;
+		//GVL_IO.aInputState[3].1:= GVL_IO_GAS_CABINET.DI_03_CabinetLampsCP;
+		//GVL_IO.aInputState[3].2:= GVL_IO_GAS_CABINET.DI_03_MFCPowerCP;
+
+			3: //Gas Detector
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].15;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[3].11 AND GVL_IO.aInputState[3].12 AND GVL_IO.aInputState[3].13 AND GVL_IO.aInputState[3].14;
+				
+
+		//GVL_IO.aInputState[3].11:= GVL_IO_GAS_CABINET.DI_04_GasDetectorH2;
+		//GVL_IO.aInputState[3].12:= GVL_IO_GAS_CABINET.DI_04_GasDetectorH2S;
+		//GVL_IO.aInputState[3].13:= GVL_IO_GAS_CABINET.DI_04_GasDetectorH2Se;
+		//GVL_IO.aInputState[3].14:= GVL_IO_GAS_CABINET.DI_04_FireSensor;
+			4: // External Alarm
+				bAlarmEnable := GVL_IO.aInterlockEnable[4].16;
+				bDeviceCurrentAlarmState := GVL_IO.aInputState[3].14 AND GVL_IO.aInputState[3].15 AND GVL_IO.aInputState[4].0 AND GVL_IO.aInputState[4].1 AND GVL_IO.aInputState[4].2
+														AND GVL_IO.aInputState[4].3 AND GVL_IO.aInputState[4].4;
+				
+						
+		//GVL_IO.aInputState[3].14:= GVL_IO_GAS_CABINET.DI_04_FireSensor;
+		//GVL_IO.aInputState[3].15 := GVL_IO_GAS_CABINET.DI_04_ExternalScrubberFault;
+		//GVL_IO.aInputState[4].0 := GVL_IO_GAS_CABINET.DI_05_ExternalH2GasCabinetFault;
+		//GVL_IO.aInputState[4].1 := GVL_IO_GAS_CABINET.DI_05_ExternalH2SGasCabinetFault;
+		//GVL_IO.aInputState[4].2 := GVL_IO_GAS_CABINET.DI_05_ExternalH2SeGasCabinetFault;
+		//GVL_IO.aInputState[4].3 := GVL_IO_GAS_CABINET.DI_05_ExternalUserInputAlarm;
+
+		END_CASE
+
+		GVL_SEQUENCE.fbFaultCheck_Utility_CP[i](
+			bAlarmEnable := bAlarmEnable,
+			bWarningEnable := FALSE,
+			bCurrentAlarmState := bDeviceCurrentAlarmState,
+			bCurrentWarningState := FALSE,
+			tAlarmDelay := tAlarmDelay_D,
+			bAlarm => bFaultAlarm,
+			bWarning => bFaultWarning
+			);
+			
+		IF bFaultAlarm THEN
+			GVL_IO.aInterlock[1].0 := TRUE; //Alarm Trig
+			GVL_IO.nCaseSignalTower := 1; // Signal Tower RED - Alarm
+			//팝업 표시
+			wAlarm := ROR(GVL_IO.aInterlock[2], (i+13));
+			wAlarm.0 := TRUE;
+			GVL_IO.aInterlock[2] := ROL(wAlarm, (i+13));
+		END_IF
+	END_FOR]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_Button_Reset_Warning" Id="{11672cb1-8009-4337-b6f3-945de947a9f8}">
+      <Implementation>
+        <ST><![CDATA[IF GVL_IO.aInterlockEnable[1].0 THEN //알람 리셋 버턴을 눌렀을 때
+	GVL_IO.aInterlock[1].0 := FALSE; //Alarm Trig Reset
+	GVL_IO.aInterlockEnable[1].0 := FALSE; //버턴 초기화
+	GVL_IO.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+END_IF
+IF GVL_IO.aInterlockEnable[1].1 THEN //주의 리셋 버턴을 눌렀을 때
+	GVL_IO.aInterlock[1].1 := FALSE; //Warmomg Trig Reset
+	GVL_IO.aInterlockEnable[1].1 := FALSE; //버턴 초기화
+	GVL_IO.nCaseSignalTower := 4; // Signal Tower Blue - Idle
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_DigitalInput" Id="{28df557a-761a-4b0f-8136-26acb753e00f}">
+      <Implementation>
+        <ST><![CDATA[bMaintKey := GVL_IO_REACTOR_CABINET.DI_01_MaintenanceModeKey;
+bPowerResetSwitch := GVL_IO_GAS_CABINET.DI_01_ResetButton;
+//jhkang Main Power Monitor 가 뭔가 ? 
+//7. 순간정전 되었다가 전기가 다시 살아 났을 때,
+// UPS는 전원이 살아있고, 히터, 펌프, bath는 전기가 나갔을 때 (아직 명확한 로직이 없음)
+bMainPowerMonitor := GVL_IO.aDigitalInputIO[7].5; /// ??????? 이게 뭐지 ?]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P90_Interlock">
+      <LineId Id="2289" Count="2" />
+      <LineId Id="2295" Count="2" />
+      <LineId Id="2299" Count="2" />
+      <LineId Id="2343" Count="0" />
+      <LineId Id="2308" Count="2" />
+      <LineId Id="2312" Count="12" />
+      <LineId Id="2326" Count="0" />
+      <LineId Id="2346" Count="0" />
+      <LineId Id="2327" Count="7" />
+      <LineId Id="2344" Count="0" />
+      <LineId Id="2335" Count="4" />
+      <LineId Id="415" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._01_Enable_RunRecipe">
+      <LineId Id="3" Count="3" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="2" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="57" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="31" Count="4" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="40" Count="4" />
+      <LineId Id="30" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._02_Enable_Reactor_Open_Dor_Off">
+      <LineId Id="2" Count="5" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="29" Count="8" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="39" Count="10" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._03_Enable_DOR_ON">
+      <LineId Id="2" Count="1" />
+      <LineId Id="5" Count="3" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._04_Enable_Heater_ON">
+      <LineId Id="28" Count="3" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._05_Enable_OpenPressure">
+      <LineId Id="2" Count="3" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._06_Enable_OpenTemp">
+      <LineId Id="2" Count="6" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._07_Enable_PumpTurnOn">
+      <LineId Id="20" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._100_Alarm_Pressure_Low">
+      <LineId Id="2" Count="56" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._101_Alarm_MFC_EPC">
+      <LineId Id="2" Count="40" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._102_Alarm_Reactor_Temp_Pre_Rotation">
+      <LineId Id="2" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="3" Count="39" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._103_Alarm_Reactor_OverPre_Temp">
+      <LineId Id="2" Count="7" />
+      <LineId Id="11" Count="6" />
+      <LineId Id="19" Count="3" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="69" Count="9" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="122" Count="7" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="131" Count="12" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._104_Alarm_Utility">
+      <LineId Id="81" Count="7" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="89" Count="4" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="94" Count="4" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="99" Count="4" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="104" Count="9" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="114" Count="10" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="125" Count="1" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="127" Count="28" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._105_Alarm_Utility_Parts">
+      <LineId Id="2" Count="5" />
+      <LineId Id="64" Count="2" />
+      <LineId Id="8" Count="2" />
+      <LineId Id="68" Count="4" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="13" Count="49" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._Button_Reset_Warning">
+      <LineId Id="12" Count="8" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P90_Interlock._DigitalInput">
+      <LineId Id="72" Count="4" />
+      <LineId Id="71" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

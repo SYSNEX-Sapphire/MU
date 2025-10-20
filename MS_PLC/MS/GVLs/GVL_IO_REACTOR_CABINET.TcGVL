@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL_IO_REACTOR_CABINET" Id="{112d5ba3-d6a0-409a-87fe-09fb9a3adfd3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	DI_01_MaintenanceModeKey AT%I*:BOOL;
+	DI_01_ReactorCabinetLampButton AT%I*:BOOL;
+	DI_01_DORVACButton AT%I*:BOOL;
+	DI_01_DORATMButton AT%I*:BOOL;
+	DI_01_ReactorDoorUpButton AT%I*:BOOL;
+	DI_01_ReactorDoorDownButton AT%I*:BOOL;
+	DI_01_ClampLock AT%I*:BOOL;
+	DI_01_ClampRelease AT%I*:BOOL;
+	
+	DI_02_C_WFlowSensor AT%I*:BOOL;
+	DI_02_SusceptorRotationMotorFault AT%I*:BOOL;
+	DI_02_VacuumPumpFail AT%I*:BOOL;
+	DI_02_VacuumPumpWarning AT%I*:BOOL;
+	DI_02_VacuumPumpAlarm AT%I*:BOOL;
+	DI_02_VacuumPumpRunning AT%I*:BOOL;
+	DI_02_VacuumPumpFBRunning AT%I*:BOOL;
+	DI_02_ReactorDoorUpLimitSensor AT%I*:BOOL;
+	
+	DI_03_ReactorDoorDownLimitSensor AT%I*:BOOL;
+	DI_03_CylinderAutoSwitch_Closed AT%I*:BOOL;
+	DI_03_CylinderAutoSwitch_Opened AT%I*:BOOL;
+	DI_03_ReactorCabinetDoorClose AT%I*:BOOL;
+	DI_03_Spare_01 AT%I*:BOOL;
+	DI_03_Spare_02 AT%I*:BOOL;
+	DI_03_Spare_03 AT%I*:BOOL;
+	DI_03_Spare_04 AT%I*:BOOL;
+	
+	DO_04_SignalTowerRed AT%Q*:BOOL;
+	DO_04_SignalTowerOrange AT%Q*:BOOL;
+	DO_04_SignalTowerGreen AT%Q*:BOOL;
+	DO_04_SignalTowerBlue AT%Q*:BOOL;
+	DO_04_SignalTowerWhite AT%Q*:BOOL;
+	DO_04_SignalTowerBuzzer AT%Q*:BOOL;
+	DO_04_ReactorCoverUpRelay AT%Q*:BOOL;
+	DO_04_ReactorCoverDownRelay AT%Q*:BOOL;
+	
+	DO_05_ClampLock AT%Q*:BOOL;
+	DO_05_ClampRelease AT%Q*:BOOL;
+	DO_05_VacuumPumpStart_Stop AT%Q*:BOOL;
+	DO_05_VacuumPumpReset AT%Q*:BOOL;
+	DO_05_SusceptorRotationFWD AT%Q*:BOOL;
+	DO_05_SusceptorRotationSTOP AT%Q*:BOOL;
+	DO_05_SusceptorRotationAL_RST AT%Q*:BOOL;
+	DO_05_DORVACButtonLamp AT%Q*:BOOL;
+	
+	DO_06_DORATMButtonLamp AT%Q*:BOOL;
+	DO_06_ReactorCoverUpButtonLamp AT%Q*:BOOL;
+	DO_06_ReactorCoverDownButtonLamp AT%Q*:BOOL;
+	DO_06_ClampLockButtonLamp AT%Q*:BOOL;
+	DO_06_ClampReleaseButtonLamp AT%Q*:BOOL;
+	DO_06_ReactorCabinetLamp AT%Q*:BOOL;
+	DO_06_Spare07 AT%Q*:BOOL;
+	DO_06_Spare08 AT%Q*:BOOL;
+	
+	AI_07_P02_ReactorPressure10TorrPV AT%I*:INT;
+	AI_07_P03_ExhaustPressurePV AT%I*:INT;
+	AI_07_S05_DORPressurePV AT%I*:INT;
+	AI_07_Spare_04 AT%I*:INT;
+
+	AI_08_R01SusceptorRotationPV AT%I*:INT;
+	AI_08_Spare_02 AT%I*:INT;
+	AI_08_Spare_03 AT%I*:INT;
+	AI_08_Spare_04 AT%I*:INT;
+	
+	AO_09_P03_ExhaustPressureAM215Input AT%Q*:INT;
+	AO_09_R01_SusceptorRotationSV AT%Q*:INT;
+	AO_09_Spare_03 AT%Q*:INT;
+	AO_09_Spare_04 AT%Q*:INT;
+	
+	AI_10_R04S_HCoolingWaterPV AT%I*:INT;
+	AI_10_Spare_02 AT%I*:INT;
+	AI_10_Spare_03 AT%I*:INT;
+	AI_10_Spare_04 AT%I*:INT;
+
+ 
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

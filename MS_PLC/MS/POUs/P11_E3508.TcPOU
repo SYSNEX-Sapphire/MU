@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="P11_E3508" Id="{a7e3d6a1-82f0-4607-8ac9-093cb5f931f5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P11_E3508
+VAR
+	wControlValue			: WORD;
+	wPowerRateSetValue		: WORD;	
+	bOutputManAuto 			: BOOL; // Command 0:Auto, 1:Manual Mode
+	
+	bHeaterOn				: BOOL := FALSE; //to PSTEK
+	bHeaterReset			: BOOL; //to PSTEK
+
+	bAlarmState_E3508 		: BOOL; //Alarm or Sensor Break Signal
+	bManAuto_E3508 			: BOOL; //State, 0:Manual, 1:Auto
+
+	isHeaterReady			: BOOL; //Close : Ready
+	isHeaterRun				: BOOL; //Close : Running, Open : Stop
+	isHeaterFault			: BOOL; //Close : Falut, Open : Normal
+	//isInductionHeaterErr	: BOOL; //Power Supply
+	bInductionHeaterCB		: BOOL;
+	//Input from E3508 Controller
+//	aInputPVBytes AT %I* 		: ARRAY[1..2]OF USINT; //Input Process Values
+//	aInputSVBytes AT %I* 		: ARRAY[1..2]OF USINT; //Input Set Values
+//	aInputTVBytes AT %I* 		: ARRAY[1..2]OF USINT; //Input Target Valuse
+//	aInputCVBytes AT %I* 		: ARRAY[1..2]OF USINT; //Induction Heter Controlled Values
+//	aInputProportional AT %I* 	: ARRAY[1..2]OF USINT; //PID - Proportional Band
+//	aInputIntegral AT %I* 		: ARRAY[1..2]OF USINT; //PID - Integral Time
+//	aInputDerivative AT %I* 	: ARRAY[1..2]OF USINT; //PID - Derivative Time 
+//	nInputAlarmBytes AT %I* 	: USINT; // Alarm State
+//	nInputManAutoBytes AT %I* 	: USINT; // ManAuto State
+	
+	wE3508_PV				: WORD;
+	wE3508_SV				: WORD;
+	wE3508_PowerRate		: WORD; //To Induction Heater Control Values
+	wE3508_P				: WORD; //PID Parameter P
+	wE3508_I				: WORD; //PID Parameter I
+	wE3508_D				: WORD; //PID Parameter D
+	//Output to E3508 Controller
+	wOutputSVBytes 				: outWord;
+	wOutputPowerSVBytes 		: outWord;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Induction Heater & Temperature Controller & Thermo Couple(R-Type)
+//Maker: PSTEK, Eurotherm
+//Model: 3508
+//Temperature Range: 0 ~ 12000℃
+
+(* Command *)
+bHeaterOn := GVL_COMMAND_FROM_UI.CMD_HEATER_MAIN_MC_ON;
+
+
+GVL_DEVICE_NET_E3508.nOutputManAutoBytes[1].0 := GVL_COMMAND_FROM_UI.CMD_E3508_MAN_AUTO; //Temp Controller Mode Command(*True:manual   False:auto*)
+
+(* Read from Power Distribution Pannel *)
+bInductionHeaterCB		:= GVL_IO_GAS_CABINET.DI_02_GraphiteHeaterELCB;
+
+(* Read from E3508 Device Value *)
+wE3508_PV				:= USINT_TO_WORD_Bit(GVL_DEVICE_NET_E3508.aInputPVBytes[1], GVL_DEVICE_NET_E3508.aInputPVBytes[2]);
+wE3508_SV				:= USINT_TO_WORD_Bit(GVL_DEVICE_NET_E3508.aInputSVBytes[1], GVL_DEVICE_NET_E3508.aInputSVBytes[2]);
+wE3508_PowerRate		:= USINT_TO_WORD_Bit(GVL_DEVICE_NET_E3508.aInputActiveOut[1], GVL_DEVICE_NET_E3508.aInputActiveOut[2]); //divided to 10
+
+wE3508_P 				:= USINT_TO_WORD_Bit(GVL_DEVICE_NET_E3508.aInputProportional[1], GVL_DEVICE_NET_E3508.aInputProportional[2]);
+wE3508_I 				:= USINT_TO_WORD_Bit(GVL_DEVICE_NET_E3508.aInputIntegral[1], GVL_DEVICE_NET_E3508.aInputIntegral[2]);
+wE3508_D 				:= USINT_TO_WORD_Bit(GVL_DEVICE_NET_E3508.aInputDerivative[1], GVL_DEVICE_NET_E3508.aInputDerivative[2]);
+
+
+
+//bAlarmState_E3508 		:= nInputAlarmBytes.7;
+
+//GVL_IO.aMonitoring_PV[11] := WORD_TO_REAL(wE3508_PowerRate)*0.1; //divided to 10 PowerRate
+
+(* Read from Induction Heater Value *)
+
+// Interface with other PRGs
+wControlValue			:= GVL_IO.wE3508_CV;
+GVL_IO.wE3508_PV		:= wE3508_PV;
+
+(* Write to E3508 Device Value *)
+// Operation Mode
+// bOutputManAuto := GVL_IO.aOutputCmd[1].11; //Temp Controller Mode Command
+// nOutputManAutoBytes.0 	:= GVL_IO.aOutputCmd[1].11; //Command
+
+IF GVL_DEVICE_NET_E3508.aInputManAutoBytes[1].0 THEN // Read form E3508 Mode, 0:Man 1:Auto
+	wOutputPowerSVBytes 	:= WORD_TO_USINT_Bit(wControlValue); //multiple to 10, Power Reate Set Value
+	GVL_DEVICE_NET_E3508.aOutputPowerBytes[1] 	:= wOutputPowerSVBytes.Lower;
+	GVL_DEVICE_NET_E3508.aOutputPowerBytes[2] 	:= wOutputPowerSVBytes.Upper;
+ELSE
+	wOutputSVBytes 			:= WORD_TO_USINT_Bit(wControlValue / 10 ); // Temperature Set Value
+	GVL_DEVICE_NET_E3508.aOutputSVBytes[1] 		:= wOutputSVBytes.Lower;
+	GVL_DEVICE_NET_E3508.aOutputSVBytes[2] 		:= wOutputSVBytes.Upper;
+END_IF
+
+(* Write to Induction Heater Value *)
+GVL_IO_GAS_CABINET.DO_07_GraphiteHeaterMC := bHeaterOn;
+//GVL_IO.aDigitalOutputIO[2].1 := bHeaterReset;
+GVL_IO.nE3508_nInputManAutoBytes := GVL_DEVICE_NET_E3508.aInputManAutoBytes[1]; //State
+
+
+GVL_DEVICE_NET_E3508.aOutputThreshold[1]:=232;
+GVL_DEVICE_NET_E3508.aOutputThreshold[2]:=3;
+]]></ST>
+    </Implementation>
+    <LineIds Name="P11_E3508">
+      <LineId Id="815" Count="22" />
+      <LineId Id="839" Count="34" />
+      <LineId Id="668" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

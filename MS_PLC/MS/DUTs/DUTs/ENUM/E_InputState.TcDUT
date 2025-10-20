@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="E_InputState" Id="{822f2f7e-a733-482c-99d1-fda51337fafe}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_InputState :
+(
+	E_Input_MaintKey,
+	Reactor_Cabinet_Lamp,
+	Gas_Cabinet_Lamp,
+	PowerDistribute_Lamp,
+	AirPressure_Sensor,
+	WaferFlow_Sensor,
+	E3508_Heater_Ready,
+	E3508_Heater_Run,
+	E3508_Heater_Fault,
+	Rotation_Start,
+	Rotation_Break,
+	Rotation_Fault,
+	Pump_Warning,
+	Pump_running,
+	Pump_Fault,
+	Reactor_Cabinet_Door,
+	Gas_Cabinet_Door,
+	PowerDistri_Cabinet_Door,
+	
+	E_InputState_END
+
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

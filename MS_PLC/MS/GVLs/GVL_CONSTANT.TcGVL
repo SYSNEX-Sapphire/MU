@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL_CONSTANT" Id="{98785915-f5a2-4621-8795-7e3f35033e2f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+	EL3064MaxValueH	: REAL := 16383; //0~5V Half Input
+	EL3064MaxValue 	: REAL := 32767; //0~10V
+	EL4004MaxValueH	: REAL := 16383; //0~5V Half Output
+	EL4004MaxValue 	: REAL := 32767; //4~20mA
+	EL3102MAxValue:REAL:=32767;
+	NumAnalogController :UINT:=19;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

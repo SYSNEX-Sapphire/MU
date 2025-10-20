@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="F_GetReal_USINT" Id="{4046cf05-e564-4799-a793-2aa7392b4bda}">
+    <Declaration><![CDATA[TYPE F_GetReal_USINT :
+UNION
+	Input_USINT : ARRAY[1..2]OF USINT;
+	Output_Real:REAL;
+END_UNION
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL_DEVICE_NET_E3508" Id="{da38e3a9-f27c-4987-8b51-ec37bccd2bd3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	(*E3508*)
+	(*Input*)
+	aInputPVBytes 			AT %I*: ARRAY[1..2]OF USINT; //Loop1 PV
+	aInputSVBytes 			AT %I*: ARRAY[1..2]OF USINT; //Loop1 Working PV
+	aInputActiveOut 		AT %I*: ARRAY[1..2]OF USINT; //Loop1 Main.ActiveOut
+	aInputAlarmStatus 		AT %I*: ARRAY[1..2]OF USINT; //Alarm status
+	aInputManAutoBytes 		AT %I*: ARRAY[1..2]OF USINT; // Loop1 Main.AutoMan
+	aInputStateAutoTune		AT %I*: ARRAY[1..2]OF USINT; // Loop1 State Auto Tune
+	aInputProportional			AT %I*: ARRAY[1..2]OF USINT; // Loop1 State Auto Tune
+	aInputIntegral			AT %I*: ARRAY[1..2]OF USINT; // Loop1 State Auto Tune
+	aInputDerivative			AT %I*: ARRAY[1..2]OF USINT; // Loop1 State Auto Tune
+	
+//	aInputAlarmThreshold 	AT %I*: ARRAY[1..2]OF USINT; //Alarm1 Threshold
+//	aInputAlarmOut 			AT %I*: ARRAY[1..2]OF USINT; //Alarm.1.Out
+//	aInputAlarmSummary 		AT %I*: ARRAY[1..2]OF USINT; // AlmSummary.AnyAlarm (Alarm Clear)
+
+	(*Output*)
+	aOutputSVBytes 			AT %Q*: ARRAY[1..2]OF USINT; //Loop.1.Main.TagetSP
+	nOutputManAutoBytes 	AT %Q*: ARRAY[1..2]OF USINT; //Loop.1.Main.AutoMan
+	aOutputPowerBytes 	AT %Q*: ARRAY[1..2]OF USINT; //Loop1 OP.ManualOutVal
+	aOutputAlarmReset	 	AT %Q*: ARRAY[1..2]OF USINT; //Loop1 Alarm Reset
+	aOutputThreshold 		AT %Q*: ARRAY[1..2]OF USINT; //Alarm.1.Threshold
+	aOutputRate 		AT %Q*: ARRAY[1..2]OF USINT; //Rate
+	aOutputAutoTune_Enable 		AT %Q*: ARRAY[1..2]OF USINT; //Auto Tune
+	
+END_VAR
+
+
+//EUROTHERM input
+//1 PV1  
+//2 PV2
+//3 SV1
+//4 SV2   / 10
+//5 Active Out /10
+//6 Active Out /10
+//7 alarm
+//8 alarm
+//9  manual auto
+//10 manual auto
+//11 PID STATUE
+//12 PID STATUE
+//13 PID p / 10
+//14 PID p / 10 
+//15 PID I 360
+//16 PID I 360
+//17 PID D 60
+//18 PID D 60]]></Declaration>
+  </GVL>
+</TcPlcObject>

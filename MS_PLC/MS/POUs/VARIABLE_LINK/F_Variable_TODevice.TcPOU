@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_Variable_TODevice" Id="{1558be8f-9973-41de-9276-f8ff9a055571}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_Variable_TODevice: BOOL
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[;]]></ST>
+    </Implementation>
+    <LineIds Name="F_Variable_TODevice">
+      <LineId Id="70" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

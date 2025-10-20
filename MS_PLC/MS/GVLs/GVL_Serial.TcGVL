@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL_Serial" Id="{2f04b256-d3e9-429e-bb30-15aa5e82ca02}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	TxBufferTB : ComBuffer; (* Receive data buffer; used with all receive function blocks *)
+	RxBufferTB : ComBuffer; (* Transmit data buffer; used with all receive function blocks *)
+	
+	stIn_KL6031_TB AT %I*	: KL6inData22B;	(* linked to the KL6001 in the TwinCAT System Manager *)
+	stOut_KL6031_TB AT %Q*	: KL6outData22B;	(* linked to the KL6001 in the TwinCAT System Manager *)	
+	
+	LineHeater_data_1	:ST_LineHeater_Data;
+	LineHeater_data_2	:ST_LineHeater_Data;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

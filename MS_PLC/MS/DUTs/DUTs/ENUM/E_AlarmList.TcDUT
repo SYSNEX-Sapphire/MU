@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="E_AlarmList" Id="{e61f5b4f-4ae2-484e-91cc-7971cbd10169}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_AlarmList :
+(
+	E_AlarmList_GasPressure_Low_N2:=1,
+	E_AlarmList_GasPressureLowN2,
+	E_AlarmList_GasPressureLowH2,
+	E_AlarmList_GasPressureLowNH3,
+	E_AlarmList_GasPressureLowSiH4,
+	E_AlarmList_CWTemperatureHighSH,
+	E_AlarmList_CWTemperatureHighCoil,
+	E_AlarmList_SusceptorOverTemperature,
+	E_AlarmList_ReactorOverPressure,
+	E_AlarmList_PneumaticPressureLow,
+	E_AlarmList_CoolingWaterLow,
+	E_AlarmList_InductionHeaterFault,
+	E_AlarmList_RotationMotorFault,
+	E_AlarmList_VacuumPumpFault,
+	E_AlarmList_GasCabinetDoorOpen,
+	E_AlarmList_ReactorCabinetDoorOpen,
+	E_AlarmList_SusceptorTemperatureDeviation,
+	E_AlarmList_ReactorPressureDeviation,
+	E_AlarmList_SusceptorRotationDeviation,
+	E_AlarmList_MORunDeviation,
+	E_AlarmList_HydRunDeviation,
+	E_AlarmList_NH3LargeINDeviation,
+	E_AlarmList_NH3SmallINDeviation,
+	E_AlarmList_SiHINDeviation,
+	E_AlarmList_SiHDilutionDeviation,
+	E_AlarmList_SiHDilutedDeviation,
+	E_AlarmList_TEBBubblingDeviation,
+	E_AlarmList_TMAlBubblingDeviation,
+	E_AlarmList_TMInBubblingDeviation,
+	E_AlarmList_TMGaBubblingDeviation,
+	E_AlarmList_DTMGaBubblingDeviation,
+	E_AlarmList_DTMGaDilutionDeviation,
+	E_AlarmList_DTMGaDilutedDeviation,
+	E_AlarmList_Cp2MgBubblingDeviation,
+	E_AlarmList_ReactorPurgeDeviation,
+	E_AlarmList_RotationSealPurgeDeviation,
+	E_AlarmList_MOVentDeviation,
+	E_AlarmList_HydVentDeviation,
+	E_AlarmList_SiH4PressureDeviation,
+	E_AlarmList_TEBPressureDeviation,
+	E_AlarmList_TMAlPressureDeviation,
+	E_AlarmList_TMInPressureDeviation,
+	E_AlarmList_TMGaPressureDeviation,
+	E_AlarmList_DTMGaPressureDeviation,
+	E_AlarmList_Cp2MgPressureDeviation,
+	E_AlarmList_END
+
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

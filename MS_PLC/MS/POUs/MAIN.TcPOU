@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="MAIN" Id="{c65bb020-a024-43e6-87d0-b2b9cfee7c16}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR_INPUT
+	controlModeCmd : E_ControlMode := E_ControlMode.Manual;
+END_VAR
+VAR
+	controlMode	: E_ControlMode := controlModeCmd;
+	prevControlMode : E_ControlMode := controlMode;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_Variable_Valve();
+F_Variable_DeviceLink();
+F_Variable_FromUI();
+F_Variable_FromUI_Interlock();
+F_Variable_TODevice();
+F_Variable_ToUI_InputState();
+GVL.fbLineHeater_Manager(RData_Module_1=>GVL_Serial.LineHeater_data_1,RData_Module_2=>GVL_Serial.LineHeater_data_2);
+
+
+P11_E3508(); //Temp Controller
+P12_IQ_PLUS(); //Throttle Valve Controller
+P13_LineHeater();
+P14_ThermalBath();
+P15_RotationOperation();
+P16_CoverOperation();
+P17_DOROperation();
+P22_Background_ThermalBath();
+
+
+IF controlMode <> E_ControlMode.Priority THEN
+	IF controlMode <> controlModeCmd THEN
+		IF controlModeCmd = E_ControlMode.Priority THEN
+			prevControlMode := controlMode;
+		END_IF
+		controlMode := controlModeCmd;
+	END_IF
+END_IF
+
+CASE controlMode OF
+	E_ControlMode.Manual:
+		P30_ManualControl();
+	
+	E_ControlMode.Recipe:
+		P50_RecipeControl(); //레시피 콘트론
+		
+	E_ControlMode.Priority:
+		P31_PriorityControl();
+		IF P31_PriorityControl.complete = TRUE THEN
+			controlMode := prevControlMode;
+			controlModeCmd := controlMode;
+		END_IF
+END_CASE
+
+P60_UpdatePV();
+P70_Interface();
+P90_Interlock();
+P91_Monitoring();
+P92_Maintenance();]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="600" Count="0" />
+      <LineId Id="536" Count="0" />
+      <LineId Id="595" Count="1" />
+      <LineId Id="598" Count="1" />
+      <LineId Id="609" Count="0" />
+      <LineId Id="597" Count="0" />
+      <LineId Id="594" Count="0" />
+      <LineId Id="537" Count="6" />
+      <LineId Id="546" Count="0" />
+      <LineId Id="548" Count="4" />
+      <LineId Id="584" Count="1" />
+      <LineId Id="553" Count="5" />
+      <LineId Id="560" Count="8" />
+      <LineId Id="583" Count="0" />
+      <LineId Id="569" Count="1" />
+      <LineId Id="618" Count="0" />
+      <LineId Id="571" Count="4" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

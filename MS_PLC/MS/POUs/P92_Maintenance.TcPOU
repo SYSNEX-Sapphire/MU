@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="P92_Maintenance" Id="{17478ea4-373a-4676-aa4e-f86e85a19514}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P92_Maintenance
+VAR
+	(* Input *)
+	//Light
+	rTrigReactorCabinetSwitch	: R_TRIG;
+	rTrigReactorCabinetMagnet 	: R_TRIG;
+	fTrigReactorCabinetMagnet 	: F_TRIG;
+	rTrigGasCabinetSwitch		: R_TRIG;
+	rTrigGasCabinetMagnet		: R_TRIG;
+	fTrigGasCabinetMagnet		: F_TRIG;
+
+	bReactorCabinetLampSwitch : BOOL;
+	bGasCabinetLampSwitch	: BOOL;
+	
+	bReactorCabientMagnet	: BOOL;
+	bGasCabinetMagnet		: BOOL;
+	bPowerDistributeMagnet	: BOOL;
+	
+	(* Output to Device *)
+	// Cabinet Lamp
+	bReactorCabinetLamp		: BOOL;
+	bGasCabinetLamp			: BOOL;
+	bPowerDistributeLamp	: BOOL;
+	
+	bSMPS24V480WFault		: BOOL;
+	bSMPS24V72WFault		: BOOL;
+	bSMPS15VPlusFault		: BOOL;
+	bSMPS15VMinusFault		: BOOL;
+	// Signal Tower
+	bSignalTower			: BYTE;
+	TimerSignalTower		: TON;
+	bBuzzer					: BOOL;
+	rTrigReactorDoorClose: R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Read from Device Value *)
+
+// Reactor Cabinet Lamp
+rTrigReactorCabinetSwitch(CLK:=GVL_IO_REACTOR_CABINET.DI_01_ReactorCabinetLampButton);
+fTrigReactorCabinetMagnet(CLK:=GVL_IO_REACTOR_CABINET.DI_03_ReactorCabinetDoorClose);
+
+IF rTrigReactorCabinetSwitch.Q OR rTrigReactorCabinetMagnet.Q OR fTrigReactorCabinetMagnet.Q THEN
+	bReactorCabinetLamp := NOT(bReactorCabinetLamp);
+END_IF
+
+rTrigReactorDoorClose(CLK:=GVL_IO_REACTOR_CABINET.DI_03_ReactorCabinetDoorClose);
+IF rTrigReactorDoorClose.Q THEN
+	bReactorCabinetLamp:=FALSE;
+END_IF
+
+
+// Gas Delivery Cabinet Lamp
+rTrigGasCabinetSwitch(CLK:= GVL_IO_GAS_CABINET.DI_01_GasCabinetLampButton);
+rTrigGasCabinetMagnet(CLK:= GVL_IO_GAS_CABINET.DI_01_GasCabinetDoorClose);
+
+IF rTrigGasCabinetSwitch.Q THEN
+	bGasCabinetLamp := NOT(bGasCabinetLamp);
+ELSIF fTrigGasCabinetMagnet.Q THEN
+	bGasCabinetLamp := TRUE;
+ELSIF rTrigGasCabinetMagnet.Q THEN
+	bGasCabinetLamp := FALSE;
+END_IF
+
+IF GVL_IO_GAS_CABINET.DI_01_ControlCabinetDoorClose = TRUE THEN
+	IF bPowerDistributeLamp THEN 
+		bPowerDistributeLamp:=FALSE;
+	END_IF
+ELSE
+	bPowerDistributeLamp := NOT(bPowerDistributeMagnet); //Magnet Switch	
+END_IF
+// Power Distribute Unit Lamp
+
+
+_Action_Buzzer();
+_Action_SignalTower();
+
+(* Write to Device Value *)
+GVL_IO_REACTOR_CABINET.DO_06_ReactorCabinetLamp := bReactorCabinetLamp;
+GVL_IO_GAS_CABINET.DO_07_GasCabinetLamp := bGasCabinetLamp;
+GVL_IO_GAS_CABINET.DO_07_ControlCabinetLamp := bPowerDistributeLamp;
+]]></ST>
+    </Implementation>
+    <Action Name="_Action_Buzzer" Id="{1605c9dc-c74f-44f7-9218-2a1bcf21db32}">
+      <Implementation>
+        <ST><![CDATA[(* Buzzer On/Off *)
+IF bBuzzer <> GVL_IO.aInterlockEnable[1].2 THEN
+	bBuzzer := GVL_IO.aInterlockEnable[1].2;
+END_IF
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_Action_SignalTower" Id="{20d2a60a-15ef-4399-9c11-f9c7ed774576}">
+      <Implementation>
+        <ST><![CDATA[
+(* Blink Signal Tower *)
+CASE GVL_IO.nCaseSignalTower OF
+	1: //RED 
+		TimerSignalTower(IN:=TRUE, PT:=T#500MS);
+		IF TimerSignalTower.Q THEN
+			TimerSignalTower(IN:=FALSE);
+			IF bSignalTower = 0 THEN
+				bSignalTower := 2#0000_0001; // RED
+			ELSE
+				bSignalTower := 0;
+			END_IF
+		END_IF
+
+	2: //YELLOW 
+		TimerSignalTower(IN:=TRUE, PT:=T#1S);
+		IF TimerSignalTower.Q THEN
+			TimerSignalTower(IN:=FALSE);
+			IF bSignalTower = 0 THEN
+				bSignalTower := 2#0000_0010; // YELLOW
+			ELSE
+				bSignalTower := 0;
+			END_IF
+		END_IF
+	3: //GREEN
+		TimerSignalTower(IN:=TRUE, PT:=T#1S);
+		IF TimerSignalTower.Q THEN
+			TimerSignalTower(IN:=FALSE);
+			IF bSignalTower = 0 THEN
+				bSignalTower := 2#0000_0100; // GREEN
+			ELSE
+				bSignalTower := 0;
+			END_IF
+		END_IF
+	4: //BLUE
+		bSignalTower := 2#0000_1000;
+	5: //WHITE
+		bSignalTower := 2#0001_0000;
+END_CASE
+
+GVL_IO_REACTOR_CABINET.DO_04_SignalTowerRed:=bSignalTower.0; //0:RED-Alarm,
+GVL_IO_REACTOR_CABINET.DO_04_SignalTowerOrange:=bSignalTower.1; //1:YELLOW,-Warning
+GVL_IO_REACTOR_CABINET.DO_04_SignalTowerGreen:=bSignalTower.2; //2:GREEN-Running
+GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBlue:=bSignalTower.3; //3:BLUE-Idle
+GVL_IO_REACTOR_CABINET.DO_04_SignalTowerWhite:=bSignalTower.4; //4:WHITE-Maint
+GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBuzzer:=bBuzzer; //5:BUZZER-Alarm
+]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P92_Maintenance">
+      <LineId Id="5" Count="0" />
+      <LineId Id="598" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="547" Count="0" />
+      <LineId Id="85" Count="1" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="681" Count="0" />
+      <LineId Id="679" Count="0" />
+      <LineId Id="684" Count="2" />
+      <LineId Id="682" Count="0" />
+      <LineId Id="678" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="106" Count="1" />
+      <LineId Id="548" Count="0" />
+      <LineId Id="109" Count="1" />
+      <LineId Id="299" Count="0" />
+      <LineId Id="301" Count="2" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="635" Count="0" />
+      <LineId Id="634" Count="0" />
+      <LineId Id="642" Count="0" />
+      <LineId Id="641" Count="0" />
+      <LineId Id="644" Count="0" />
+      <LineId Id="638" Count="0" />
+      <LineId Id="636" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="381" Count="0" />
+      <LineId Id="489" Count="0" />
+      <LineId Id="499" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="553" Count="2" />
+      <LineId Id="140" Count="0" />
+    </LineIds>
+    <LineIds Name="P92_Maintenance._Action_Buzzer">
+      <LineId Id="2" Count="3" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P92_Maintenance._Action_SignalTower">
+      <LineId Id="2" Count="37" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="42" Count="6" />
+      <LineId Id="40" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

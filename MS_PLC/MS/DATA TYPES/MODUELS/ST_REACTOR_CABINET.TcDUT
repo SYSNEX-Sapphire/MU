@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_REACTOR_CABINET" Id="{74d62307-9e3d-486e-a441-59396f140616}">
+    <Declaration><![CDATA[TYPE ST_REACTOR_CABINET :
+STRUCT
+
+	DI_01_MaintenanceModeKey :ST_DIGITAL_PART;
+	DI_01_ReactorCabinetLampButton :ST_DIGITAL_PART;
+	DI_01_DORVACButton :ST_DIGITAL_PART;
+	DI_01_DORATMButton :ST_DIGITAL_PART;
+	DI_01_ReactorDoorUpButton :ST_DIGITAL_PART;
+	DI_01_ReactorDoorDownButton :ST_DIGITAL_PART;
+	DI_01_ClampLock :ST_DIGITAL_PART;
+	DI_01_ClampRelease :ST_DIGITAL_PART;
+	
+	DI_02_C_WFlowSensor :ST_DIGITAL_PART;
+	DI_02_SusceptorRotationMotorFault :ST_DIGITAL_PART;
+	DI_02_VacuumPumpFail :ST_DIGITAL_PART;
+	DI_02_VacuumPumpWarning :ST_DIGITAL_PART;
+	DI_02_VacuumPumpAlarm :ST_DIGITAL_PART;
+	DI_02_VacuumPumpRunning :ST_DIGITAL_PART;
+	DI_02_VacuumPumpFBRunning :ST_DIGITAL_PART;
+	
+	DI_02_ReactorDoorUpLimitSensor :ST_DIGITAL_PART;
+	DI_03_ReactorDoorDownLimitSensor :ST_DIGITAL_PART;
+	DI_03_CylinderAutoSwitch_Closed :ST_DIGITAL_PART;
+	DI_03_CylinderAutoSwitch_Opened :ST_DIGITAL_PART;
+	DI_03_ReactorCabinetDoorClose :ST_DIGITAL_PART;
+	DI_03_Spare_01 :ST_DIGITAL_PART;
+	DI_03_Spare_02 :ST_DIGITAL_PART;
+	DI_03_Spare_03 :ST_DIGITAL_PART;
+	DI_03_Spare_04 :ST_DIGITAL_PART;
+	
+	DO_04_SignalTowerRed :ST_DIGITAL_PART;
+	DO_04_SignalTowerOrange :ST_DIGITAL_PART;
+	DO_04_SignalTowerGreen :ST_DIGITAL_PART;
+	DO_04_SignalTowerBlue :ST_DIGITAL_PART;
+	DO_04_SignalTowerWhite :ST_DIGITAL_PART;
+	DO_04_SignalTowerBuzzer :ST_DIGITAL_PART;
+	DO_04_ReactorCoverUpRelay :ST_DIGITAL_PART;
+	DO_04_ReactorCoverDownRelay :ST_DIGITAL_PART;
+	
+	DO_05_ClampLock :ST_DIGITAL_PART;
+	DO_05_ClampRelease :ST_DIGITAL_PART;
+	DO_05_VacuumPumpStart_Stop :ST_DIGITAL_PART;
+	DO_05_VacuumPumpReset :ST_DIGITAL_PART;
+	DO_05_SusceptorRotationFWD :ST_DIGITAL_PART;
+	DO_05_SusceptorRotationSTOP :ST_DIGITAL_PART;
+	DO_05_SusceptorRotationAL_RST :ST_DIGITAL_PART;
+	DO_05_DORVACButtonLamp :ST_DIGITAL_PART;
+	
+	DO_06_DORATMButtonLamp :ST_DIGITAL_PART;
+	DO_06_ReactorCoverUpButtonLamp :ST_DIGITAL_PART;
+	DO_06_ReactorCoverDownButtonLamp :ST_DIGITAL_PART;
+	DO_06_ClampLockButtonLamp :ST_DIGITAL_PART;
+	DO_06_ClampReleaseButtonLamp :ST_DIGITAL_PART;
+	DO_06_ReactorCabinetLamp :ST_DIGITAL_PART;
+	DO_06_Spare07 :ST_DIGITAL_PART;
+	DO_06_Spare08 :ST_DIGITAL_PART;
+	
+	AI_07_P02_ReactorPressure10TorrPV :ST_ANALOG_PART;
+	AI_07_P03_ExhaustPressurePV :ST_ANALOG_PART;
+	AI_07_S05_DORPressurePV :ST_ANALOG_PART;
+	AI_07_Spare_04 :ST_ANALOG_PART;
+
+	AI_08_R01SusceptorRotationPV :ST_ANALOG_PART;
+	AI_08_Spare_02 :ST_ANALOG_PART;
+	AI_08_Spare_03 :ST_ANALOG_PART;
+	AI_08_Spare_04 :ST_ANALOG_PART;
+	
+	AO_09_P03_ExhaustPressureAM215Input :ST_ANALOG_PART;
+	AO_09_R01_SusceptorRotationSV :ST_ANALOG_PART;
+	AO_09_Spare_03 :ST_ANALOG_PART;
+	AO_09_Spare_04 :ST_ANALOG_PART;
+	
+	AI_10_R04S_HCoolingWaterPV :ST_ANALOG_PART;
+	AI_10_Spare_02 :ST_ANALOG_PART;
+	AI_10_Spare_03 :ST_ANALOG_PART;
+	AI_10_Spare_04 :ST_ANALOG_PART;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

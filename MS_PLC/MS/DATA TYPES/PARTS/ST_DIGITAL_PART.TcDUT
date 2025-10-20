@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_DIGITAL_PART" Id="{94c5c442-9c97-4c53-91c5-4aa5bf6165dd}">
+    <Declaration><![CDATA[TYPE ST_DIGITAL_PART :
+STRUCT
+	PART_ID:DINT;
+	VALUE:BOOL;
+	UI_NUMBER:DINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

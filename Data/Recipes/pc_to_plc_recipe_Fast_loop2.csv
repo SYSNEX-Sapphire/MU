@@ -1,0 +1,11 @@
+Name,No,RTime,HTime,STemp,RPress,SRotation,CTemp,LoopRepeat,LoopEndStep,M01,M02,M03,M04,M05,M06,M07,M08,M09,M10,M11,M12,E01,E02,E03,E04,V01,V02,V03,V04,V05,V06,V07,V08,V09,V10,V11,V12,V13,V14,V15,V16,V17,V18,V19,V20
+Evacuation,1,2,2,20,32,6,0,,,130,160,3,3,1,10,10,1,15,10,10,10,1500,900,1200,1200,False,True,False,True,False,True,True,False,True,True,False,False,True,False,True,True,False,False,True,False
+N2 filling,2,2,2,,,0,0,3,6,,10,3,3,1,10,3,1,100,100,50,1,1251,90,435,1100,True,False,True,False,True,False,False,True,False,False,True,True,False,True,False,False,True,True,False,True
+Evacuation,3,2,2,143,,0,0,,,150,,3,3,1,10,10,1,15,10,10,10,1500,900,1200,1200,False,True,False,True,False,False,True,False,True,True,False,False,True,False,False,True,False,True,True,False
+H2 Flow Set,4,2,2,,0,0,,,,200,,3,3,1,10,10,1,15,10,10,10,1500,900,1200,1200,True,False,True,False,True,False,False,True,True,False,True,True,False,True,False,False,True,False,False,True
+Temp Up Pre,5,2,2,300,12,0,0,,,200,200,3,3,1,10,10,1,15,10,10,10,1500,900,1200,1200,False,True,False,True,False,False,True,False,False,True,False,False,True,False,False,True,False,True,True,False
+Temp Up to T Etching 1,6,2,2,500,,0,,,,200,200,3,3,1,10,10,1,15,10,10,10,1500,900,1200,1200,True,False,True,False,True,True,False,True,False,False,True,True,False,True,True,False,True,False,False,True
+Temp Up to T Etching 2,7,2,2,1000,0,0,0,,,200,200,3,3,1,10,10,1,15,10,10,10,1500,900,1200,1200,False,True,False,True,False,False,True,False,True,True,False,False,True,False,True,True,False,True,True,False
+Thermal Etching,8,2,2,1000,0,0,500,,,200,200,3,3,1,10,10,1,15,12,12,10,1500,900,1200,1200,True,False,True,False,True,True,False,True,False,False,True,True,False,True,True,False,True,False,False,True
+Temp Down to Buffer,9,2,2,0,0,0,,,,200,200,3,3,1,10,10,1,15,12,12,10,1500,900,1200,1200,False,True,False,True,False,False,True,False,False,True,False,False,True,False,False,True,False,False,True,False
+Recipe End,10,2,2,0,0,0,0,,,200,200,3,3,1,10,10,1,50,10,10,10,1500,900,1200,1200,True,False,True,False,True,True,False,True,True,False,True,True,False,True,True,False,True,True,False,True

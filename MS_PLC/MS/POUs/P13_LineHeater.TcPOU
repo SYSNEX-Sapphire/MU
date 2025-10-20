@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="P13_LineHeater" Id="{39a0ad06-755a-4fd9-b8ed-65d02fe2261a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P13_LineHeater
+VAR
+	rTemperatureSV 		: ARRAY[1..8]OF REAL;
+	bAutoTuneSV 		: ARRAY[1..8]OF BOOL;
+
+	rTemperaturePV 		: ARRAY[1..8]OF REAL;
+	isLineHeater_Run	: ARRAY[1..8]OF BOOL;
+	isLineHeater_ATune	: ARRAY[1..8]OF BOOL;
+	isLineHeater_Err	: ARRAY[1..8]OF BOOL;
+
+	TimeOnDelay			: TON; //Time delay after Power ON of Thermal Bath
+	TimeCycle			: TON;
+	nComMode 			: INT; // //1 = PV Req, 2 = STATUS Req, 3 = SV Write, 4 = AutoTune On/Off
+	nCount 				: INT;
+	rTemperatureTV 		: ARRAY[1..8]OF REAL;
+	bAutoTuneTV			: ARRAY[1..8]OF BOOL;
+
+	//for sending variable
+	TimeWaitSend		:TON;
+	bSendingEnable 		: BOOL:=TRUE; // Check the Sending Stage
+	bSetValueMode 		: BOOL;
+	fbSend				: SendString;
+	sSendString 		: STRING;
+	bSendBusy			: BOOL;
+	bSendingOK 			: BOOL; //v1
+	eSendErrorID		: ComError_t;
+	
+	// for received variable
+	TimeWaitReceive		:TON;
+	fbReceive			: ReceiveString;
+	sReceivedString		: STRING;
+	bStringReceived		: BOOL;
+	bReceiveBusy		: BOOL;
+	bReceiveError		: BOOL;
+	eReceiveErrorID		: ComError_t;
+	bReceiveTimeout		: BOOL;
+	bReceivedOK 		: BOOL;
+	hStrReceivedST		: STRING;
+	hStrReceivedPV		: STRING;
+	
+	nHeaterNumber 		: INT := 1;
+	sHeaterNumber 		: STRING := '1';
+	sReceivedHeaterNumber : STRING;
+	nReceivedHeaterNumber : INT;
+	sReceivedAffirmation : STRING;
+	sReceivedData 		: STRING;
+	nHeaterStrPositionPV : INT:= 11; //Received String Start Position
+	nDecimal			:INT;
+	nSendStrCounter		:INT := 1;
+	bReset : BOOL;
+	sTest : STRING;
+	nStrPosition : INT;
+	nHeaterNumberPV : INT;
+	sTemperaturePV : STRING;
+	(* Input *)
+	bLineHeaterCB		: BOOL;
+	bLineHeaterCP		: BYTE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[_DIgitalInput();
+TimeOnDelay(IN:= GVL_IO_GAS_CABINET.DI_02_LineHeatersELCB, PT :=T#5S); //Time Delay after a Thermal Bath MC ON
+
+IF TimeOnDelay.Q THEN
+	
+	_GetSP();
+	
+	TimeOnDelay(IN:=FALSE);
+	FOR nHeaterNumber:= 1 TO 8 DO
+		IF (rTemperatureTV[nHeaterNumber] <> rTemperatureSV[nHeaterNumber]) THEN
+			rTemperatureTV[nHeaterNumber] := rTemperatureSV[nHeaterNumber];
+			
+			_SendTemp();
+		END_IF
+	END_FOR
+END_IF
+
+
+_Update_Data();]]></ST>
+    </Implementation>
+    <Action Name="_DigitalInput" Id="{2361a466-4910-4461-afdc-6cafae2346a8}">
+      <Implementation>
+        <ST><![CDATA[bLineHeaterCB	:= GVL_IO_GAS_CABINET.DI_02_LineHeatersELCB;
+
+bLineHeaterCP.0 	:= GVL_IO_GAS_CABINET.DI_03_LineHeater_1CP;
+bLineHeaterCP.1 	:= GVL_IO_GAS_CABINET.DI_03_LineHeater_2CP;
+bLineHeaterCP.2 	:= GVL_IO_GAS_CABINET.DI_03_LineHeater_3CP;
+bLineHeaterCP.3 	:= GVL_IO_GAS_CABINET.DI_03_LineHeater_4CP;
+bLineHeaterCP.4 	:= GVL_IO_GAS_CABINET.DI_03_LineHeater_5CP;
+bLineHeaterCP.5 	:= GVL_IO_GAS_CABINET.DI_04_LineHeater_6CP;
+bLineHeaterCP.6 	:= GVL_IO_GAS_CABINET.DI_04_LineHeater_7CP;
+bLineHeaterCP.7 	:= GVL_IO_GAS_CABINET.DI_04_LineHeater_8CP;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_GetSP" Id="{7b5a566c-409f-4ac0-878f-eada1ac61ae6}">
+      <Implementation>
+        <ST><![CDATA[
+rTemperatureSV[1] := GVL_IO.aInterlockSet[13];
+rTemperatureSV[2] := GVL_IO.aInterlockSet[14];
+rTemperatureSV[3] := GVL_IO.aInterlockSet[15];
+rTemperatureSV[4] := GVL_IO.aInterlockSet[16];
+rTemperatureSV[5] := GVL_IO.aInterlockSet[17];
+rTemperatureSV[6] := GVL_IO.aInterlockSet[18];
+rTemperatureSV[7] := GVL_IO.aInterlockSet[19];
+rTemperatureSV[8] := GVL_IO.aInterlockSet[20];]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_SendTemp" Id="{6923cb2d-46df-49ee-941e-35090a9ce3ea}">
+      <Implementation>
+        <ST><![CDATA[CASE nHeaterNumber OF
+	1:
+		GVL.fbLineHeater_Manager._SendModbusCommand(sendMessage:=F_Temp_Write_Set_Point(Module_Number:=1,CommandIndex:=16#0
+																,Write_Value:=REAL_TO_WORD(rTemperatureSV[nHeaterNumber])));
+	2:
+		GVL.fbLineHeater_Manager._SendModbusCommand(sendMessage:=F_Temp_Write_Set_Point(Module_Number:=1,CommandIndex:=16#03E8
+																,Write_Value:=REAL_TO_WORD(rTemperatureSV[nHeaterNumber])));
+	3:
+		GVL.fbLineHeater_Manager._SendModbusCommand(sendMessage:=F_Temp_Write_Set_Point(Module_Number:=1,CommandIndex:=16#07D0
+																,Write_Value:=REAL_TO_WORD(rTemperatureSV[nHeaterNumber])));
+	4:
+		GVL.fbLineHeater_Manager._SendModbusCommand(sendMessage:=F_Temp_Write_Set_Point(Module_Number:=1,CommandIndex:=16#0BB8
+																,Write_Value:=REAL_TO_WORD(rTemperatureSV[nHeaterNumber])));
+																
+	(*Change Module Number*)															
+	5:
+		GVL.fbLineHeater_Manager._SendModbusCommand(sendMessage:=F_Temp_Write_Set_Point(Module_Number:=2,CommandIndex:=16#0
+																,Write_Value:=REAL_TO_WORD(rTemperatureSV[nHeaterNumber])));
+	6:
+		GVL.fbLineHeater_Manager._SendModbusCommand(sendMessage:=F_Temp_Write_Set_Point(Module_Number:=2,CommandIndex:=16#03E8
+																,Write_Value:=REAL_TO_WORD(rTemperatureSV[nHeaterNumber])));
+	7:
+		GVL.fbLineHeater_Manager._SendModbusCommand(sendMessage:=F_Temp_Write_Set_Point(Module_Number:=2,CommandIndex:=16#07D0
+																,Write_Value:=REAL_TO_WORD(rTemperatureSV[nHeaterNumber])));
+	8:
+		GVL.fbLineHeater_Manager._SendModbusCommand(sendMessage:=F_Temp_Write_Set_Point(Module_Number:=2,CommandIndex:=16#0BB8
+																,Write_Value:=REAL_TO_WORD(rTemperatureSV[nHeaterNumber])));
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_Update_Data" Id="{e9f12455-21d4-4682-890d-00e0e68cf189}">
+      <Implementation>
+        <ST><![CDATA[rTemperaturePV[1] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_1_PV_VALUE;
+rTemperaturePV[2] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_2_PV_VALUE;
+rTemperaturePV[3] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_3_PV_VALUE;
+rTemperaturePV[4] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_4_PV_VALUE;
+
+rTemperaturePV[5] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_1_PV_VALUE;
+rTemperaturePV[6] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_2_PV_VALUE;
+rTemperaturePV[7] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_3_PV_VALUE;
+rTemperaturePV[8] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_4_PV_VALUE;
+
+GVL_IO.aLineHeater_rTemperaturePV := rTemperaturePV;]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P13_LineHeater">
+      <LineId Id="550" Count="0" />
+      <LineId Id="553" Count="2" />
+      <LineId Id="705" Count="0" />
+      <LineId Id="703" Count="1" />
+      <LineId Id="556" Count="2" />
+      <LineId Id="560" Count="5" />
+      <LineId Id="635" Count="0" />
+      <LineId Id="566" Count="0" />
+      <LineId Id="577" Count="0" />
+    </LineIds>
+    <LineIds Name="P13_LineHeater._DigitalInput">
+      <LineId Id="2" Count="8" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P13_LineHeater._GetSP">
+      <LineId Id="2" Count="7" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P13_LineHeater._SendTemp">
+      <LineId Id="1" Count="1" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="5" Count="2" />
+      <LineId Id="11" Count="1" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="19" Count="10" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="3" Count="0" />
+    </LineIds>
+    <LineIds Name="P13_LineHeater._Update_Data">
+      <LineId Id="2" Count="9" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

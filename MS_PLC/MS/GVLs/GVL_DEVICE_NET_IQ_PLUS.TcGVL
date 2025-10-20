@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL_DEVICE_NET_IQ_PLUS" Id="{4c30d852-0fe3-4005-bc56-db96aaa8770f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	(*IQ PLUS*)
+	(*Input*)
+	nInputStatus AT %I* : USINT; //Input Status Bytes
+	aInputPressurePV_CDG2 AT %I* : ARRAY[1..2]OF USINT; //CDG2 Pressure
+	aInputPressurePV_CDG1 AT %I* : ARRAY[1..2]OF USINT; //CDG1 Pressure
+	aInputPressureSP AT %I* : ARRAY[1..2]OF USINT; //Set Point Pressure
+	aInputValvePosionPV AT %I* : ARRAY[1..2]OF USINT; //Current Valve Position
+	
+	(*Output*)
+	//Output to IQ-PLUS Throttle Valve
+	nOutputMode AT %Q* : USINT;//0 : normal 1:Close , 2:Open Valve , 3:Hold , 4:Reset
+	aOutputSVBytes AT %Q* : ARRAY[1..2]OF USINT; //Set Pressure
+	nOutputSetType AT %Q* : USINT; //1:Pressure Control, 2:Valve Position Control
+	
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

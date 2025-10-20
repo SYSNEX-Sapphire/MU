@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="FB_RecipeAnalogControlInputSequencer" Id="{baa4a425-4968-4360-81b7-f83562b782ba}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RecipeAnalogControlInputSequencer
+VAR_INPUT
+	rampTime: UINT;
+END_VAR
+VAR_IN_OUT
+	rRecipe: ARRAY[1..(GVL_CONSTANT.NumAnalogController)] OF REAL;
+END_VAR
+VAR
+	i: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:= 1 TO E_aAnalogInputIO_Index.E_PV_EPC_04 DO
+	IF 0.0 < GVL_IO.aMaxValueController[i] THEN
+		GVL_IO.aController[i].input.restart := TRUE;
+		GVL_IO.aController[i].input.rampTime := rampTime; 
+		GVL_IO.aController[i].input.targetValue := rRecipe[i] / GVL_IO.aMaxValueController[i] * GVL_CONSTANT.EL3064MaxValueH;
+	END_IF
+END_FOR
+
+FOR i:= E_aAnalogInputIO_Index.E_PV_Susceptor_Temp TO E_aAnalogInputIO_Index.E_PV_susceptorRotation DO
+	GVL_IO.aController[i].input.restart := TRUE;
+	GVL_IO.aController[i].input.rampTime := rampTime;
+	GVL_IO.aController[i].input.targetValue := rRecipe[i];
+END_FOR]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RecipeAnalogControlInputSequencer">
+      <LineId Id="1" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="2" Count="2" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="30" Count="1" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="25" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

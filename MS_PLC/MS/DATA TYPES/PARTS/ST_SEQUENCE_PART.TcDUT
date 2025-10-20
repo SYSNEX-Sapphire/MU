@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_SEQUENCE_PART" Id="{95e29eb6-c842-48bf-9a5b-2419e922b140}">
+    <Declaration><![CDATA[TYPE ST_SEQUENCE_PART :
+STRUCT
+	PARTID:DINT;
+	STATUS:DINT;
+	CURRENT_STEP:DINT;
+	MESSAGE: STRING(100);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

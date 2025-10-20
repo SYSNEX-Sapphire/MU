@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_Morning_Index" Id="{0e7382c7-f47d-4f2f-aff7-1fba711d59df}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_Morning_Index :
+(
+	E_Morning_UltimatePressure:=1,
+	E_Morning_ExhaustPressure:=2,
+	E_Morning_DoubleOring:=3,
+	E_Morning_GasPressure_N2:=4,
+	E_Morning_GasPressure_H2:=5,
+	E_Morning_GasPressure_H2S:=6,
+	E_Morning_GasPressure_H2SE:=7,
+	E_Morning_CoolingWafer_SH:=8,
+	E_Morning_DP_Chalcogen:=9,
+	E_Morning_MO_DP:=10,
+	E_Morning_TempPowerRate:=11,
+	E_Morning_TV_Position:=12,
+	E_Morning_TB_Temp_1:=13,
+	E_Morning_TB_Temp_2:=14,
+	E_Morning_TB_Temp_3:=15,
+	E_Morning_TB_Temp_4:=16,
+	E_Morning_Total_Flow_MOD:=17,
+	E_Morning_Total_Flow_HYD:=18
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_AnalogDeviceRampControl" Id="{901ef948-d319-4e50-9c34-c06b07342954}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AnalogDeviceRampControl
+VAR
+	i : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:=1 TO E_aAnalogInputIO_Index.E_PV_EPC_04 DO
+	IF 0.0 < GVL_IO.aMaxValueController[i]  THEN
+		GVL_IO.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aController[i].rControlValue); //Write to Device
+		GVL_IO.aController_CV[i] := LREAL_TO_REAL((GVL_IO.aController[i].rControlValue / GVL_CONSTANT.EL3064MaxValueH)*GVL_IO.aMaxValueController[i]);
+		GVL_IO.aController[i]();
+	END_IF
+END_FOR
+
+
+//jhkang aController 의 Input은 언제 들어감?
+//Temp Controller
+GVL_IO.wE3508_CV := LREAL_TO_WORD(GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].rControlValue * 10 )  ; //Write to Temperature Controller
+GVL_IO.aController_CV[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp] := WORD_TO_REAL(GVL_IO.wE3508_CV) / 10 ;
+GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp]();
+
+//Temp Pressure Controller				
+GVL_IO.wIqPlus_CV := LREAL_TO_WORD(GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure].rControlValue); //Write to Pressure Controller
+GVL_IO.aController_CV[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure] := WORD_TO_REAL(GVL_IO.wIqPlus_CV);
+GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure]();
+
+//Rotation Controller		
+GVL_IO.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].rControlValue); //Write to Rotation Controller (rpm)
+GVL_IO.aController_CV[E_aAnalogInputIO_Index.E_PV_susceptorRotation] := GVL_IO.rRotation_ControlValue;
+GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_susceptorRotation]();	]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AnalogDeviceRampControl">
+      <LineId Id="85" Count="0" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="42" Count="4" />
+      <LineId Id="90" Count="2" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="47" Count="2" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="2" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="59" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

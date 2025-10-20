@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL_IO_GAS_CABINET" Id="{c8f60412-0f4c-4ce3-8fbc-1ba3575e0171}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	DI_01_ResetButton AT%I*:BOOL;
+	DI_01_GasCabinetLampButton AT%I*:BOOL;
+	DI_01_PneumaticPressureSensor AT%I*:BOOL;
+	DI_01_GasCabinetDoorClose AT%I*:BOOL;
+	DI_01_ControlCabinetDoorClose AT%I*:BOOL;
+	DI_01_SMPS_1Alarm AT%I*:BOOL;
+	DI_01_SMPS_2Alarm AT%I*:BOOL;
+	DI_01_SMPS_3Alarm AT%I*:BOOL;
+	
+	DI_02_SMPS_4Alarm AT%I*:BOOL;
+	DI_02_GraphiteHeaterELCB AT%I*:BOOL;
+	DI_02_ThermalBathsELCB AT%I*:BOOL;
+	DI_02_VacuumPumpELCB AT%I*:BOOL;
+	DI_02_LineHeatersELCB AT%I*:BOOL;
+	DI_02_RotationMotorCP AT%I*:BOOL;
+	DI_02_CoverLiftMotorCP AT%I*:BOOL;
+	DI_02_T_VCP AT%I*:BOOL;
+	
+	DI_03_GasDetectorCP AT%I*:BOOL;
+	DI_03_CabinetLampsCP AT%I*:BOOL;
+	DI_03_MFCPowerCP AT%I*:BOOL;
+	DI_03_LineHeater_1CP AT%I*:BOOL;
+	DI_03_LineHeater_2CP AT%I*:BOOL;
+	DI_03_LineHeater_3CP AT%I*:BOOL;
+	
+	DI_03_LineHeater_4CP AT%I*:BOOL;
+	DI_03_LineHeater_5CP AT%I*:BOOL;
+	DI_04_LineHeater_6CP AT%I*:BOOL;
+	DI_04_LineHeater_7CP AT%I*:BOOL;
+	DI_04_LineHeater_8CP AT%I*:BOOL;
+	DI_04_GasDetectorH2 AT%I*:BOOL;
+	DI_04_GasDetectorH2S AT%I*:BOOL;
+	DI_04_GasDetectorH2Se AT%I*:BOOL;
+	DI_04_FireSensor AT%I*:BOOL;
+	DI_04_ExternalScrubberFault AT%I*:BOOL;
+	
+	DI_05_ExternalH2GasCabinetFault AT%I*:BOOL;
+	DI_05_ExternalH2SGasCabinetFault AT%I*:BOOL;
+	DI_05_ExternalH2SeGasCabinetFault AT%I*:BOOL;
+	DI_05_ExternalUserInputAlarm AT%I*:BOOL;
+	DI_05_ThermalBath_1DeviationAlarm AT%I*:BOOL;
+	DI_05_ThermalBath_1CutOffAlarm AT%I*:BOOL;
+	DI_05_ThermalBath_2DeviationAlarm AT%I*:BOOL;
+	DI_05_ThermalBath_2CutOffAlarm AT%I*:BOOL;
+	
+	DI_06_ThermalBath_3DeviationAlarm AT%I*:BOOL;
+	DI_06_ThermalBath_3CutOffAlarm AT%I*:BOOL;
+	DI_06_ThermalBath_4DeviationAlarm AT%I*:BOOL;
+	DI_06_ThermalBath_4CutOffAlarm AT%I*:BOOL;
+	DI_06_Spare_01 AT%I*:BOOL;
+	DI_06_Spare_02 AT%I*:BOOL;
+	DI_06_Spare_03 AT%I*:BOOL;
+	DI_06_Spare_04 AT%I*:BOOL;
+	
+	DO_07_SystemPowerOffLock AT%Q*:BOOL;
+	DO_07_ControlCabinetLamp AT%Q*:BOOL;
+	DO_07_GasCabinetLamp AT%Q*:BOOL;
+	DO_07_GraphiteHeaterMC AT%Q*:BOOL;
+	DO_07_ThermalBathsMC AT%Q*:BOOL;
+	DO_07_VacuumPumpMC AT%Q*:BOOL;
+	DO_07_LineHeatersMC AT%Q*:BOOL;
+	DO_07_ResetButtonLamp AT%Q*:BOOL;
+	
+	DO_08_Spare_01 AT%Q*:BOOL;
+	DO_08_Spare_02 AT%Q*:BOOL;
+	DO_08_Spare_03 AT%Q*:BOOL;
+	DO_08_Spare_04 AT%Q*:BOOL;
+	DO_08_Spare_05 AT%Q*:BOOL;
+	DO_08_Spare_06 AT%Q*:BOOL;
+	DO_08_Spare_07 AT%Q*:BOOL;
+	DO_08_Spare_08 AT%Q*:BOOL;
+	
+	AI_09_M01_ChalcogenRunPV AT%I*:INT;
+	AI_09_M02_MORunPV AT%I*:INT;
+	AI_09_M03_H2SeSupplyPV AT%I*:INT;
+	AI_09_M04_H2SSupplyPV AT%I*:INT;
+	
+	AO_10_M01_ChalcogenRunSV AT%Q*:INT;
+	AO_10_M02_MORunSV AT%Q*:INT;
+	AO_10_M03_H2SeSupplySV AT%Q*:INT;
+	AO_10_M04_H2SSupplySV AT%Q*:INT;
+	
+	AI_11_M05_Source_1TMInSupplyPV AT%I*:INT;
+	AI_11_M06_Source_2TMGaSupplyPV AT%I*:INT;
+	AI_11_M07_Source_3DMSeSupplyPV AT%I*:INT;
+	AI_11_M08_Source_4ChalcoSupplyPV AT%I*:INT;
+	
+	AO_12_M05_Source_1TMInSupplySV AT%Q*:INT;
+	AO_12_M06_Source_2TMGaSupplySV AT%Q*:INT;
+	AO_12_M07_Source_3DMSeSupplySV AT%Q*:INT;
+	AO_12_M08_Source_4ChalcoSupplySV AT%Q*:INT;
+	
+	AI_13_M09_LinerPurgePV AT%I*:INT;
+	AI_13_M10_HeaterPurgePV AT%I*:INT;
+	AI_13_M11_ChalcogenVentPV AT%I*:INT;
+	AI_13_M12_MOVentPV AT%I*:INT;
+	
+	AO_14_M09_LinerPurgeSV AT%Q*:INT;
+	AO_14_M10_HeaterPurgeSV AT%Q*:INT;
+	AO_14_M11_ChalcogenVentSV AT%Q*:INT;
+	AO_14_M12_MOVentSV AT%Q*:INT;
+	
+	AI_15_E01Source_1TMInPressurePV AT%I*:INT;
+	AI_15_E02Source_2TMGaPressurePV AT%I*:INT;
+	AI_15_E03Source_3DMSePressurePV AT%I*:INT;
+	AI_15_E04Source_4ChalcoPressurePV AT%I*:INT;
+	
+	AO_16_E01Source_1TMInPressureSV AT%Q*:INT;
+	AO_16_E02Source_2TMGaPressureSV AT%Q*:INT;
+	AO_16_E03Source_3DMSePressureSV AT%Q*:INT;
+	AO_16_E04Source_4ChalcoPressureSV AT%Q*:INT;
+	
+	DI_17_DP1ChalcogenDP AT%I*:INT;
+	DI_17_DP2MODP AT%I*:INT;
+	
+	DI_18_S01N2SupplyPressPV AT%I*:INT;
+	DI_18_S02H2SupplyPressPV AT%I*:INT;
+	DI_18_S03H2SSupplyPressPV AT%I*:INT;
+	DI_18_S04H2SeSupplyPressPV AT%I*:INT;
+	
+//	DI_19_LineHeaterController AT%I*:BOOL;
+//	DI_20_ThermalBathx4EA AT%I*:BOOL;
+	 
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

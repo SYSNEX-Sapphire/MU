@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_Modbus_Send_Frame" Id="{95599800-a818-4406-80e8-fbd65d72965f}">
+    <Declaration><![CDATA[TYPE ST_Modbus_Send_Frame :
+STRUCT
+	UnitID:BYTE;
+	StartAddress		:WORD;
+	sendQuantity		:WORD;
+	SendData			:ARRAY [0..10] OF WORD;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

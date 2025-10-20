@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Modbus_Send_FIFO" Id="{971fcccc-f3d5-45f2-9d7f-e73bbf056593}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Modbus_Send_FIFO
+VAR_INPUT
+	stInput				:ST_Modbus_Send_Frame;
+END_VAR
+VAR_OUTPUT
+	bExistMessage		:BOOL;
+	nBufferCount		:UDINT;
+	nLoad				:REAL;
+	stOutput			:ST_Modbus_Send_Frame;
+END_VAR
+VAR
+	ArrBuffer			:ARRAY[0..10000] OF BYTE;
+	fbBuffer			:FB_MemRingBuffer;
+	bOk					:BOOL;
+	cbSize				:UDINT;
+	
+	nCurrentBuffer		:UDINT;
+	BufferSize			:UINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bExistMessage := nBufferCount > 0;
+BufferSize := SIZEOF(ArrBuffer);
+nLoad :=  (UDINT_TO_REAL(fbBuffer.cbSize)/UDINT_TO_REAL(BufferSize)) * 100.0;;]]></ST>
+    </Implementation>
+    <Action Name="A_Add" Id="{9d978233-6a95-46db-873c-61b12168c27b}">
+      <Implementation>
+        <ST><![CDATA[fbBuffer.A_AddTail(	pWrite:=ADR(stInput),
+					cbWrite:= SIZEOF( stInput ),
+					pBuffer:= ADR( arrBuffer ),
+					cbBuffer:= SIZEOF( arrBuffer ),
+					bOk=> bOk,
+					nCount => nBufferCount );]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Remove" Id="{4d04fd7d-30d2-42f4-be48-5ee41b38f025}">
+      <Implementation>
+        <ST><![CDATA[fbBuffer.A_RemoveHead(
+						pRead:= ADR(stOutput ),
+						cbRead:= SIZEOF( stOutput ),
+						pBuffer:= ADR( arrBuffer ),
+						cbBuffer:= SIZEOF( arrBuffer ),
+						bOk=> bOk,
+						nCount => nBufferCount );]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Reset" Id="{ba558b3d-19c3-45d2-b0f7-2fba583faf71}">
+      <Implementation>
+        <ST><![CDATA[MEMSET(ADR(ArrBuffer),0,SIZEOF(ArrBuffer));
+
+fbBuffer.A_Reset(bOk=>bOk,
+			nCount=>nBufferCount);			
+			bExistMessage := nBufferCount > 0;
+nLoad := fbBuffer.cbSize  / 200;]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="FB_Modbus_Send_FIFO">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Modbus_Send_FIFO.A_Add">
+      <LineId Id="2" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Modbus_Send_FIFO.A_Remove">
+      <LineId Id="2" Count="5" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Modbus_Send_FIFO.A_Reset">
+      <LineId Id="2" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

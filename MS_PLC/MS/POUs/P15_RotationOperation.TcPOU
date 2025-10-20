@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="P15_RotationOperation" Id="{7f828812-d1bb-49a4-a03d-f3e347855c39}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P15_RotationOperation
+VAR
+	rControlValue			: REAL; //rpm
+	bStart_Stop				: BOOL := TRUE;
+	bAlarmReset				: BOOL; //Motor Driver Alarm
+
+	bRotationCP				: BOOL;
+	nConvertedRotation_PV	: REAL; //PV 0~100 rpm
+
+	rConvertedCV			:REAL;
+	(* Motor Driver *)
+	bBrake_Run				: BOOL;
+	(* Rotation Operation Parameter*)
+	wRotaion_PV				: WORD;
+	isRotationFault			: BOOL; //Motor Driver
+	calcRotation: REAL;
+END_VAR
+
+VAR CONSTANT
+	KL4404MaxValueP		: REAL := 16383; //0~5V, 0~3000
+	//Motor Max Rotation RPM 3000rpm, Gear Ratio 20, Belt Ratio 4.5
+	ConversionFactor 	: REAL :=491.49;// 491.49 ; //13106 * 20 * 4.5 / 3000
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Oriental Motor Driver : BLHM230K-GFS, 0~4V
+
+_DigitalInput();
+
+calcRotation := (wRotaion_PV / ConversionFactor) * (5.0/3.0);
+
+
+nConvertedRotation_PV := (calcRotation);
+
+// Interface with other PRGs
+GVL_IO.nRotation_Converted_PV := nConvertedRotation_PV;
+rControlValue := GVL_IO.rRotation_ControlValue;
+
+//Write to Motor Driver
+rConvertedCV := rControlValue * ConversionFactor; // Convert from RPM to control value
+
+
+IF GVL_io.aInterlockEnable[1].7 = TRUE THEN // UI 의 Auto Power ON 기능에 따라서 자동 On . oFF 사용 
+	IF (GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].input.targetValue > 0) OR (rConvertedCV > 0) THEN // Motor Driver RUN
+		bBrake_Run := TRUE;
+	ELSIF (GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].input.targetValue = 0) AND (rConvertedCV = 0) THEN
+		bBrake_Run := FALSE;
+	END_IF
+ELSE
+	bBrake_Run:=FALSE;
+END_IF
+
+_DigitalOutput();]]></ST>
+    </Implementation>
+    <Action Name="_DigitalInput" Id="{db81d855-9855-4bd4-87ca-83883a25ba2e}">
+      <Implementation>
+        <ST><![CDATA[(* Read from Power Distribution Pannel *)
+bRotationCP := GVL_IO_GAS_CABINET.DI_02_RotationMotorCP;
+
+//from Device Value
+isRotationFault := NOT(GVL_IO_REACTOR_CABINET.DI_02_SusceptorRotationMotorFault);
+wRotaion_PV := UINT_TO_WORD(GVL_IO_REACTOR_CABINET.AI_08_R01SusceptorRotationPV);]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_DigitalOutput" Id="{b7f936ee-b5d8-4792-8a4c-a2f45c591fba}">
+      <Implementation>
+        <ST><![CDATA[GVL_IO_REACTOR_CABINET.DO_05_SusceptorRotationFWD := bBrake_Run;
+GVL_IO_REACTOR_CABINET.AO_09_R01_SusceptorRotationSV:=REAL_TO_INT(rConvertedCV);
+ 
+]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="P15_RotationOperation">
+      <LineId Id="216" Count="2" />
+      <LineId Id="262" Count="2" />
+      <LineId Id="219" Count="20" />
+      <LineId Id="163" Count="0" />
+    </LineIds>
+    <LineIds Name="P15_RotationOperation._DigitalInput">
+      <LineId Id="23" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="P15_RotationOperation._DigitalOutput">
+      <LineId Id="6" Count="1" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_Variable_FromUI_Interlock" Id="{24dd70c4-f47e-49a1-9f71-9d56635c4d74}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_Variable_FromUI_Interlock: BOOL
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//F_Variable_DeviceLink
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_Variable_FromUI_Interlock">
+      <LineId Id="82" Count="0" />
+      <LineId Id="84" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,22 @@
+﻿<Application x:Class="SapphireXR_App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SapphireXR_App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Colors.xaml"/>
+                <ResourceDictionary Source="/Styles/ControlTemplates.xaml"/>
+                <ResourceDictionary Source="/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
+                <ResourceDictionary Source="/Resources/icons/icon=buzzer_off.xaml" />
+                <ResourceDictionary Source="/Resources/icons/icon=buzzer_on.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="DefaultRecipeListBackground" Color="{Binding Color, Source={StaticResource Gray_50}}" />
+            <SolidColorBrush x:Key="DefaultRecipeListForeground" Color="{Binding Color, Source={StaticResource Gray_900}}" />
+            <SolidColorBrush x:Key="DisabledRecipeListForeground" Color="{Binding Color, Source={StaticResource Gray_600}}" />
+            <SolidColorBrush x:Key="HighlitedRecipeListBackground" Color="{Binding Color, Source={StaticResource Gray_500}}" />
+            <SolidColorBrush x:Key="HighlitedRecipeListForeground" Color="IndianRed" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

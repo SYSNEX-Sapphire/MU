@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_StateValve_Process" Id="{d90acf08-ffd6-4205-a772-d8111e71dbdd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_StateValve_Process : bool
+VAR_INPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_StateValve_Process:= GVL_IO_VALVE.DO_00_V01ChalcogenCarrierChange = FALSE AND
+				GVL_IO_VALVE.DO_00_V02MOCarreirChange = FALSE  AND
+				GVL_IO_VALVE.DO_00_V03H2SeSourceChange = FALSE  AND
+				GVL_IO_VALVE.DO_00_V04H2SSourceChange = FALSE ;]]></ST>
+    </Implementation>
+    <LineIds Name="F_StateValve_Process">
+      <LineId Id="30" Count="2" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

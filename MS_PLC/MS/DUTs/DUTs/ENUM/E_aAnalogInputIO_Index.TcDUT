@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_aAnalogInputIO_Index" Id="{6e9d6f4e-d1ac-4d03-bd75-0f709fef1494}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_aAnalogInputIO_Index :
+(
+	E_PV_MFC_01 :=1,
+	E_PV_MFC_02 :=2,
+	E_PV_MFC_03 :=3,
+	E_PV_MFC_04 :=4,
+	E_PV_MFC_05 :=5,
+	E_PV_MFC_06 :=6,
+	E_PV_MFC_07 :=7,
+	E_PV_MFC_08 :=8,
+	E_PV_MFC_09 :=9,
+	E_PV_MFC_10 :=10,
+	E_PV_MFC_11 :=11,
+	E_PV_MFC_12 :=12,
+	E_PV_EPC_01 :=13,
+	E_PV_EPC_02 :=14,
+	E_PV_EPC_03 :=15,
+	E_PV_EPC_04 :=16,
+	E_PV_Susceptor_Temp:=17,
+	E_PV_Reactor_Pressure:=18,
+	E_PV_susceptorRotation:=19,
+	E_PV_Ultimate_Pressure:=20,
+	E_PV_Exhaust_Pressure:=21,
+	E_PV_DOR_PRESSURE:=22,
+	E_PV_GAS_Pressure_N2:=23,
+	E_PV_GAS_Pressure_H2:=24,
+	E_PV_GAS_Pressure_H2S:=25,
+	E_PV_GAS_Pressure_H2Se:=26,
+	E_PV_CoolingWafer_SH:=27
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

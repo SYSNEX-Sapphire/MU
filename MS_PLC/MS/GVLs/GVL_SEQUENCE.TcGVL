@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL_SEQUENCE" Id="{afa24cfe-a057-4c9d-bd84-b82c36777d71}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+//	fbUpdateModue:FB_UPDATE_MODULE;
+	
+	fbDeviationCheck		:ARRAY[1..29] OF FB_DeviationCheck;
+	fbDeviationCheck_Reactor		:ARRAY[1..3] OF FB_DeviationCheck;
+	fbSensorLimitCheck		:ARRAY[1..4] OF FB_SensorLimitCheck;  // Pressure N2 H2 H2S,H2SE 
+	fbSensorOverLimitCheck	:ARRAY[1..2] OF FB_OverLimitCheck;  // Over Temp  , Over Pressure  
+	fbFaultCheck			:ARRAY[1..8] OF FB_FaultCheck; // CDA/CoolingWafer/Rotation Fault/Vacuum Pump Fault/Gas Cabinet Open / Reactor Door Open / Dor Fault
+	fbFaultCheck_Utility	:ARRAY[1..4] OF FB_FaultCheck; //SMPS,Circuit Power , Gas Detector , External Alarm
+	fbFaultCheck_Utility_CP :ARRAY[1..4] OF FB_FaultCheck; //CP
+	
+	FB_DOR_PRESSURE_AVG: FB_RINGBUFFER;
+	FB_EXHAUST_AVG: FB_RINGBUFFER;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

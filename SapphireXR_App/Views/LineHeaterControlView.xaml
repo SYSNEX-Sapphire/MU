@@ -1,0 +1,113 @@
+﻿<Window x:Class="SapphireXR_App.Views.LineHeaterControlView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SapphireXR_App.Views"
+		xmlns:control="clr-namespace:SapphireXR_App.Controls"
+        mc:Ignorable="d"
+        WindowStyle="None"      
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight"
+        MinWidth="400"
+        MinHeight="150"
+        Title="LineHeaterControl" Height="202" Width="400" 
+        x:Name="LineHeaterControlDialog">
+    <Border  Background="{StaticResource Gray_100}">
+        <Border.CornerRadius>
+            <CornerRadius TopLeft="{StaticResource r_3}" TopRight="{StaticResource r_3}" BottomLeft="{StaticResource r_3}" BottomRight="{StaticResource r_3}" />
+        </Border.CornerRadius>
+        <Grid Background="Transparent" Margin="{StaticResource p_5_sqrt}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="21.28"/>
+                <RowDefinition Height="16" />
+                <RowDefinition Height="96"/>
+            </Grid.RowDefinitions>
+            <!-- 머리말 -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="/Resources/icons/icon=flow_controller.png" />
+                <Label Grid.Column="1" Content="{Binding Title}" FontFamily="Segoe UI" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource Gray_950}"  Padding="0" />
+            </Grid>
+            <Label Grid.Row="2" Padding="0" Margin="0" Content="{Binding Message}" FontFamily="Segoe UI" FontSize="16" Foreground="{StaticResource Gray_950}" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+            <!-- 내용 -->
+            <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="0">
+                    <Grid.Resources>
+                        <Style x:Key="label" TargetType="TextBlock"  BasedOn="{StaticResource infoTextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                        <Style x:Key="textInput" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBox}">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="Width" Value="96" />
+                            <Setter Property="Foreground" Value="{StaticResource Gray_900}" />
+                        </Style>
+                        <Style x:Key="readOnlyTextInput" TargetType="Border">
+                            <Setter Property="Background" Value="{StaticResource Gray_400}" />
+                            <Setter Property="Width" Value="96" />
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="CornerRadius">
+                                <Setter.Value>
+                                    <CornerRadius TopLeft="{StaticResource r_1}" TopRight="{StaticResource r_1}" BottomLeft="{StaticResource r_1}" BottomRight="{StaticResource r_1}" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style x:Key="valueLabel" TargetType="Label">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Foreground" Value="{StaticResource Gray_950}" />
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="36" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition Width="104"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="72"/>
+                        <ColumnDefinition Width="104"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource label}">Target Value</TextBlock>
+                    <local:FloatingPointBoxWithMax Grid.Row="0" Grid.Column="1" x:Name="txtInput" Text="{Binding TargetValue, UpdateSourceTrigger=PropertyChanged}" MaxValue="{Binding MaxValue}" Style="{StaticResource textInput}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Style="{StaticResource label}">Max. Value</TextBlock>
+                    <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource readOnlyTextInput}">
+                        <Label  x:Name="txtFlowMaxValue" Content="{Binding MaxValue}" Style="{StaticResource valueLabel}" />
+                    </Border>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Content="확인"
+                        Margin="5"
+                        IsDefault="True"
+                        Command="{Binding ConfirmCommand}"
+                        CommandParameter="{Binding ElementName=LineHeaterControlDialog}" Style="{StaticResource PrimaryButton}"/>
+                    <Button Grid.Row="2" Grid.Column="1" 
+                        Content="닫기"
+                        Margin="5" 
+                        IsCancel="True" 
+                        Style="{StaticResource DefaultButton}"
+                        Command="{Binding CloseCommand}"
+                        CommandParameter="{Binding ElementName=LineHeaterControlDialog}" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

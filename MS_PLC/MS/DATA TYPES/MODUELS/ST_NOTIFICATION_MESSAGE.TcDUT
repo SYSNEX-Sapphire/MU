@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_NOTIFICATION_MESSAGE" Id="{9b8b135b-affd-4b0a-b72a-22e82e0f3e51}">
+    <Declaration><![CDATA[TYPE ST_NOTIFICATION_MESSAGE :
+STRUCT
+	INDEX:DINT;
+	TITLE:STRING(255);
+	MESSAGE :STRING(255);
+	NOTIFICATION_TYPE:DINT; (* NOTIFI_INTERLOCK = 1, NOTIFI_ALARM = 2, NOTIFI_MESSAGE = 3 *)
+	MODULE_ID:DINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

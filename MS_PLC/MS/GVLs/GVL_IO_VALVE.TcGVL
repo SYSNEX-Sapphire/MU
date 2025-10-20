@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL_IO_VALVE" Id="{ab35d8f2-2e47-42e2-8fc5-e73912c85b17}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	DO_00_V01ChalcogenCarrierChange AT%Q*:BOOL;
+	DO_00_V02MOCarreirChange AT%Q*:BOOL;
+	DO_00_V03H2SeSourceChange AT%Q*:BOOL;
+	DO_00_V04H2SSourceChange AT%Q*:BOOL;
+	DO_00_V05Source_1TMInCarrierChange AT%Q*:BOOL;
+	DO_00_V06Source_1TMInBypass AT%Q*:BOOL;
+	DO_00_V07Source_2TMGaCarrierChange AT%Q*:BOOL;
+	DO_00_V08Source_2TMGaBypass AT%Q*:BOOL;
+	DO_00_V09Source_3DMSeCarrierChange AT%Q*:BOOL;
+	DO_00_V10Source_3DMSeBypass AT%Q*:BOOL;
+	DO_00_V11Source_4ChalcogenCarrierChange AT%Q*:BOOL;
+	DO_00_V12Source_4ChalcogenBypass AT%Q*:BOOL;
+	DO_00_V13ReactorPurgeCarrierChange AT%Q*:BOOL;
+	DO_00_V14Source_1TMInManifoldRun AT%Q*:BOOL;
+	DO_00_V15Source_2TMGaManifoldRun AT%Q*:BOOL;
+	DO_00_V16Source_3DMSeManifoldRun AT%Q*:BOOL;
+	DO_00_V17GasH2SeManifoldRun AT%Q*:BOOL;
+	DO_00_V18GasH2SManifoldRun AT%Q*:BOOL;
+	DO_00_V19Source_4ChalcogenManifoldRun AT%Q*:BOOL;
+	DO_00_V20VentPress_Change AT%Q*:BOOL;
+	DO_00_V21PumpByPass AT%Q*:BOOL;
+	DO_00_V22DORVaccumON AT%Q*:BOOL;
+	DO_00_V23DORFilling AT%Q*:BOOL;
+	DO_00_V24Source_1LeakTest_IN AT%Q*:BOOL;
+	DO_00_V25Source_1LeakTest_OUT AT%Q*:BOOL;
+	DO_00_V26Source_2LeakTest_IN AT%Q*:BOOL;
+	DO_00_V27Source_2LeakTest_OUT AT%Q*:BOOL;
+	DO_00_V28Source_3LeakTest_IN AT%Q*:BOOL;
+	DO_00_V29Source_3LeakTest_OUT AT%Q*:BOOL;
+	DO_00_V30Source_4LeakTest_IN AT%Q*:BOOL;
+	DO_00_V31Source_4LeakTest_OUT AT%Q*:BOOL;
+	DO_00_V32SourceVacuumON AT%Q*:BOOL;
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

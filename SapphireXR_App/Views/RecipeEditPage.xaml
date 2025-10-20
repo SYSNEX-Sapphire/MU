@@ -1,0 +1,765 @@
+﻿<Page x:Class="SapphireXR_App.Views.RecipeEditPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:behaviors="clr-namespace:SapphireXR_App.Behavior"
+      xmlns:local="clr-namespace:SapphireXR_App.Views"
+      xmlns:control="clr-namespace:SapphireXR_App.Controls"
+      xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+      xmlns:vc="clr-namespace:SapphireXR_App.ValueConverter"
+      mc:Ignorable="d" 
+      d:DesignHeight="1032" d:DesignWidth="1620"
+      Title="RecipeEditPage">
+    <Page.Resources>
+        <Style x:Key="BaseStyle" TargetType="{x:Type Control}">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="NanumGothic"/>
+        </Style>
+        <Style x:Key="RecipeOperationStyle" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="64"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="4"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Page.Resources>
+    <Grid Grid.Column="0" Background="Transparent">
+        <Frame x:Name="frRecipeEdit"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="490"/>
+                <RowDefinition Height="56"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" BorderBrush="{StaticResource Gray_300}">
+                    <Border.BorderThickness>
+                        <Thickness Right="1" Bottom="1" />
+                    </Border.BorderThickness>
+                    <Canvas  Background="{StaticResource RecipeEditPageBackground}" IsEnabled="{Binding ControlUIEnabled}">
+                        <!-- #Region 1. 메인 공급 배관 -->
+                        <!-- Nitrogen Gas Line -->
+                        <Polyline Points="749,33 749,10 249,10 249,65 40,65 40,266 1075,266 1075,278" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />
+                        <Line X1="549" Y1="10" X2="549" Y2="33" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />
+                        <Line X1="165" Y1="54" X2="165" Y2="65" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />
+                        <Line X1="40" Y1="159" X2="58" Y2="159" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />
+                        <Line X1="40" Y1="223" X2="58" Y2="223" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />
+                        <Line X1="315" Y1="266" X2="315" Y2="278" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />
+                        <Line X1="515" Y1="266" X2="515" Y2="278" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />
+                        <Line X1="715" Y1="266" X2="715" Y2="278" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />
+                        <Line X1="915" Y1="266" X2="915" Y2="278" Stroke="{StaticResource N2_LineColor}" StrokeThickness="2" />                        
+                        
+                        <!--  Hydrogen Gas Line -->
+                        <Polyline Points="30,25 20,25 20,256 1099,256 1099,278" Stroke="{StaticResource H2_LineColor}"  StrokeThickness="2" />
+                        <Line X1="20" Y1="135" X2="58" Y2="135" Stroke="{StaticResource H2_LineColor}" StrokeThickness="2" />
+                        <Line X1="20" Y1="199" X2="58" Y2="199" Stroke="{StaticResource H2_LineColor}" StrokeThickness="2" />
+                        <Line X1="339" Y1="256" X2="339" Y2="278" Stroke="{StaticResource H2_LineColor}" StrokeThickness="2" />
+                        <Line X1="539" Y1="256" X2="539" Y2="278" Stroke="{StaticResource H2_LineColor}" StrokeThickness="2" />
+                        <Line X1="739" Y1="256" X2="739" Y2="278" Stroke="{StaticResource H2_LineColor}" StrokeThickness="2" />
+                        <Line X1="939" Y1="256" X2="939" Y2="278" Stroke="{StaticResource H2_LineColor}" StrokeThickness="2" />
+
+                        <!-- Hydrogen sulfide(H2S) Gas Line -->
+                        <Polyline Points="616,25 573,25 573,33" Stroke="{StaticResource H2S_LineColor}"  StrokeThickness="2" />
+
+                        <!-- Hydrogen selenide(H2Se) Gas Line -->
+                        <Polyline Points="816,25 773,25 773,33" Stroke="{StaticResource H2Se_LineColor}"  StrokeThickness="2" />
+                        <!--#endregion-->
+
+                        <!-- #region 2. 프로세스 매니폴드 가스배관 -->
+                        <Line X1="82" Y1="135" X2="106" Y2="135" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="176" Y1="155" X2="1270" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="82" Y1="199" X2="106" Y2="199" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="176" Y1="199" X2="1270" Y2="199" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+
+                        <Line X1="573" Y1="57" X2="573" Y2="73" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="773" Y1="57" X2="773" Y2="73" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="573" Y1="107" X2="573" Y2="119" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="773" Y1="107" X2="773" Y2="119" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="573" Y1="143" X2="573" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="773" Y1="143" X2="773" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+
+                        <!-- MO #1 -->
+                        <Line X1="339" Y1="302" X2="339" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="339" Y1="390" X2="339" Y2="400" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="339" Y1="436" X2="339" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="373" Y1="436" X2="373" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="373" Y1="400" X2="373" Y2="346" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="373" Y1="312" X2="373" Y2="235" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />                                              
+                        <Line X1="373" Y1="199" X2="373" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <!-- MO #2 -->
+                        <Line X1="539" Y1="302" X2="539" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="539" Y1="390" X2="539" Y2="400" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="539" Y1="436" X2="539" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="573" Y1="436" X2="573" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="573" Y1="400" X2="573" Y2="346" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="573" Y1="312" X2="573" Y2="235" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="573" Y1="199" X2="573" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <!-- MO #3 -->
+                        <Line X1="739" Y1="302" X2="739" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="739" Y1="390" X2="739" Y2="400" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="739" Y1="436" X2="739" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="773" Y1="436" X2="773" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="773" Y1="400" X2="773" Y2="346" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="773" Y1="312" X2="773" Y2="235" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="773" Y1="199" X2="773" Y2="211" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <!-- MO #4 -->
+                        <Line X1="939" Y1="302" X2="939" Y2="356" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="939" Y1="390" X2="939" Y2="400" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="939" Y1="436" X2="939" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="973" Y1="436" X2="973" Y2="446" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="973" Y1="400" X2="973" Y2="346" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="973" Y1="312" X2="973" Y2="191" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="973" Y1="167" X2="973" Y2="155" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <!-- Purge -->
+                        <Polyline Points="1099,302 1099,363 1129,363" Stroke="{StaticResource ProcessLineColor}"  StrokeThickness="2" />
+                        <Line X1="1099" Y1="319" X2="1129" Y2="319" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="1199" Y1="319" X2="1270" Y2="319" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="1199" Y1="363" X2="1270" Y2="363" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <!-- Vent -->
+                        <Line X1="1073" Y1="368" X2="1073" Y2="400" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Polyline Points="1049,424 1049,469 1270,469" Stroke="{StaticResource ProcessLineColor}"  StrokeThickness="2" />
+                        <Polyline Points="1073,424 1073,443 1270,443" Stroke="{StaticResource ProcessLineColor}"  StrokeThickness="2" />
+                        <Line X1="254" Y1="140" X2="287" Y2="140" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        <Line X1="254" Y1="234" X2="287" Y2="234" Stroke="{StaticResource ProcessLineColor}" StrokeThickness="2" />
+                        
+                        <!-- 샤워헤드(Chalc) 화살표  -->
+                        <Path Canvas.Left="1282" Canvas.Top="155" Fill="{StaticResource ProcessLineColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="0 0" IsClosed="True">
+                                        <LineSegment Point="-12 -4"/>
+                                        <LineSegment Point="-12 4"/>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <!-- Shower Head (MO) 화살표  -->
+                        <Path Canvas.Left="1282" Canvas.Top="199" Fill="{StaticResource ProcessLineColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="0 0" IsClosed="True">
+                                        <LineSegment Point="-12 -4"/>
+                                        <LineSegment Point="-12 4"/>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <!-- Out Liner Purge 화살표  -->
+                        <Path Canvas.Left="1282" Canvas.Top="319" Fill="{StaticResource ProcessLineColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="0 0" IsClosed="True">
+                                        <LineSegment Point="-12 -4"/>
+                                        <LineSegment Point="-12 4"/>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <!-- Heater Purge 화살표  -->
+                        <Path Canvas.Left="1282" Canvas.Top="363" Fill="{StaticResource ProcessLineColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="0 0" IsClosed="True">
+                                        <LineSegment Point="-12 -4"/>
+                                        <LineSegment Point="-12 4"/>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                       
+                        <!-- To Reactor 화살표  -->
+                        <Path Canvas.Left="1282" Canvas.Top="443" Fill="{StaticResource ProcessLineColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="0 0" IsClosed="True">
+                                        <LineSegment Point="-12 -4"/>
+                                        <LineSegment Point="-12 4"/>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <!-- To Scrubber 화살표  -->
+                        <Path Canvas.Left="1282" Canvas.Top="469" Fill="{StaticResource ProcessLineColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="0 0" IsClosed="True">
+                                        <LineSegment Point="-12 -4"/>
+                                        <LineSegment Point="-12 4"/>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>                       
+                        <!-- Vent 1 화살표  -->
+                        <Path Canvas.Left="299" Canvas.Top="140" Fill="{StaticResource ProcessLineColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="0 0" IsClosed="True">
+                                        <LineSegment Point="-12 -4"/>
+                                        <LineSegment Point="-12 4"/>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <!-- Vent 2 화살표  -->
+                        <Path Canvas.Left="299" Canvas.Top="234" Fill="{StaticResource ProcessLineColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="0 0" IsClosed="True">
+                                        <LineSegment Point="-12 -4"/>
+                                        <LineSegment Point="-12 4"/>
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <!--#endregion-->
+
+                        <!-- #Region 3. 상태 모니터링(가스압력, 항온조, 반응기)-->
+                        <!-- 가스압력 모니터링 -->
+                        <control:GasMonitor x:Name="gasMonitor_H2" Canvas.Left="155" Canvas.Top="20"  MonitorID="Gas1"/>
+                        <control:GasMonitor x:Name="gasMonitor_N2" Canvas.Left="30" Canvas.Top="20"  MonitorID="Gas2"/>
+                        <control:GasMonitor x:Name="gasMonitor_H2S" Canvas.Left="616" Canvas.Top="20"  MonitorID="Gas3"/>
+                        <control:GasMonitor x:Name="gasMonitor_H2Se" Canvas.Left="816" Canvas.Top="20"  MonitorID="Gas4"/>
+
+                        <!-- 항온조 온도 모니터링 -->
+                        <control:SourceMonitor x:Name="sourceMonitor_1" Canvas.Left="321" Canvas.Top="446" MonitorID="Source1"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_2" Canvas.Left="521" Canvas.Top="446" MonitorID="Source2"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_3" Canvas.Left="721" Canvas.Top="446" MonitorID="Source3"/>
+                        <control:SourceMonitor x:Name="sourceMonitor_4" Canvas.Left="921" Canvas.Top="446" MonitorID="Source4"/>
+     
+
+                        <!-- 반응기 콘트롤러 -->
+                        <Rectangle Canvas.Left="965" Canvas.Top="5" Width="330" Height="120" Stroke="#3d495a" StrokeThickness="2" />
+
+                        <Label Canvas.Left="998" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Temperature"
+                            Width="80" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="1093" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Pressure"
+                            Width="80" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="1188" Canvas.Top="50" Foreground="{StaticResource PrimaryFontColor}" Content="Rotation"
+                            Width="80" HorizontalContentAlignment="Center"/>
+                        <control:RecipeEditFlowController x:Name="susceptorTemperature" Canvas.Left="1003" Canvas.Top="72" ControllerID="Temperature" Type="Reactor" />
+                        <control:RecipeEditFlowController x:Name="reactorPressure" Canvas.Left="1098" Canvas.Top="72" ControllerID="Pressure" Type="Reactor" />
+                        <control:RecipeEditFlowController x:Name="susceptorRotation" Canvas.Left="1193" Canvas.Top="72" ControllerID="Rotation" Type="Reactor" />
+                        <!--#endregion-->
+
+                        <!-- #Region 4. 가스제어용 밸브 -->
+                        <control:SwitchingValve  x:Name="V01" Canvas.Left="58" Canvas.Top="171" ValveID="V01"  Target="CurrentRecipeStep"  RenderTransformOrigin="0,0">
+                            <control:SwitchingValve.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="270"/>
+                                </TransformGroup>
+                            </control:SwitchingValve.RenderTransform>
+                        </control:SwitchingValve>
+                        <control:SwitchingValve x:Name="V02" Canvas.Left="58" Canvas.Top="235" ValveID="V02"  Target="CurrentRecipeStep"  RenderTransformOrigin="0,0">
+                            <control:SwitchingValve.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="270"/>
+                                </TransformGroup>
+                            </control:SwitchingValve.RenderTransform>
+                        </control:SwitchingValve>
+                        <control:SwitchingValve x:Name="V03" Canvas.Left="537" Canvas.Top="33" ValveID="V03" Target="CurrentRecipeStep" />
+                        <control:SwitchingValve x:Name="V04" Canvas.Left="737" Canvas.Top="33" ValveID="V04" Target="CurrentRecipeStep" />                        
+                        <control:SwitchingValve x:Name="V05" Canvas.Left="303" Canvas.Top="278" ValveID="V05" Target="CurrentRecipeStep" />
+                        <control:BypassValve x:Name="V06" Canvas.Left="330" Canvas.Top="400" ValveID="V06" Target="CurrentRecipeStep" />                        
+                        <control:SwitchingValve x:Name="V07" Canvas.Left="503" Canvas.Top="278" ValveID="V07" Target="CurrentRecipeStep" />
+                        <control:BypassValve x:Name="V08" Canvas.Left="530" Canvas.Top="400" ValveID="V08" Target="CurrentRecipeStep" />                        
+                        <control:SwitchingValve x:Name="V09" Canvas.Left="703" Canvas.Top="278" ValveID="V09" Target="CurrentRecipeStep" />
+                        <control:BypassValve x:Name="V10" Canvas.Left="730" Canvas.Top="400" ValveID="V10" Target="CurrentRecipeStep" />                        
+                        <control:SwitchingValve x:Name="V11" Canvas.Left="903" Canvas.Top="278" ValveID="V11" Target="CurrentRecipeStep" />
+                        <control:BypassValve x:Name="V12" Canvas.Left="930" Canvas.Top="400" ValveID="V12" Target="CurrentRecipeStep" />
+                                                
+                        <control:SwitchingValve x:Name="V13" Canvas.Left="1063" Canvas.Top="278" ValveID="V13" Target="CurrentRecipeStep" />
+                        <control:SwitchingValve x:Name="V14" Canvas.Left="337" Canvas.Top="211" ValveID="V14" Target="CurrentRecipeStep" />
+                        <control:SwitchingValve x:Name="V15" Canvas.Left="537" Canvas.Top="211" ValveID="V15" Target="CurrentRecipeStep" />
+                        <control:SwitchingValve x:Name="V16" Canvas.Left="737" Canvas.Top="211" ValveID="V16" Target="CurrentRecipeStep" />
+                        <control:SwitchingValve x:Name="V17" Canvas.Left="537" Canvas.Top="119" ValveID="V17" Target="CurrentRecipeStep" />
+                        <control:SwitchingValve x:Name="V18" Canvas.Left="737" Canvas.Top="119" ValveID="V18" Target="CurrentRecipeStep" />
+                        <control:SwitchingValve x:Name="V19" Canvas.Left="937" Canvas.Top="167" ValveID="V19" Target="CurrentRecipeStep" />
+                        <control:SwitchingValve x:Name="V20" Canvas.Left="1037" Canvas.Top="400" ValveID="V20" Target="CurrentRecipeStep" />
+                        <!--#endregion-->
+
+                        <!-- #Region 5. 가스제어(MFC, EPC) -->
+                        <!-- MFC -->
+                        <control:RecipeEditFlowController x:Name="MFC01" Canvas.Left="106" Canvas.Top="128" ControllerID="MFC01" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC02" Canvas.Left="106" Canvas.Top="192" ControllerID="MFC02" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC03" Canvas.Left="526" Canvas.Top="73" ControllerID="MFC03" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC04" Canvas.Left="726" Canvas.Top="73" ControllerID="MFC04" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC05" Canvas.Left="350" Canvas.Top="312" ControllerID="MFC05" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC06" Canvas.Left="550" Canvas.Top="312" ControllerID="MFC06" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC07" Canvas.Left="750" Canvas.Top="312" ControllerID="MFC07" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC08" Canvas.Left="950" Canvas.Top="312" ControllerID="MFC08" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC09" Canvas.Left="1129" Canvas.Top="356" ControllerID="MFC09" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC10" Canvas.Left="1129" Canvas.Top="312" ControllerID="MFC10" Type="MFC" />                        
+                        <control:RecipeEditFlowController x:Name="MFC11" Canvas.Left="184" Canvas.Top="113" ControllerID="MFC11" Type="MFC" />
+                        <control:RecipeEditFlowController x:Name="MFC12" Canvas.Left="184" Canvas.Top="207" ControllerID="MFC12" Type="MFC" />                     
+                         <!--EPC Contol Box!-->
+                        <control:RecipeEditFlowController x:Name="EPC01" Canvas.Left="292" Canvas.Top="356" ControllerID="EPC01" Type="EPC" />
+                        <control:RecipeEditFlowController x:Name="EPC02" Canvas.Left="492" Canvas.Top="356" ControllerID="EPC02" Type="EPC" />
+                        <control:RecipeEditFlowController x:Name="EPC03" Canvas.Left="692" Canvas.Top="356" ControllerID="EPC03" Type="EPC" />
+                        <control:RecipeEditFlowController x:Name="EPC04" Canvas.Left="892" Canvas.Top="356" ControllerID="EPC04" Type="EPC" />
+                        <!--#endregion-->
+
+                        <!-- #Region 6. Text -->
+                        <Label Canvas.Left="1185" Canvas.Top="134" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(Chalc)"/>
+                        <Label Canvas.Left="1185" Canvas.Top="178" Foreground="{StaticResource PrimaryFontColor}" Content="Shower Head(MO)"/>
+                        <Label Canvas.Left="1199" Canvas.Top="326" Foreground="{StaticResource PrimaryFontColor}" Content="Out Liner Purge"/>
+                        <Label Canvas.Left="1199" Canvas.Top="370" Foreground="{StaticResource PrimaryFontColor}" Content="Heater Purge"/>
+                        <Label Canvas.Left="1185" Canvas.Top="422" Foreground="{StaticResource PrimaryFontColor}" Content="to Reactor"/>
+                        <Label Canvas.Left="1185" Canvas.Top="448" Foreground="{StaticResource PrimaryFontColor}" Content="to Scrubber"/>
+                        <Label Canvas.Left="1049" Canvas.Top="344" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                            Width="50" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="256" Canvas.Top="120" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                            Width="33" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="256" Canvas.Top="214" Foreground="{StaticResource PrimaryFontColor}" Content="Vent"
+                            Width="33" HorizontalContentAlignment="Center"/>
+                        
+                        <!--MFC/EPC Label !-->
+                        <Label Canvas.Left="101" Canvas.Top="106" Foreground="DimGray" Content="M01"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="101" Canvas.Top="170" Foreground="DimGray" Content="M02"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="598" Canvas.Top="66" Foreground="DimGray" Content="M03"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="798" Canvas.Top="66" Foreground="DimGray" Content="M04"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="422" Canvas.Top="305" Foreground="DimGray" Content="M05"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="622" Canvas.Top="305" Foreground="DimGray" Content="M06"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="822" Canvas.Top="305" Foreground="DimGray" Content="M07"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="1022" Canvas.Top="305" Foreground="DimGray" Content="M08"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="1129" Canvas.Top="386" Foreground="DimGray" Content="M09"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="1129" Canvas.Top="288" Foreground="DimGray" Content="M10"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="256" Canvas.Top="106" Foreground="DimGray" Content="M11"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="256" Canvas.Top="200" Foreground="DimGray" Content="M12"
+                                Width="40" HorizontalContentAlignment="Center" />                        
+                        <Label Canvas.Left="256" Canvas.Top="349" Foreground="DimGray" Content="E01"
+                            Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="456" Canvas.Top="349" Foreground="DimGray" Content="E02"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="656" Canvas.Top="349" Foreground="DimGray" Content="E03"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <Label Canvas.Left="856" Canvas.Top="349" Foreground="DimGray" Content="E04"
+                                Width="40" HorizontalContentAlignment="Center" />
+                        <!--Valve Label !-->
+                        <Label Canvas.Left="50" Canvas.Top="100" Foreground="{StaticResource PrimaryFontColor}" Content="V01"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="50" Canvas.Top="230" Foreground="{StaticResource PrimaryFontColor}" Content="V02"
+                                Width="40" HorizontalContentAlignment="Center"/>                        
+                        <Label Canvas.Left="504" Canvas.Top="32" Foreground="{StaticResource PrimaryFontColor}" Content="V03"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="704" Canvas.Top="32" Foreground="{StaticResource PrimaryFontColor}" Content="V04"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="270" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V05"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="296" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V06"
+                        Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="470" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V07"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="496" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V08"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="670" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V09"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="696" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V10"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="870" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V11"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="896" Canvas.Top="408" Foreground="{StaticResource PrimaryFontColor}" Content="V12"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="1030" Canvas.Top="277" Foreground="{StaticResource PrimaryFontColor}" Content="V13"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="378" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V14"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="578" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V15"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="778" Canvas.Top="210" Foreground="{StaticResource PrimaryFontColor}" Content="V16"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="578" Canvas.Top="118" Foreground="{StaticResource PrimaryFontColor}" Content="V17"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="778" Canvas.Top="118" Foreground="{StaticResource PrimaryFontColor}" Content="V18"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="978" Canvas.Top="166" Foreground="{StaticResource PrimaryFontColor}" Content="V19"
+                                Width="40" HorizontalContentAlignment="Center"/>
+                        <Label Canvas.Left="1004" Canvas.Top="399" Foreground="{StaticResource PrimaryFontColor}" Content="V20"
+                                Width="40" HorizontalContentAlignment="Center"/>                        
+                        <!--#endregion-->
+                    </Canvas>
+                </Border>
+                <Border Grid.Column="1" BorderBrush="{StaticResource Gray_300}" BorderThickness="0, 1, 0, 0">
+                    <Grid Background="{StaticResource Gray_100}">
+                        <Grid.Resources>
+                            <Style x:Key="InfoTextLabelRight" TargetType="Label" BasedOn="{StaticResource infoLabelLeft}">
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                            </Style>
+                            <Style x:Key="RecipeEditInfroTextBox" TargetType="TextBox" BasedOn="{StaticResource InfoTextBox}">
+                                <Setter Property="Width" Value="82" />
+                                <Setter Property="Height" Value="24" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <!-- Recipe Information -->
+                        <Grid Grid.Row="0" Margin="{StaticResource p_3_sqrt}">
+                            <Border BorderBrush="{StaticResource Gray_300}" BorderThickness="0 0 0 1">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel.Margin>
+                                        <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}" Bottom="{StaticResource p_4}" />
+                                    </StackPanel.Margin>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="4" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.Column="0" Width="24" Height="24" Source="/Resources/icons/icon=recipe_information.png"/>
+                                        <Label Grid.Column="2" Content="Recipe Information" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="0 0 0 2" Style="{StaticResource SectionTitle}" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="8"/>
+                                        </Grid.RowDefinitions>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="4"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition  Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="4" />
+                                            <RowDefinition/>
+                                            <RowDefinition Height="4" />
+                                            <RowDefinition/>
+                                            <RowDefinition Height="4" />
+                                            <RowDefinition/>
+                                            <RowDefinition Height="4" />
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <Label Grid.Row="0" Grid.Column="0" Content="Total Recipe Time" Style="{StaticResource InfoTextLabelRight}" />
+                                        <Label Grid.Row="2" Grid.Column="0" Content="Number of Step" Style="{StaticResource InfoTextLabelRight}" />
+                                        <Label Grid.Row="4" Grid.Column="0" Content="Ramping Rate Temp." Style="{StaticResource InfoTextLabelRight}" />
+                                        <Label Grid.Row="6" Grid.Column="0" Content="Ramping Rate Press." Style="{StaticResource InfoTextLabelRight}"/>
+                                        <Label Grid.Row="8" Grid.Column="0" Content="Total Flow Rate" Style="{StaticResource InfoTextLabelRight}" />
+
+                                        <TextBox x:Name="tbTotalRecipeTime" Grid.Row="0" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalRecipeTime}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                        <TextBox x:Name="tbTotalStepNumber" Grid.Row="2" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalStepNumber}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                        <TextBox x:Name="tbRampingRateTemp" Grid.Row="4" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.RampingRateTemp}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                        <TextBox x:Name="tbRampingRatePress" Grid.Row="6" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.RampingRatePress}" Style="{StaticResource RecipeEditInfroTextBox}" />
+                                        <TextBox x:Name="tbTotalFlowRate" Grid.Row="8" Grid.Column="2" Text="{Binding CurrentRecipeInformationViewModel.TotalFlowRate}" Style="{StaticResource RecipeEditInfroTextBox}" />
+
+                                        <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Left" Content="sec." Style="{StaticResource InfoTextLabelRight}" />
+                                        <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left"  Content="°C/sec." Style="{StaticResource InfoTextLabelRight}" />
+                                        <Label Grid.Row="4" Grid.Column="4" HorizontalAlignment="Left"  Content="Torr/sec." Style="{StaticResource InfoTextLabelRight}" />
+                                        <Label Grid.Row="6" Grid.Column="4" HorizontalAlignment="Left"  Content="sccm" Style="{StaticResource InfoTextLabelRight}" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- #Region 7. 레시피 작성 커맨드 버턴) -->
+            <Grid Grid.Row="1">
+                <Grid>
+                    <Grid.Margin>
+                        <Thickness Left="{StaticResource p_5}" Right="{StaticResource p_5}" Top="{StaticResource p_2}" Bottom="{StaticResource p_2}" />
+                    </Grid.Margin>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button x:Name="btnRecipeNew" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeNewCommand}" ToolTip="load new empty recipe">
+                            <Image Source="/Resources/icons/icon=new.png" Style="{StaticResource MenuImage}" />
+                        </Button>
+                        <Button x:Name="btnRecipeOpen" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeOpenCommand}" ToolTip="open recipe">
+                            <Image Source="/Resources/icons/icon=open.png" Style="{StaticResource MenuImage}" />
+                        </Button>
+                        <Button x:Name="btnRecipePLCLoad" Style="{StaticResource MenuImageButton}" Command="{Binding RecipePLCLoadCommand, Mode=TwoWay}" ToolTip="load recipe to PLC">
+                            <Image Source="/Resources/icons/icon=PLC.png" Style="{StaticResource MenuImage}" />
+                        </Button>
+                        <Button x:Name="btnRecipeSave" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeSaveCommand, Mode=TwoWay}" ToolTip="save recipe">
+                            <Image Source="/Resources/icons/icon=save.png" Style="{StaticResource MenuImage}" />
+                        </Button>
+                        <Button x:Name="btnRecipeSaveAs" Style="{StaticResource MenuImageButton}" Command="{Binding RecipeSaveAsCommand, Mode=TwoWay}" ToolTip="save recipe as a file name">
+                            <Image Source="/Resources/icons/icon=save_as.png" Style="{StaticResource MenuImage}" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <TextBlock Width="87" Text="Recipe File" Style="{StaticResource infoTextBlock}"/>
+                        <TextBox x:Name="tbRecipeEditFile" Width="430" Height="40" Style="{StaticResource InfoTextBox}" Text="{Binding RecipeFilePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <!--#endregion-->
+
+            <!-- #Region 8. Recipe Edit 데이터 테이블 -->
+            <Grid Grid.Row="2" Background="Transparent">
+                <Grid.Resources>
+                    <ContextMenu x:Key="ContextMenuOnSelectedWIthCopied">
+                        <MenuItem Header="Copy" InputGestureText="Ctrl+C" Command="{Binding CopyCommand}" />
+                        <MenuItem Header="Paste"  InputGestureText="Ctrl+V" Command="{Binding PasteCommand}"  />
+                        <Separator/>
+                        <MenuItem Header="Add Step"  Command="{Binding AddStepCommand}" CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                        <MenuItem Header="Insert Step" InputGestureText="Insert" Command="{Binding InsertStepCommand}" />
+                        <Separator />
+                        <MenuItem Header="Delete Step" InputGestureText="Del" Command="{Binding DeleteStepCommand}"/>
+                    </ContextMenu>
+                    <ContextMenu x:Key="ContextMenuOnSelectedWIthoutCopied">
+                        <MenuItem Header="Copy"  InputGestureText="Ctrl+C" Command="{Binding CopyCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Add Step" Command="{Binding AddStepCommand}"  CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}" />
+                        <MenuItem Header="Insert Step" InputGestureText="Insert" Command="{Binding InsertStepCommand}" />
+                        <Separator />
+                        <MenuItem Header="Delete Step " InputGestureText="Del" Command="{Binding DeleteStepCommand}"/>
+                    </ContextMenu>
+                    <ContextMenu x:Key="ContextMenuOnNothingSelected">
+                        <MenuItem Header="Add Step"  Command="{Binding AddStepCommand}"/>
+                    </ContextMenu>
+                    <Style TargetType="DataGrid" BasedOn="{StaticResource RecipeList}">
+                        <Setter Property="AutoGenerateColumns" Value="False" />
+                        <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+                        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                        <Setter Property="CellStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Foreground" Value="{Binding Foreground, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                                    <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="RowStyle">
+                            <Setter.Value>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Height" Value="26"/>
+                                    <Setter Property="Background" Value="{StaticResource Gray_50}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentState}" Value="NoneSelected">
+                                <Setter  Property="ContextMenu" Value="{StaticResource ContextMenuOnNothingSelected}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentState}" Value="Selected">
+                                <Setter Property="ContextMenu" Value="{StaticResource ContextMenuOnSelectedWIthoutCopied}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentState}" Value="Copied">
+                                <Setter Property="ContextMenu" Value="{StaticResource ContextMenuOnSelectedWIthCopied}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="ValveOnOffCheckBox" TargetType="{x:Type CheckBox}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type CheckBox}">
+                                    <Ellipse Width="10" Height="10" x:Name="checkButton" Stroke="Gray">
+                                        <Ellipse.Style>
+                                            <Style TargetType="{x:Type Ellipse}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="True">
+                                                        <Setter Property="Fill" Value="Lime"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="False">
+                                                        <Setter Property="Fill" Value="White"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
+                <Border BorderBrush="{StaticResource Gray_300}">
+                    <Border.BorderThickness>
+                        <Thickness Top="1" />
+                    </Border.BorderThickness>
+                    <!-- 수직형 탭 설정-->
+                    <TabControl TabStripPlacement="Left" Style="{StaticResource DefaultVerticalTabControl}">
+                        <TabControl.Resources>
+                            <Style x:Key="gridColumnTextBoxIntegerMaxNumber" TargetType="TextBox">
+                                <Style.Setters>
+                                    <EventSetter Event="TextChanged"  Handler="TextBox_TextChangedIntegerMaxNumber" />
+                                </Style.Setters>
+                            </Style>
+                            <Style x:Key="gridColumnTextBoxIntegerOnlyNumber" TargetType="TextBox">
+                                <Style.Setters>
+                                    <EventSetter Event="TextChanged"  Handler="TextBox_TextChangedIntegerOnlyNumber" />
+                                </Style.Setters>
+                            </Style>
+                            <Style x:Key="gridColumnTextBoxFloatingPointMaxNumber" TargetType="TextBox">
+                                <Style.Setters>
+                                    <EventSetter Event="TextChanged"  Handler="TextBox_TextChangedFloatingPointMaxNumber" />
+                                    <EventSetter Event="LostFocus" Handler="TextBox_LostFocusTrimLastDot" />
+                                </Style.Setters>
+                            </Style>
+                            <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource DefaultVerticalTabItem}" />
+                            <vc:NullableNumericValueConverter x:Key="nullableNumericValueConverter" />
+                            <Style TargetType="{x:Type DataGridRowHeader}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DataGridRowHeader}">
+                                            <Border/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </TabControl.Resources>
+                        <TabItem Header="Reactor Data">
+                            <TabItem.Content>
+                                <DataGrid x:Name="reactorDataGrid" CanUserSortColumns="False" DataContext="{Binding ReactorDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding" CanUserAddRows="False">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                    </DataGrid.Resources>
+                                    <DataGrid.InputBindings>
+                                        <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
+                                        <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
+                                        <KeyBinding Key="Insert" Command="{Binding InsertStepCommand}" />
+                                        <KeyBinding Key="Delete"  Command="{Binding DeleteStepCommand}" />
+                                        <KeyBinding Modifiers="Ctrl" Command="{Binding AddStepCommand}" />
+                                    </DataGrid.InputBindings>
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="SelectionChanged">
+                                            <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBoxIntegerOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBoxIntegerOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="LoopRepeat" Width="100" Binding="{Binding LoopRepeat, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}}" EditingElementStyle="{StaticResource gridColumnTextBoxIntegerOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="LoopEndStep" Width="100" Binding="{Binding LoopEndStep, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}}" EditingElementStyle="{StaticResource gridColumnTextBoxIntegerOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Susceptor Temp." Width="100" Binding="{Binding STemp, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Reactor Press." Width="100" Binding="{Binding RPress, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Sus. Rotation" Width="100" Binding="{Binding SRotation, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Compare Temp." Width="100" Binding="{Binding CTemp, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxIntegerOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </TabItem.Content>
+                        </TabItem>
+
+                        <TabItem Header="FlowData">
+                            <TabItem.Content>
+                                <DataGrid x:Name="flowDataGrid" CanUserSortColumns="False" DataContext="{Binding FlowDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CellEditEnding="flowDataGrid_CellEditEnding" CanUserAddRows="False">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                    </DataGrid.Resources>
+                                    <DataGrid.InputBindings>
+                                        <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
+                                        <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
+                                    </DataGrid.InputBindings>
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="SelectionChanged">
+                                            <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Ramp" Width="100" Binding="{Binding RTime, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBoxIntegerOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Hold" Width="100" Binding="{Binding HTime, UpdateSourceTrigger=LostFocus}" EditingElementStyle="{StaticResource gridColumnTextBoxIntegerOnlyNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M01" Width="70" Binding="{Binding M01, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M02" Width="70" Binding="{Binding M02, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M03" Width="70" Binding="{Binding M03, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M04" Width="70" Binding="{Binding M04, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M05" Width="70" Binding="{Binding M05, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M06" Width="70" Binding="{Binding M06, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M07" Width="70" Binding="{Binding M07, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M08" Width="70" Binding="{Binding M08, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M09" Width="70" Binding="{Binding M09, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M10" Width="70" Binding="{Binding M10, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M11" Width="70" Binding="{Binding M11, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="M12" Width="70" Binding="{Binding M12, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="E01" Width="70" Binding="{Binding E01, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="E02" Width="70" Binding="{Binding E02, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="E03" Width="70" Binding="{Binding E03, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="E04" Width="70" Binding="{Binding E04, UpdateSourceTrigger=LostFocus, Converter={StaticResource nullableNumericValueConverter}, ValidatesOnDataErrors=True}" EditingElementStyle="{StaticResource gridColumnTextBoxFloatingPointMaxNumber}" ElementStyle="{StaticResource EventLogElement}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </TabItem.Content>
+                        </TabItem>
+                        <TabItem Header="ValveData">
+                            <TabItem.Content>
+                                <DataGrid  x:Name="valveDataGrid" CanUserSortColumns="False" DataContext="{Binding ValveDataGridContext}" ItemsSource="{Binding RecipeViewModel.Recipes}" CanUserAddRows="False">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollbar}" />
+                                    </DataGrid.Resources>
+                                    <DataGrid.InputBindings>
+                                        <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
+                                        <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
+                                    </DataGrid.InputBindings>
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="SelectionChanged">
+                                            <b:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="No" Width="30" Binding="{Binding No}"  IsReadOnly="True" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" ElementStyle="{StaticResource EventLogElement}" />
+                                        <DataGridCheckBoxColumn Header="V01" Width="50" Binding="{Binding V01, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V02" Width="50" Binding="{Binding V02, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V03" Width="50" Binding="{Binding V03, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V04" Width="50" Binding="{Binding V04, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V05" Width="50" Binding="{Binding V05, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V06" Width="50" Binding="{Binding V06, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V07" Width="50" Binding="{Binding V07, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V08" Width="50" Binding="{Binding V08, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V09" Width="50" Binding="{Binding V09, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V10" Width="50" Binding="{Binding V10, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V11" Width="50" Binding="{Binding V11, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V12" Width="50" Binding="{Binding V12, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V13" Width="50" Binding="{Binding V13, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V14" Width="50" Binding="{Binding V14, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V15" Width="50" Binding="{Binding V15, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V16" Width="50" Binding="{Binding V16, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V17" Width="50" Binding="{Binding V17, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V18" Width="50" Binding="{Binding V18, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V19" Width="50" Binding="{Binding V19, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                        <DataGridCheckBoxColumn Header="V20" Width="50" Binding="{Binding V20, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EditingElementStyle="{StaticResource ValveOnOffCheckBox}" ElementStyle="{StaticResource ValveOnOffCheckBox}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </TabItem.Content>
+                        </TabItem>
+                    </TabControl>
+                </Border>
+            </Grid>
+            <!--#endregion-->
+        </Grid>
+    </Grid>
+</Page>

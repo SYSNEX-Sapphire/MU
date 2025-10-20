@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="ST_SOL_VALVE" Id="{021b7b84-18ff-4a8d-b345-49d3c2bea3ff}">
+    <Declaration><![CDATA[TYPE ST_SOL_VALVE :
+STRUCT
+	DO_00_V01ChalcogenCarrierChange :ST_DIGITAL_PART;
+	DO_00_V02MOCarreirChange :ST_DIGITAL_PART;
+	DO_00_V03H2SeSourceChange :ST_DIGITAL_PART;
+	DO_00_V04H2SSourceChange :ST_DIGITAL_PART;
+	DO_00_V05Source_1TMInCarrierChange :ST_DIGITAL_PART;
+	DO_00_V06Source_1TMInBypass :ST_DIGITAL_PART;
+	DO_00_V07Source_2TMGaCarrierChange :ST_DIGITAL_PART;
+	DO_00_V08Source_2TMGaBypass :ST_DIGITAL_PART;
+	
+	DO_00_V09Source_3DMSeCarrierChange :ST_DIGITAL_PART;
+	DO_00_V10Source_3DMSeBypass :ST_DIGITAL_PART;
+	DO_00_V11Source_4ChalcogenCarrierChange :ST_DIGITAL_PART;
+	DO_00_V12Source_4ChalcogenBypass :ST_DIGITAL_PART;
+	DO_00_V13ReactorPurgeCarrierChange :ST_DIGITAL_PART;
+	DO_00_V14Source_1TMInManifoldRun :ST_DIGITAL_PART;
+	DO_00_V15Source_2TMGaManifoldRun :ST_DIGITAL_PART;
+	DO_00_V16Source_3DMSeManifoldRun :ST_DIGITAL_PART;
+	
+	DO_00_V17GasH2SeManifoldRun :ST_DIGITAL_PART;
+	DO_00_V18GasH2SManifoldRun :ST_DIGITAL_PART;
+	DO_00_V19Source_4ChalcogenManifoldRun :ST_DIGITAL_PART;
+	DO_00_V20VentPress_Change :ST_DIGITAL_PART;
+	DO_00_V21PumpByPass :ST_DIGITAL_PART;
+	DO_00_V22DORVaccumON :ST_DIGITAL_PART;
+	DO_00_V23DORFilling :ST_DIGITAL_PART;
+	DO_00_V24Source_1LeakTest_IN :ST_DIGITAL_PART;
+	
+	DO_00_V25Source_1LeakTest_OUT :ST_DIGITAL_PART;
+	DO_00_V26Source_2LeakTest_IN :ST_DIGITAL_PART;
+	DO_00_V27Source_2LeakTest_OUT :ST_DIGITAL_PART;
+	DO_00_V28Source_3LeakTest_IN :ST_DIGITAL_PART;
+	DO_00_V29Source_3LeakTest_OUT :ST_DIGITAL_PART;
+	DO_00_V30Source_4LeakTest_IN :ST_DIGITAL_PART;
+	DO_00_V31Source_4LeakTest_OUT :ST_DIGITAL_PART;
+	DO_00_V32SourceVacuumON :ST_DIGITAL_PART;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

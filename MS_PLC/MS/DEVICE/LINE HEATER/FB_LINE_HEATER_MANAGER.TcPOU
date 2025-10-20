@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_LINE_HEATER_MANAGER" Id="{9702cd75-241a-4a7b-8f90-3e54f3c6c47f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LINE_HEATER_MANAGER
+VAR_INPUT
+	sendMessage			:ST_Modbus_Send_Frame;
+END_VAR
+VAR_OUTPUT
+	bWriteError			:BOOL; 
+	bReadError			:BOOL;
+	bSendBufferusFull	:BOOL;
+	bConnectError 		: BOOL;
+	
+	RData_Module_1	:ST_LineHeater_Data;
+	RData_Module_2	:ST_LineHeater_Data;
+END_VAR
+VAR
+	fbModbus_Master		:ModbusRtuMasterV2_KL6x22B;
+	ReconnectTon		:TON;
+	DataReadTon			:TON;
+	bWriteExecute		:BOOL;
+	bReadExecute		:BOOL;
+	arrReceivedBuffer 	:ARRAY [0..24] OF WORD;
+	arrSendBuffer 		:ARRAY [0..99] OF WORD;
+	
+	nModbusRead_Start_ADDR	:BYTE;
+	nModbusWrite_Start_ADDR	:WORD;
+	nReadExecuteCount		:UDINT;
+		
+	fbStructModbusSend:FB_MODBUS_SEND_FIFO;
+	stOutput:ST_MODBUS_SEND_FRAME;
+	
+	nWriteQuantity		:WORD;
+	fallEdge			:F_TRIG;
+	backCount			: UDINT;
+	nCycle				: UDINT;
+	ReceivedTime		: UDINT;
+	ResendTon			: Ton;
+	rinedge				: R_TRIG;
+	WriteCount			: INT;
+	CheckLoad			: REAL;
+	ErrorCount			: INT;
+	BufferCount_Zefo	: INT;
+	fTrigWriteComplete	: F_TRIG;
+	ReReadTon: TON;
+	ReReadTrig			: BOOL;
+	
+	ReadInputRegsBusy		: BOOL;
+	ReadInputRegsError		: BOOL;
+	WriteSingleRegisterBusy	: BOOL;
+	WriteSingleRegisterError: BOOL;
+	nModbusWrite_UniD: BYTE;
+	ReadErrorID: Tc2_ModbusRTU.MODBUS_ERRORS;
+	ReadLength: UINT;
+	bReadSend: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF  ReadInputRegsError =FALSE THEN
+	_Case();
+	_CheckSendData();
+ELSE
+	ReconnectTon(IN:=ReconnectTon.Q=FALSE AND TRUE,pt:=T#1S);
+	
+	IF ReconnectTon.Q THEN
+		
+		ErrorCount := ErrorCount +1;
+		
+		IF ReadInputRegsError = TRUE THEN
+			bReadExecute:=NOT bReadExecute;
+		END_IF
+		
+	END_IF
+END_IF
+
+_ModbusFunction();
+
+fbStructModbusSend();
+
+bConnectError:= ReadInputRegsError;]]></ST>
+    </Implementation>
+    <Action Name="_Case" Id="{b5e5e4e6-f09c-4735-a18d-50cd827ec56f}">
+      <Implementation>
+        <ST><![CDATA[IF ReadInputRegsBusy = TRUE OR ReadInputRegsError = TRUE AND bWriteExecute = FALSE AND WriteSingleRegisterBusy = FALSE  THEN
+	bReadExecute := FALSE;
+	IF ReadInputRegsError = TRUE THEN
+		bReadError:=TRUE;
+	END_IF
+END_IF
+
+(*Copy Data*)
+IF (ReadInputRegsBusy = FALSE AND ReadInputRegsError = FALSE)  THEN
+	IF (fbModbus_Master.cbRead = 48 )  (*AND (arrReceivedBuffer[4] <> 0)*) THEN
+		
+//	IF arrReceivedBuffer[4] = 0 THEN
+//		BufferCount_Zefo:=BufferCount_Zefo +1 ; 
+//	END_IF
+
+		CASE nReadExecuteCount OF
+			1:MEMCPY(ADR(RData_Module_1),ADR(arrReceivedBuffer),SIZEOF(RData_Module_1));
+				ReceivedTime :=nCycle;
+				nCycle:=0;
+			2:MEMCPY(ADR(RData_Module_2),ADR(arrReceivedBuffer),SIZEOF(RData_Module_2));
+		END_CASE
+	END_IF
+	
+END_IF
+	nCycle:=nCycle+1;
+
+(*Change Address*)
+IF ReadInputRegsBusy = FALSE  AND ReadInputRegsError = FALSE  AND fbStructModbusSend.nBufferCount = 0 AND bWriteExecute = FALSE AND WriteSingleRegisterBusy = FALSE THEN
+	DataReadTon(IN:=TRUE,pT:=T#500MS);
+	IF DataReadTon.Q THEN
+		
+		nReadExecuteCount:=nReadExecuteCount+1;
+		DataReadTon(IN:=FALSE);
+		bReadExecute:=TRUE;
+		
+		MEMSET(ADR(arrReceivedBuffer),0,SIZEOF(arrReceivedBuffer));
+		
+		CASE nReadExecuteCount OF
+			1:
+				nModbusRead_Start_ADDR:=1;
+			2:
+				nModbusRead_Start_ADDR:=2;
+				
+			3:
+				nReadExecuteCount:=0;
+		ELSE
+			nReadExecuteCount:=0;
+			bReadExecute:=false;
+		END_CASE
+	END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_CheckSendData" Id="{6562381a-d445-4f0c-9454-ad66b3a8766d}">
+      <Implementation>
+        <ST><![CDATA[IF WriteSingleRegisterBusy = FALSE OR WriteSingleRegisterError = TRUE THEN
+	bWriteExecute := FALSE;
+END_IF
+
+IF fbStructModbusSend.nBufferCount > 0 AND bWriteExecute = FALSE AND WriteSingleRegisterBusy = FALSE THEN
+	ResendTon(IN:=TRUE,pt:=T#150MS);
+	rinedge(CLK:=ResendTon.Q);
+	IF rinedge.q THEN
+		ResendTon(IN:=FALSE);
+		fbStructModbusSend.A_Remove(stOutput=>stOutput);
+		
+		nWriteQuantity:=stOutput.sendQuantity;
+		nModbusWrite_UniD:=stOutput.UnitID;
+		nModbusWrite_Start_ADDR:=stOutput.StartAddress;
+		MEMCPY(ADR(arrSendBuffer),ADR(stoutput.SendData),SIZEOF(stoutput.SendData));
+		
+		bWriteExecute:=TRUE;
+		nReadExecuteCount:=0;
+		rinedge(CLK:=FALSE);
+		ReReadTrig:=FALSE;
+	END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_ModbusFunction" Id="{4fa7b19f-847a-46ef-a73f-4c96a6f0414c}">
+      <Implementation>
+        <ST><![CDATA[//Write the Regs to Modbus Server Function16
+IF ReadInputRegsBusy = FALSE THEN
+	fbModbus_Master.WriteSingleRegister(
+		UnitID:= nModbusWrite_UniD, 
+		Quantity:= nWriteQuantity, 
+		MBAddr:= nModbusWrite_Start_ADDR, 
+		cbLength:= SIZEOF(arrSendBuffer),
+		pMemoryAddr:= ADR(arrSendBuffer),
+		AuxQuantity:= , 
+		AuxMBAddr:= , 
+		AuxcbLength:= , 
+		pAuxMemoryAddr:= , 
+		Execute:= bWriteExecute,
+		Timeout:= T#1S , 
+		BUSY=>WriteSingleRegisterBusy ,
+		Error=>WriteSingleRegisterError , 
+		ErrorId=> , 
+		cbRead=> );
+END_IF
+
+IF WriteSingleRegisterError THEN
+	WriteCount:=WriteCount+1;
+END_IF
+
+IF WriteSingleRegisterBusy = FALSE  THEN
+	//Read the Regs FROM Modbus Server Function3
+	fbModbus_Master.ReadInputRegs(
+		UnitID:= nModbusRead_Start_ADDR, // 온도 콘트롤러 ID 
+		Quantity:= 24, // 통신 데이터 사이즈
+		MBAddr:= 16#03E8, //레지스터 주소
+		cbLength:= SIZEOF(arrReceivedBuffer) , 
+		pMemoryAddr:= ADR(arrReceivedBuffer),
+		Execute:= bReadExecute,
+		Timeout:= T#1S , 
+		BUSY=>ReadInputRegsBusy ,
+		Error=> ReadInputRegsError,
+		ErrorId=>ReadErrorID, 
+		cbRead=>ReadLength );	
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_SendModbusCommand" Id="{b19bf173-4bfe-4c73-b1c5-bae5c5bfcd31}">
+      <Implementation>
+        <ST><![CDATA[IF fbStructModbusSend.nLoad < 90THEN
+	IF 	fbStructModbusSend.nLoad > CheckLoad THEN 
+		CheckLoad := fbStructModbusSend.nLoad;
+	END_IF
+	
+	fbStructModbusSend.A_Add(stinput:=sendMessage);	
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="FB_LINE_HEATER_MANAGER">
+      <LineId Id="3" Count="15" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="20" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LINE_HEATER_MANAGER._Case">
+      <LineId Id="2" Count="19" />
+      <LineId Id="26" Count="7" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="35" Count="12" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="57" Count="5" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LINE_HEATER_MANAGER._CheckSendData">
+      <LineId Id="2" Count="20" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LINE_HEATER_MANAGER._ModbusFunction">
+      <LineId Id="2" Count="22" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="26" Count="3" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="38" Count="5" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LINE_HEATER_MANAGER._SendModbusCommand">
+      <LineId Id="2" Count="5" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
