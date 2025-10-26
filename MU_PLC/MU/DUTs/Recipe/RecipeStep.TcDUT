@@ -3,8 +3,8 @@
   <DUT Name="RecipeStep" Id="{c67477fa-59d3-43d0-9335-dff43a63186e}">
     <Declaration><![CDATA[TYPE RecipeStep :
 STRUCT
-	sRecipe : STRING(81);
-	iRecipe : ARRAY[1..5] OF INT; //Reactor Condition
+	sRecipe : STRING(GVL_CONSTANT.MaxRecipeNameLength);
+	iRecipe : ARRAY[1..GVL_CONSTANT.RecipeNumReactorCondition] OF INT; //Reactor Condition
 	rRecipe : ARRAY[1..GVL_CONSTANT.NumAnalogController] OF REAL; //MFC, EPC Data
 	cTemp 	: REAL := 0; 	
 	dRecipe : DWORD; //Valve Data

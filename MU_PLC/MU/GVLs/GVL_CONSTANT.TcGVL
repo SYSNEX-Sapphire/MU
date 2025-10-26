@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <GVL Name="GVL_CONSTANT" Id="{98785915-f5a2-4621-8795-7e3f35033e2f}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL CONSTANT
@@ -7,8 +7,29 @@ VAR_GLOBAL CONSTANT
 	EL3064MaxValue 	: REAL := 32767; //0~10V
 	EL4004MaxValueH	: REAL := 16383; //0~5V Half Output
 	EL4004MaxValue 	: REAL := 32767; //4~20mA
-	EL3102MAxValue:REAL:=32767;
-	NumAnalogController :UINT:=19;
+	EL3102MAxValue: REAL :=32767;
+	
+	NumAnalogController : UINT :=19;
+	
+	NumAnalogInput : UINT := 40;
+	NumAnalogOutput : UINT := 42;
+	
+	NumDigitalInput : UINT := 9;
+	NumDigitalOutput : UINT := 5;
+	
+	NumOutputCmd : UINT := 3;
+	NumInputState : UINT := 6;
+	
+	NumInterlock : UINT := 5;
+	NumInterlockSet : UINT := 20;
+	NumInterlockEnable : UINT := 6;
+	
+	NumSolValve : UINT := 28;
+	NumMonitoring : UINT := 18;
+	
+	MaxRecipeStep : UINT := 100;
+	MaxRecipeNameLength : UINT := 81;
+	RecipeNumReactorCondition : UINT := 5;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
