@@ -8,7 +8,7 @@
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
-    <Name>MS</Name>
+    <Name>MU</Name>
     <ProgramVersion>3.1.4024.0</ProgramVersion>
     <Application>{47bed283-ee76-4dca-80e4-0d085ba02ef0}</Application>
     <TypeSystem>{ddda897f-890a-4439-93db-7e3939342967}</TypeSystem>
@@ -374,7 +374,7 @@
     </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MS.tmc">
+    <None Include="MU.tmc">
       <SubType>Content</SubType>
     </None>
   </ItemGroup>
