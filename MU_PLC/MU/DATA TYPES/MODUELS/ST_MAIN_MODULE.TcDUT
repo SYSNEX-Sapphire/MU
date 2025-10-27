@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <DUT Name="ST_MAIN_MODULE" Id="{25f5eb89-ca03-4585-b681-bf62172c38ca}">
     <Declaration><![CDATA[TYPE ST_MAIN_MODULE :
 STRUCT
-	NOTIFICATION:ST_NOTIFICATION;
-	SEQENCE:ST_SEQUENCE;
+
+	TEMP_CONTROLLER:ST_TEMP_CONTROLLER;  // 구조가 변결 될 수  있음
+	LINE_HEATER:ARRAY[1..8] OF ST_TEMP_CONTROLLER;// 구조가 변결 될 수  있음
+	THROTTLE_VALVE:ST_THROTTLE_VALVE;// 구조가 변결 될 수  있음
 	
-	GAS_CABINET:ST_GAS_CABINET;
-	REACTOR_CABINET:ST_REACTOR_CABINET;
-	VALVE:ST_SOL_VALVE;
-	TEMP_CONTROLLER:ST_TEMP_CONTROLLER;
-	THROTTLE_VALVE:ST_THROTTLE_VALVE;
+	//기타 Device 추가
+	//기타 Device 추가
+	//기타 Device 추가
 END_STRUCT
 END_TYPE
 
