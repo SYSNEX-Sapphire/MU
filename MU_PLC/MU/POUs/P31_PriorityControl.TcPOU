@@ -11,7 +11,7 @@ VAR_OUTPUT
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[pr_TON(IN := TRUE, PT := (1 + GVL_IO.aController[1].input.rampTime) * T#1S);
+      <ST><![CDATA[pr_TON(IN := TRUE, PT := (1 + GVL_IO.aAnalogController[1].cvController.input.rampTime) * T#1S);
 fbAnalogDeviceRampControl();
 IF pr_TON.Q = TRUE THEN
 	pr_TON(IN := FALSE);

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P50_RecipeControl" Id="{e332a806-fd31-4290-a7c3-27f42c11d38e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P50_RecipeControl
 VAR
@@ -21,16 +21,16 @@ VAR CONSTANT
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[CASE RCP.cmd_RcpOperation OF
+      <ST><![CDATA[CASE GVL_IO.recipe.control.cmd_RcpOperation OF
 	0: //Init State
  		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 		
-		FOR i:=1 TO Rcp.iRcpTotalStep DO
-			loopCount[i] := Rcp.aRecipe[i].iRecipe[5];
+		FOR i:=1 TO GVL_IO.recipe.iRcpTotalStep DO
+			loopCount[i] := GVL_IO.recipe.aRecipe[i].iRecipe[5];
 		END_FOR
 		
 		nRcpIndex := 0;
-		Rcp.userState := 0;
+		GVL_IO.recipe.control.userState := 0;
 		eRecipeRun := E_RecipeRun.Initial;
 		GVL_IO.nCaseSignalTower := 5; // White - Idle
 
@@ -44,29 +44,29 @@ END_VAR
 		CASE eRecipeRun OF
 			E_RecipeRun.Initial:
 				f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
-				fbRecipeAnalogInputControlSequencer(rRecipe := RCP.aRecipe[nRcpIndex].rRecipe, rampTime:= TO_UINT(RCP.aRecipe[nRcpIndex].iRecipe[2]));
-				fbValveControl(valveSetting:= RCP.aRecipe[nRcpIndex].dRecipe);
-				Rcp.userState := 10;// Recipe Running
+				fbRecipeAnalogInputControlSequencer(rRecipe := GVL_IO.recipe.aRecipe[nRcpIndex].rRecipe, rampTime:= TO_UINT(GVL_IO.recipe.aRecipe[nRcpIndex].iRecipe[2]));
+				fbValveControl(valveSetting:= GVL_IO.recipe.aRecipe[nRcpIndex].dRecipe);
+				GVL_IO.recipe.control.userState := 10;// Recipe Running
 				GVL_IO.nCaseSignalTower := 3;
 				eRecipeRun := E_RecipeRun.Ramp;
 				
 			E_RecipeRun.Ramp: // Ramp 수행
-				Ramp_TON(IN:=TRUE, PT:= RCP.aRecipe[nRcpIndex].iRecipe[2] * T#1S, ET=>RCP.RecipeRunET.ET);
-				RCP.RecipeRunET.Mode := E_RecipeRunETMode.Ramp;
+				Ramp_TON(IN:=TRUE, PT:= GVL_IO.recipe.aRecipe[nRcpIndex].iRecipe[2] * T#1S, ET=>GVL_IO.recipe.control.RecipeRunET.ET);
+				GVL_IO.recipe.control.RecipeRunET.Mode := E_RecipeRunETMode.Ramp;
 				IF Ramp_TON.Q THEN
 					Ramp_TON(IN:=FALSE);
 					eRecipeRun := E_RecipeRun.CheckHoldTemp;
 				END_IF				
 				
 			E_RecipeRun.CheckHoldTemp: //Hold Temp 확인
-				IF RCP.aRecipe[nRcpIndex].cTemp = 0.0 THEN
-					Hold_TON(IN:=TRUE, PT:= RCP.aRecipe[nRcpIndex].iRecipe[3] * T#1S, ET=>RCP.RecipeRunET.ET);
-					RCP.RecipeRunET.Mode := E_RecipeRunETMode.Hold;
+				IF GVL_IO.recipe.aRecipe[nRcpIndex].cTemp = 0.0 THEN
+					Hold_TON(IN:=TRUE, PT:= GVL_IO.recipe.aRecipe[nRcpIndex].iRecipe[3] * T#1S, ET=>GVL_IO.recipe.control.RecipeRunET.ET);
+					GVL_IO.recipe.control.RecipeRunET.Mode := E_RecipeRunETMode.Hold;
 					IF Hold_TON.Q THEN
 						Hold_TON(IN:=FALSE);
 						eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
 					END_IF
-				ELSIF GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp] < RCP.aRecipe[nRcpIndex].cTemp THEN //서셉터 온도가 Wait 온도보다 낮을 때
+				ELSIF GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].pv < GVL_IO.recipe.aRecipe[nRcpIndex].cTemp THEN //서셉터 온도가 Wait 온도보다 낮을 때
 					Hold_TON(IN:=FALSE);
 					eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
 				ELSE // 서셉터 온도가 Wait 온도보다 높을 때
@@ -75,9 +75,9 @@ END_VAR
 				
 			E_RecipeRun.End: // 다음 Step 이동 (루프 마지막 단계일 경우, 다음 Step 이동 또는 루프 처음단계로 점프)
 				loopCount[nRcpIndex] := loopCount[nRcpIndex] - 1;
-				nRcpIndex := nRcpIndex + 1 - (RCP.aRecipe[nRcpIndex].iRecipe[4]) * MIN(loopCount[nRcpIndex], 1);
-				IF nRcpIndex > Rcp.iRcpTotalStep THEN
-					RCP.cmd_RcpOperation := 50;
+				nRcpIndex := nRcpIndex + 1 - (GVL_IO.recipe.aRecipe[nRcpIndex].iRecipe[4]) * MIN(loopCount[nRcpIndex], 1);
+				IF nRcpIndex > GVL_IO.recipe.iRcpTotalStep THEN
+					GVL_IO.recipe.control.cmd_RcpOperation := 50;
 				END_IF
 				eRecipeRun := E_RecipeRun.Initial;
 		END_CASE
@@ -90,13 +90,13 @@ END_VAR
 				Hold_TON(PAUSE:=TRUE);
 		END_CASE
 		
-		Pause_TON(IN:=TRUE, PT:= Pause_MAX, ET=>RCP.Pause_ET); //최대 홀드 시간이 지나면 다음 스텝으로 넘거감
+		Pause_TON(IN:=TRUE, PT:= Pause_MAX, ET=>GVL_IO.recipe.control.Pause_ET); //최대 홀드 시간이 지나면 다음 스텝으로 넘거감
 		IF Pause_TON.Q THEN
 			Pause_TON(IN:=FALSE);
 			eRecipeRun := E_RecipeRun.End; // 레시피 첫 Column 실행
 		END_IF
 
-		Rcp.userState := 20;
+		GVL_IO.recipe.control.userState := 20;
 		GVL_IO.nCaseSignalTower := 5;
 		
 	30: //RESTART
@@ -109,20 +109,20 @@ END_VAR
 				Hold_TON(PAUSE:=FALSE);
 		END_CASE
 
-		RCP.Pause_ET := T#0S;
-		Rcp.userState := 10;
-		RCP.cmd_RcpOperation := 10;	
+		GVL_IO.recipe.control.Pause_ET := T#0S;
+		GVL_IO.recipe.control.userState := 10;
+		GVL_IO.recipe.control.cmd_RcpOperation := 10;	
 		GVL_IO.nCaseSignalTower := 3;
 		
 	40: //STOP
 		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
 		F_StopAnalogRamping_ForRecipe();
-		Rcp.userState := 40;
+		GVL_IO.recipe.control.userState := 40;
 		GVL_IO.nCaseSignalTower := 5;
 		
 	50: //END
 		f_ResetTimersAndRCPTimes(fbPause_TON := Pause_TON, fbRamp_TON := Ramp_TON, fbHold_TON := Hold_TON);
-		Rcp.userState := 50;
+		GVL_IO.recipe.control.userState := 50;
 		fbAnalogDeviceRampControl();
 		GVL_IO.nCaseSignalTower := 5;
 		
@@ -130,10 +130,10 @@ END_VAR
 		IF E_RecipeRun.Ramp <= eRecipeRun  AND  eRecipeRun <= E_RecipeRun.CheckHoldTemp THEN
 			eRecipeRun := E_RecipeRun.End;
 		END_IF
-		Rcp.cmd_RcpOperation := 10;
-		RCP.Pause_ET := T#0S;
+		GVL_IO.recipe.control.cmd_RcpOperation := 10;
+		GVL_IO.recipe.control.Pause_ET := T#0S;
 END_CASE
-RCP.iRcpStepN := nRcpIndex;]]></ST>
+GVL_IO.recipe.control.iRcpStepN := nRcpIndex;]]></ST>
     </Implementation>
     <LineIds Name="P50_RecipeControl">
       <LineId Id="1" Count="16" />

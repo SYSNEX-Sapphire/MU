@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <GVL Name="GVL_IO" Id="{a5f3292d-798a-4b6c-af88-b59309d83086}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
@@ -13,7 +13,7 @@ VAR_GLOBAL
 	
 	(*Solenoid Valve*)
 	aOutputSolValve 	: ARRAY[1..GVL_CONSTANT.NumSolValve] OF BOOL; //Solenoid Valve
-	aAnalogController : ARRAY[1..GVL_CONSTANT.NumAnalogController] OF BOOL;
+	aAnalogController : ARRAY[1..GVL_CONSTANT.NumAnalogController] OF AnalogController;
 	
 	(* Present Value Meter Display*)
 	aMonitoring_PV 			: ARRAY[1..GVL_CONSTANT.NumMonitoring] OF REAL; //Gauge Monitoring Value to UI
@@ -28,7 +28,7 @@ VAR_GLOBAL
 	ControlDevice :ST_MAIN_MODULE;
 	
 	recipe :Recipe;
-	
+	controlModeCmd : E_ControlMode := E_ControlMode.Manual;
 	
 // 	nCaseSignalTower		: INT;
 // 	nDorOperationError		: INT;
@@ -52,6 +52,7 @@ VAR_GLOBAL
 // 	UI_INTERLOCK_CHECK_RECIPE_ENABLE:WORD;(**)
 // 	UI_INTERLOCK_CHECK_OPEN_REACTOR:WORD;(**)
 	
+	aMaxValueController: INT;
 END_VAR
 ]]></Declaration>
   </GVL>
