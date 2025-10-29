@@ -2,9 +2,6 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="MAIN" Id="{c65bb020-a024-43e6-87d0-b2b9cfee7c16}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
-VAR_INPUT
-	
-END_VAR
 VAR
 	controlMode	: E_ControlMode := E_ControlMode.Manual;
 	prevControlMode : E_ControlMode := controlMode;
@@ -35,7 +32,7 @@ IF controlMode <> E_ControlMode.Priority THEN
 		IF GVL_IO.controlModeCmd = E_ControlMode.Priority THEN
 			prevControlMode := controlMode;
 		END_IF
-		controlMode := GVL_IO.controlModeCmd;
+		GVL_IO.controlMode := controlMode := GVL_IO.controlModeCmd;
 	END_IF
 END_IF
 
@@ -49,7 +46,7 @@ CASE controlMode OF
 	E_ControlMode.Priority:
 		P31_PriorityControl();
 		IF P31_PriorityControl.complete = TRUE THEN
-			controlMode := prevControlMode;
+			GVL_IO.controlMode := controlMode := prevControlMode;
 			GVL_IO.controlModeCmd := controlMode;
 		END_IF
 END_CASE

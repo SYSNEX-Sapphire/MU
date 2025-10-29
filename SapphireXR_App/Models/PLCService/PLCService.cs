@@ -143,9 +143,6 @@ namespace SapphireXR_App.Models
 
         private static void CreateHandle()
         {
-            hDeviceControlValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_CV");
-            hDeviceCurrentValuePLC = Ads.CreateVariableHandle("GVL_IO.aController_PV");
-            hDeviceMaxValuePLC = Ads.CreateVariableHandle("GVL_IO.aMaxValueController");
             hReadValveStatePLC = Ads.CreateVariableHandle("GVL_IO.aOutputSolValve");
             hMonitoring_PV = Ads.CreateVariableHandle("GVL_IO.aMonitoring_PV");
             hInputState = Ads.CreateVariableHandle("GVL_IO.aInputState");
@@ -155,7 +152,7 @@ namespace SapphireXR_App.Models
             hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
             hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
             hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
-            for(uint arrayIndex = 0; arrayIndex < NumAlarmWarningArraySize; arrayIndex++)
+            for (uint arrayIndex = 0; arrayIndex < NumAlarmWarningArraySize; arrayIndex++)
             {
                 hInterlockEnable[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockEnable[" + (arrayIndex + 1) + "]");
             }
@@ -167,15 +164,15 @@ namespace SapphireXR_App.Models
             {
                 hInterlock[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlock[" + (arrayIndex + 1) + "]");
             }
-            hRcp = Ads.CreateVariableHandle("RCP.aRecipe");
-            hRcpTotalStep = Ads.CreateVariableHandle("RCP.iRcpTotalStep");
-            hCmd_RcpOperation = Ads.CreateVariableHandle("RCP.cmd_RcpOperation");
-            hRcpStepN = Ads.CreateVariableHandle("RCP.iRcpStepN");
-            hControlModeCmd = Ads.CreateVariableHandle("MAIN.controlModeCmd");
-            hControlMode = Ads.CreateVariableHandle("MAIN.controlMode");
-            hUserState = Ads.CreateVariableHandle("RCP.userState");
-            hRecipeControlPauseTime = Ads.CreateVariableHandle("RCP.Pause_ET");
-            hRecipeRunET = Ads.CreateVariableHandle("RCP.RecipeRunET");
+            hRcp = Ads.CreateVariableHandle("GVL_IO.recipe.aRecipe");
+            hRcpTotalStep = Ads.CreateVariableHandle("GVL_IO.recipe.iRcpTotalStep");
+            hCmd_RcpOperation = Ads.CreateVariableHandle("GVL_IO.recipe.control.cmd_RcpOperation");
+            hRcpStepN = Ads.CreateVariableHandle("GVL_IO.recipe.control.iRcpStepN");
+            hControlModeCmd = Ads.CreateVariableHandle("GVL_IO.controlModeCmd");
+            hControlMode = Ads.CreateVariableHandle("GVL_IO.controlMode");
+            hUserState = Ads.CreateVariableHandle("GVL_IO.recipe.control.userState");
+            hRecipeControlPauseTime = Ads.CreateVariableHandle("GVL_IO.recipe.control.Pause_ET");
+            hRecipeRunET = Ads.CreateVariableHandle("GVL_IO.recipe.control.RecipeRunET");
             hOutputSetType = Ads.CreateVariableHandle("P12_IQ_PLUS.nOutputSetType");
             hOutputMode = Ads.CreateVariableHandle("P12_IQ_PLUS.nTValveMode");
             hTemperaturePV = Ads.CreateVariableHandle("GVL_IO.aLineHeater_rTemperaturePV");
@@ -183,7 +180,20 @@ namespace SapphireXR_App.Models
             hUIInterlockCheckReactorEnable = Ads.CreateVariableHandle("GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR");
             for (uint analogDevice = 0; analogDevice < NumControllers; ++analogDevice)
             {
-                hAControllerInput[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1)+ "].input");
+                hAControllerInput[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1) + "].input");
+            }
+
+            for (uint analogDevice = 0; analogDevice < NumControllers; ++analogDevice)
+            {
+                string hACName = "GVL_IO.aAnalogController[" + (analogDevice + 1) + "]";
+                hAnalogControllers[analogDevice] = new()
+                {
+                    hPV = Ads.CreateVariableHandle(hACName + ".pv"),
+                    hCV = Ads.CreateVariableHandle(hACName + ".cv"),
+                    hTV = Ads.CreateVariableHandle(hACName + ".tv"),
+                    hMaxValue = Ads.CreateVariableHandle(hACName + ".maxValue"),
+                    hCVControllerInput = Ads.CreateVariableHandle(hACName + ".cvController.input")
+                };
             }
         }
 

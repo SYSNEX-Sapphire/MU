@@ -28,7 +28,9 @@ VAR_GLOBAL
 	ControlDevice :ST_MAIN_MODULE;
 	
 	recipe :Recipe;
+	
 	controlModeCmd : E_ControlMode := E_ControlMode.Manual;
+	controlMode	: E_ControlMode := controlModeCmd;
 	
 // 	nCaseSignalTower		: INT;
 // 	nDorOperationError		: INT;

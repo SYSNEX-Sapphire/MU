@@ -147,8 +147,11 @@ namespace SapphireXR_App.Models
 
         private static void ReadCurrentValueFromPLC()
         {
-            aDeviceCurrentValues = Ads.ReadAny<float[]>(hDeviceCurrentValuePLC, [NumControllers]);
-            aDeviceControlValues = Ads.ReadAny<float[]>(hDeviceControlValuePLC, [NumControllers]);
+            for (int analogController = 0; analogController < NumControllers; analogController++)
+            {
+                aDeviceCurrentValues[analogController] = Ads.ReadAny<float>(hAnalogControllers[analogController].hPV);
+                aDeviceControlValues[analogController] = Ads.ReadAny<float>(hAnalogControllers[analogController].hCV);
+            }
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
             aInputState = Ads.ReadAny<short[]>(hInputState, [6]);
             ReadValveStateFromPLC();

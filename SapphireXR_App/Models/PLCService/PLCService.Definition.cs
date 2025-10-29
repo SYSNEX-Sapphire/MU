@@ -4,7 +4,6 @@ using System.Windows.Threading;
 using TwinCAT.Ads;
 using SapphireXR_App.Enums;
 using System.Runtime.InteropServices;
-using System.Printing;
 
 namespace SapphireXR_App.Models
 {
@@ -158,8 +157,8 @@ namespace SapphireXR_App.Models
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC = null;
-        private static float[]? aDeviceCurrentValues = null;
-        private static float[]? aDeviceControlValues = null;
+        private static float[] aDeviceCurrentValues = new float[NumControllers];
+        private static float[] aDeviceControlValues = new float[NumControllers];
         private static float[]? aMonitoring_PVs = null;
         private static short[]? aInputState = null;
         private static BitArray? bOutputCmd1 = null;
@@ -224,11 +223,17 @@ namespace SapphireXR_App.Models
         private static DispatcherTimer? currentActiveRecipeListener = null;
         private static DispatcherTimer? connectionTryTimer = null;
 
+        private struct HAnalogController
+        {
+            public uint hPV;
+            public uint hCV;
+            public uint hTV;
+            public uint hMaxValue;
+            public uint hCVControllerInput;
+        }
         // Read from PLC State
         private static uint hReadValveStatePLC;
         private static uint hDeviceMaxValuePLC;
-        private static uint hDeviceControlValuePLC;
-        private static uint hDeviceCurrentValuePLC;
         private static uint hRcp;
         private static uint hRcpTotalStep;
         private static uint hCmd_RcpOperation;
@@ -255,6 +260,7 @@ namespace SapphireXR_App.Models
         private static uint[] hInterlockset = new uint[NumInterlockSet];
         private static uint[] hInterlock = new uint[NumInterlock];
         private static uint[] hAControllerInput = new uint[NumControllers];
+        private static HAnalogController[] hAnalogControllers = new HAnalogController[NumControllers]; 
 
         private static bool RecipeRunEndNotified = false;
         private static bool ShowMessageOnOnTick = true;
