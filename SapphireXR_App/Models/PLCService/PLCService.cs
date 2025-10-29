@@ -178,10 +178,6 @@ namespace SapphireXR_App.Models
             hTemperaturePV = Ads.CreateVariableHandle("GVL_IO.aLineHeater_rTemperaturePV");
             hUIInterlockCheckRecipeEnable = Ads.CreateVariableHandle("GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE");
             hUIInterlockCheckReactorEnable = Ads.CreateVariableHandle("GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR");
-            for (uint analogDevice = 0; analogDevice < NumControllers; ++analogDevice)
-            {
-                hAControllerInput[analogDevice] = Ads.CreateVariableHandle("GVL_IO.aController[" + (analogDevice + 1) + "].input");
-            }
 
             for (uint analogDevice = 0; analogDevice < NumControllers; ++analogDevice)
             {

@@ -233,7 +233,6 @@ namespace SapphireXR_App.Models
         }
         // Read from PLC State
         private static uint hReadValveStatePLC;
-        private static uint hDeviceMaxValuePLC;
         private static uint hRcp;
         private static uint hRcpTotalStep;
         private static uint hCmd_RcpOperation;
@@ -259,7 +258,6 @@ namespace SapphireXR_App.Models
         private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
         private static uint[] hInterlockset = new uint[NumInterlockSet];
         private static uint[] hInterlock = new uint[NumInterlock];
-        private static uint[] hAControllerInput = new uint[NumControllers];
         private static HAnalogController[] hAnalogControllers = new HAnalogController[NumControllers]; 
 
         private static bool RecipeRunEndNotified = false;

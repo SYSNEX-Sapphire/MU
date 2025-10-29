@@ -45,41 +45,29 @@ namespace SapphireXR_App.Models
                     throw new Exception("AnalogDeviceIO is null in WriteDeviceMaxValue");
                 }
 
-                float[] maxValue = new float[analogDeviceIOs.Count];
-                int index = 0;
+                float KL3464MaxValueH = Ads.ReadAny<float>(Ads.CreateVariableHandle("GVL_CONSTANT.EL3064MaxValueH"));
                 foreach (AnalogDeviceIO entry in analogDeviceIOs)
                 {
                     if (entry.ID == null)
                     {
                         throw new Exception("entry ID is null for AnalogDeviceIO");
                     }
-                    if (index < 3)
+
+                    int index = dIndexController[Util.RecipeFlowControlFieldToControllerID[entry.ID]];
+                    if (15 < index)
                     {
-                        maxValue[index + 16] = entry.MaxValue;
+                        aTargetValueMappingFactor[index] = 1.0f;
                     }
                     else
                     {
-                        maxValue[index - 3] = entry.MaxValue;
+                        aTargetValueMappingFactor[index] = KL3464MaxValueH / entry.MaxValue;
                     }
-                    index++;
+                    Ads.WriteAny(hAnalogControllers[index].hMaxValue, entry.MaxValue);
                 }
-                Ads.WriteAny(hDeviceMaxValuePLC, maxValue, [dIndexController.Count]);
-
-                float KL3464MaxValueH = Ads.ReadAny<float>(Ads.CreateVariableHandle("GVL_CONSTANT.EL3064MaxValueH"));
-                for(uint mapping = 0; mapping < (aTargetValueMappingFactor.Length - 3); ++mapping)
-                {
-                    aTargetValueMappingFactor[mapping] = KL3464MaxValueH / maxValue[mapping];
-                }
-                for(uint mapping = (uint)(aTargetValueMappingFactor.Length - 3); mapping < aTargetValueMappingFactor.Length; ++mapping)
-                {
-                    aTargetValueMappingFactor[mapping] = 1.0f;
-                }
-
-                // List Analog Device Input / Output
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                throw new InvalidOperationException("PLC로 Max Value를 쓰는데, 문제가 발생하였습니다. 애플리케이션을 종료합니다. 원인은 다음과 같습니다: " + ex.Message);
             }
         }
 
@@ -334,7 +322,7 @@ namespace SapphireXR_App.Models
                 throw new Exception("KL3464MaxValueH is null in WriteFlowControllerTargetValue");
             }
             float actualTargetValue = targetValue * targetValueMappingFactor.Value;
-            Ads.WriteAny(hAControllerInput[controllerIDIndex], new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = actualTargetValue });
+            Ads.WriteAny(hAnalogControllers[controllerIDIndex].hCVControllerInput, new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = actualTargetValue });
             switch (controllerIDIndex)
             {
                 case 16:
