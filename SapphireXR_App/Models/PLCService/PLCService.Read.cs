@@ -1,4 +1,5 @@
 ﻿using SapphireXR_App.Enums;
+using SapphireXR_App.ViewModels;
 using System.Collections;
 using System.Windows;
 
@@ -87,18 +88,6 @@ namespace SapphireXR_App.Models
                 }
 
                 string exceptionStr = string.Empty;
-                if (aDeviceControlValues == null)
-                {
-                    exceptionStr += "aDeviceControlValues is null in OnTick PLCService";
-                }
-                if (aDeviceCurrentValues == null)
-                {
-                    if (exceptionStr != string.Empty)
-                    {
-                        exceptionStr += "\r\n";
-                    }
-                    exceptionStr += "aDeviceCurrentValues is null in OnTick PLCService";
-                }
                 if (aMonitoring_PVs == null)
                 {
                     if (exceptionStr != string.Empty)
@@ -147,10 +136,28 @@ namespace SapphireXR_App.Models
 
         private static void ReadCurrentValueFromPLC()
         {
-            for (int analogController = 0; analogController < NumControllers; analogController++)
+            foreach (KeyValuePair<string, int> kv in dIndexController)
             {
-                aDeviceCurrentValues[analogController] = Ads.ReadAny<float>(hAnalogControllers[analogController].hPV);
-                aDeviceControlValues[analogController] = Ads.ReadAny<float>(hAnalogControllers[analogController].hCV);
+                switch (kv.Key)
+                {
+                    case "Temperature":
+                    case "Pressure":
+                    case "Rotation":
+                        aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAnalogControllers[kv.Value].hCV);
+                        aDeviceCurrentValues[kv.Value] = Ads.ReadAny<float>(hAnalogControllers[kv.Value].hPV);
+                        break;
+
+                    default:
+                        float? maxValue = SettingViewModel.ReadMaxValue(kv.Key);
+                        if (maxValue == null)
+                        {
+                            throw new ArgumentException(kv.Key + "is not valid analog device ID");
+                        }
+                        aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAnalogControllers[kv.Value].hCV) / AnalogControllerOutputVoltage * maxValue.Value;
+                        aDeviceCurrentValues[kv.Value] = Ads.ReadAny<float>(hAnalogControllers[kv.Value].hPV) / AnalogControllerOutputVoltage * maxValue.Value;
+                        break;
+
+                }
             }
             aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
             aInputState = Ads.ReadAny<short[]>(hInputState, [6]);
@@ -250,7 +257,21 @@ namespace SapphireXR_App.Models
 
         public static float ReadFlowControllerTargetValue(string controllerID)
         {
-            return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[dIndexController[controllerID]].hCVControllerInput).targetValue / GetTargetValueMappingFactor(controllerID);
+            switch (controllerID)
+            {
+                case "Temperature":
+                case "Pressure":
+                case "Rotation":
+                    return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[dIndexController[controllerID]].hCVControllerInput).targetValue;
+
+                default:
+                    float? maxValue = SettingViewModel.ReadMaxValue(controllerID);
+                    if (maxValue == null)
+                    {
+                        throw new ArgumentException(controllerID + "is not valid analog device ID");
+                    }
+                    return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[dIndexController[controllerID]].hCVControllerInput).targetValue / AnalogControllerOutputVoltage * maxValue.Value;
+            }
         }
 
         public static short ReadCurrentStep()

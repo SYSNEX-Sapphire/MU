@@ -14,6 +14,7 @@ VAR_GLOBAL
 	(*Solenoid Valve*)
 	aOutputSolValve 	: ARRAY[1..GVL_CONSTANT.NumSolValve] OF BOOL; //Solenoid Valve
 	aAnalogController : ARRAY[1..GVL_CONSTANT.NumAnalogController] OF AnalogController;
+	aReactorMaxValue		: ARRAY[1..GVL_CONSTANT.NumReactor] OF REAL;
 	
 	(* Present Value Meter Display*)
 	aMonitoring_PV 			: ARRAY[1..GVL_CONSTANT.NumMonitoring] OF REAL; //Gauge Monitoring Value to UI
@@ -55,6 +56,7 @@ VAR_GLOBAL
 // 	UI_INTERLOCK_CHECK_OPEN_REACTOR:WORD;(**)
 	
 	aMaxValueController: INT;
+	rRotation_ControlValue: REAL;
 END_VAR
 ]]></Declaration>
   </GVL>

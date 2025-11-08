@@ -67,9 +67,10 @@ VAR
 	fDeviceAlarmTreshold		: REAL;
 	fDeviceWarningTreshold		: REAL;
 	
-	i	: INT;
+	i	: UINT;
 	j 	: INT;
 
+	fReactorIndexToAnalogControllerIndex : F_ReactorIndexToAnalogControllerIndex;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -313,16 +314,16 @@ END_FOR]]></ST>
     <Action Name="_101_Alarm_MFC_EPC" Id="{8202243e-b333-45ee-ace8-e6ff9df10a7f}">
       <Implementation>
         <ST><![CDATA[//jhkang MFC ,EPC
-FOR i := 1 TO 16 DO
+FOR i := 1 TO GVL_CONSTANT.NumFlowController DO
 		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i+2)); //오늘쪽 쉬프트 연산
 		wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i+2));
 		
 		GVL_SEQUENCE.fbDeviationCheck[i](
 			bAlarmEnable := wDeviceAlarmEnable.0,
 			bWarningEnable := wDeviceWarningEnable.0,
-			fCurrentValue := GVL_IO.aController_PV[i],
-			fControlValue := GVL_IO.aController_CV[i],
-			fMaxValue := GVL_IO.aMaxValueController[i],
+			fCurrentValue := GVL_IO.aAnalogController[i].pv,
+			fControlValue := LREAL_TO_REAL(GVL_IO.aAnalogController[i].cvController.rControlValue),
+			fMaxValue := GVL_CONSTANT.AnalogControllerOutputVoltage,
 			fAlarmTreshold := GVL_IO.aInterlockSet[1],
 			fWarningTreshold := GVL_IO.aInterlockSet[2],
 			tAlarmDelay := tAlarmDelay_A,
@@ -360,16 +361,16 @@ FOR i := 1 TO 16 DO
       <Implementation>
         <ST><![CDATA[//jhkang Reactor Temp , Pressure ,Rotation
 
-FOR i := 1 TO 3 DO
+FOR i := 1 TO GVL_CONSTANT.NumReactor DO
 		wDeviceAlarmEnable := SHR(GVL_IO.aInterlockEnable[2], (i-1)); //오늘쪽 쉬프트 연산
 		wDeviceWarningEnable := SHR(GVL_IO.aInterlockEnable[3], (i-1));
 		
 		GVL_SEQUENCE.fbDeviationCheck_Reactor[i](
 			bAlarmEnable := wDeviceAlarmEnable.0,
 			bWarningEnable := wDeviceWarningEnable.0,
-			fCurrentValue := GVL_IO.aController_PV[i+16],
-			fControlValue := GVL_IO.aController_CV[i+16],
-			fMaxValue := GVL_IO.aMaxValueController[i+16],
+			fCurrentValue := GVL_IO.aAnalogController[fReactorIndexToAnalogControllerIndex(i)].pv,
+			fControlValue := LREAL_TO_REAL(GVL_IO.aAnalogController[fReactorIndexToAnalogControllerIndex(i)].cvController.rControlValue),
+			fMaxValue := GVL_IO.aReactorMaxValue[i],
 			fAlarmTreshold := GVL_IO.aInterlockSet[1],
 			fWarningTreshold := GVL_IO.aInterlockSet[2],
 			tAlarmDelay := tAlarmDelay_A,

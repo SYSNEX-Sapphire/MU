@@ -3,35 +3,21 @@
   <POU Name="F_StopAnalogRamping_ForRecipe" Id="{894f4883-78ef-41b6-90b5-91f6e5cdbce2}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_StopAnalogRamping_ForRecipe
 VAR
-	i: INT;
+	i: UINT;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR i:= 1 TO E_aAnalogInputIO_Index.E_PV_EPC_04 DO
-	IF 0.0 < GVL_IO.aAnalogController[i].maxValue THEN
-		GVL_IO.aAnalogController[i].cvController.input.restart := TRUE;
-		GVL_IO.aAnalogController[i].cvController.input.rampTime := 1; 
-		GVL_IO.aAnalogController[i].cvController.input.targetValue := GVL_IO.aAnalogController[i].cv;
-	END_IF
-END_FOR
-
-FOR i:= E_aAnalogInputIO_Index.E_PV_Susceptor_Temp TO E_aAnalogInputIO_Index.E_PV_susceptorRotation DO
+      <ST><![CDATA[FOR i := 1 TO GVL_CONSTANT.NumAnalogController DO
 	GVL_IO.aAnalogController[i].cvController.input.restart := TRUE;
-	GVL_IO.aAnalogController[i].cvController.input.rampTime := 1;
-	GVL_IO.aAnalogController[i].cvController.input.targetValue := GVL_IO.aAnalogController[i].cv;
+	GVL_IO.aAnalogController[i].cvController.input.rampTime := 1; 
+	GVL_IO.aAnalogController[i].cvController.input.targetValue := LREAL_TO_REAL(GVL_IO.aAnalogController[i].cvController.rControlValue);
 END_FOR]]></ST>
     </Implementation>
     <LineIds Name="F_StopAnalogRamping_ForRecipe">
       <LineId Id="1" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="2" Count="2" />
+      <LineId Id="32" Count="1" />
       <LineId Id="20" Count="0" />
       <LineId Id="5" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="30" Count="1" />
-      <LineId Id="27" Count="0" />
-      <LineId Id="25" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

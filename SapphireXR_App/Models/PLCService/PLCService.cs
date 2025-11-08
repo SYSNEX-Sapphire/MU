@@ -185,11 +185,13 @@ namespace SapphireXR_App.Models
                 hAnalogControllers[analogDevice] = new()
                 {
                     hPV = Ads.CreateVariableHandle(hACName + ".pv"),
-                    hCV = Ads.CreateVariableHandle(hACName + ".cv"),
-                    hTV = Ads.CreateVariableHandle(hACName + ".tv"),
-                    hMaxValue = Ads.CreateVariableHandle(hACName + ".maxValue"),
+                    hCV = Ads.CreateVariableHandle(hACName + ".cvController.rControlValue"),
                     hCVControllerInput = Ads.CreateVariableHandle(hACName + ".cvController.input")
                 };
+            }
+            for (uint reactor = 0; reactor < NumReactor; ++reactor)
+            {
+                hReactorMaxValue[reactor] = Ads.CreateVariableHandle("GVL_IO.aReactorMaxValue[" + (reactor + 1) + "]");
             }
         }
 
@@ -256,18 +258,6 @@ namespace SapphireXR_App.Models
         public static void RemovePLCStateUpdateTask(Action task)
         {
             AddOnPLCStateUpdateTask.Remove(task);
-        }
-
-        private static float GetTargetValueMappingFactor(string controllerID)
-        {
-            int controllerIDIndex = dIndexController[controllerID];
-            float? targetValueMappingFactor = aTargetValueMappingFactor[controllerIDIndex];
-            if (targetValueMappingFactor == null)
-            {
-                throw new Exception("KL3464MaxValueH is null in WriteFlowControllerTargetValue");
-            }
-
-            return targetValueMappingFactor.Value;
         }
     }
 }

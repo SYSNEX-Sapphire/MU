@@ -4,9 +4,6 @@
     <Declaration><![CDATA[TYPE AnalogController :
 STRUCT
 	pv : REAL;
-	cv : REAL;
-	tv : REAL;
-	maxValue : REAL;
 	cvController : FB_ControlRampGenerator;
 END_STRUCT
 END_TYPE

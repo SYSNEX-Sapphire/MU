@@ -8,9 +8,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i:=1 TO E_aAnalogInputIO_Index.E_PV_EPC_04 DO
-	IF 0.0 < GVL_IO.aAnalogController[i].maxValue  THEN		
-		GVL_IO.aAnalogController[i].pv := (GVL_IO.aAnalogInputIO[i] / GVL_CONSTANT.EL3064MaxValueH) * GVL_IO.aAnalogController[i].maxValue;
-	END_IF
+	GVL_IO.aAnalogController[i].pv := INT_TO_REAL(GVL_IO.aAnalogInputIO[i]) / GVL_CONSTANT.EL3064MaxValueH * GVL_CONSTANT.AnalogControllerOutputVoltage;
 END_FOR
 
 GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].pv := WORD_TO_REAL(GVL_IO.wE3508_PV);
@@ -18,7 +16,8 @@ GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure].pv := WOR
 GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].pv := GVL_IO.nRotation_Converted_PV;]]></ST>
     </Implementation>
     <LineIds Name="P60_UpdatePV">
-      <LineId Id="6" Count="7" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="9" Count="4" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

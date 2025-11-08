@@ -7,9 +7,11 @@ VAR_GLOBAL CONSTANT
 	EL3064MaxValue 	: REAL := 32767; //0~10V
 	EL4004MaxValueH	: REAL := 16383; //0~5V Half Output
 	EL4004MaxValue 	: REAL := 32767; //4~20mA
-	EL3102MAxValue: REAL :=32767;
+	EL3102MAxValue	: REAL := 32767;
 	
-	NumAnalogController : UINT :=19;
+	NumAnalogController : UINT := 19;
+	NumFlowController : UINT := 16;
+	NumReactor : UINT := NumAnalogController - NumFlowController;
 	
 	NumAnalogInput : UINT := 40;
 	NumAnalogOutput : UINT := 42;
@@ -30,6 +32,8 @@ VAR_GLOBAL CONSTANT
 	MaxRecipeStep : UINT := 100;
 	MaxRecipeNameLength : UINT := 81;
 	RecipeNumReactorCondition : UINT := 5;
+	
+	AnalogControllerOutputVoltage : REAL := 5;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

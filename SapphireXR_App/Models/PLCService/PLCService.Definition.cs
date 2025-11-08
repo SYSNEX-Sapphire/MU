@@ -107,6 +107,7 @@ namespace SapphireXR_App.Models
         };
 
         public enum TriggerType { Alarm = 0, Warning };
+        public enum Reactor { SusceptorTemperature = 0, ReactorPressure, SusceptorRotation };
 
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx = new Dictionary<string, int>
         {
@@ -152,8 +153,10 @@ namespace SapphireXR_App.Models
         private const uint NumInterlock = 5;
         public const uint NumDigitalDevice = 17;
         public const uint NumAnalogDevice = 19;
+        public const uint NumReactor = 3;
         public const int NumRecipeEnableSubConditions = 12;
         public const int NumReactorEnableSubConditions = 10;
+        public const float AnalogControllerOutputVoltage = 5.0f;
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC = null;
@@ -164,7 +167,6 @@ namespace SapphireXR_App.Models
         private static BitArray? bOutputCmd1 = null;
         private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)NumAlarmWarningArraySize).ToArray();
         private static Memory<byte> userStateBuffer = new Memory<byte>([ 0x00, 0x00 ]);
-        private static float?[] aTargetValueMappingFactor = new float?[dIndexController.Count];
 
         private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
         private static Dictionary<string, ObservableManager<float>.Publisher>? dControlValueIssuers;
@@ -227,8 +229,6 @@ namespace SapphireXR_App.Models
         {
             public uint hPV;
             public uint hCV;
-            public uint hTV;
-            public uint hMaxValue;
             public uint hCVControllerInput;
         }
         // Read from PLC State
@@ -258,7 +258,8 @@ namespace SapphireXR_App.Models
         private static uint[] hInterlockEnable = new uint[NumAlarmWarningArraySize];
         private static uint[] hInterlockset = new uint[NumInterlockSet];
         private static uint[] hInterlock = new uint[NumInterlock];
-        private static HAnalogController[] hAnalogControllers = new HAnalogController[NumControllers]; 
+        private static HAnalogController[] hAnalogControllers = new HAnalogController[NumControllers];
+        private static uint[] hReactorMaxValue = new uint[NumReactor];
 
         private static bool RecipeRunEndNotified = false;
         private static bool ShowMessageOnOnTick = true;
@@ -271,6 +272,7 @@ namespace SapphireXR_App.Models
         private static Dictionary<int, float> AnalogDeviceInterlockSetIndiceToCommit = new Dictionary<int, float>();
         private static (bool, float) DigitalDevicelnterlockSetToCommit = (false, 0.0f);
         private static Dictionary<int, float> InterlockSetIndiceToCommit = new Dictionary<int, float>();
+        static Dictionary<Reactor, float> ReactorMaxValueToCommit = new Dictionary<Reactor, float>();
 
         private static List<Action> AddOnPLCStateUpdateTask = new List<Action>();
     }

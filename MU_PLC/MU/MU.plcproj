@@ -162,6 +162,9 @@
     <Compile Include="FUNCTION\HEXSTR_TO_REAL_LHeaterPV.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FUNCTION\F_ReactorIndexToAnalogControllerIndex.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FUNCTION\Real_To_String_LineHeater.TcPOU">
       <SubType>Code</SubType>
     </Compile>

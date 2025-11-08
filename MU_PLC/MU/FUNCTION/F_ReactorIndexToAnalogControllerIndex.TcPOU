@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <POU Name="F_ReactorIndexToAnalogControllerIndex" Id="{e107827f-687c-44bb-b3b3-9f5c877a3adc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_ReactorIndexToAnalogControllerIndex : UINT
+VAR_INPUT
+	i : UINT;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_ReactorIndexToAnalogControllerIndex := i + GVL_CONSTANT.NumFlowController]]></ST>
+    </Implementation>
+    <LineIds Name="F_ReactorIndexToAnalogControllerIndex">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -20,8 +20,9 @@ namespace SapphireXR_App.Models
 
     public partial class AnalogDeviceIO : WarningAlarmDevice
     {
-        public int MaxValue { get; set; }
-       
+        [ObservableProperty]
+        private int maxValue;
+
     }
 
     public partial class SwitchDI : WarningAlarmDevice

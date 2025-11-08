@@ -84,6 +84,16 @@
         <TabControl TabStripPlacement="Left" Style="{StaticResource SettingTabControl}" Margin="{StaticResource p_5_sqrt}" Padding="0">
             <TabControl.Resources>
                 <Style TargetType="TabItem" BasedOn="{StaticResource SetingTabItem}" />
+                <Style x:Key="SaveButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
+                            <Setter Property="IsEnabled" Value="True" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="False">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
             </TabControl.Resources>
             <!--Tab for Alarm Setting -->
             <TabItem Name="AlarmSetting" Header="Alarm">
@@ -140,7 +150,7 @@
                                                     <Thickness Left="{StaticResource p_2}" Right="{StaticResource p_2}"/>
                                                 </TextBox.Margin>
                                             </TextBox>
-                                            <Button x:Name="btnAlarmSettingSave" Content="Save" Width="209.5" Height="28" Command="{Binding AnalogDeviceSettingSaveCommand}" HorizontalContentAlignment="Right" Style="{StaticResource PrimaryButton}"/>
+                                            <Button x:Name="btnAlarmSettingSave" Content="Save" Width="209.5" Height="28" Command="{Binding AnalogDeviceSettingSaveCommand}" HorizontalContentAlignment="Right" Style="{StaticResource SaveButton}"/>
                                         </StackPanel>
                                         <StackPanel>
                                             <DataGrid x:Name="dgAlarmSettingA" Height="780" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource SettingDataGrid}">
@@ -215,7 +225,7 @@
                                                     <Thickness Right="{StaticResource p_4}" />
                                                 </TextBox.Margin>
                                             </TextBox>
-                                            <Button x:Name="btnEventSettingSave" Content="Save" Width="200" Height="28" Command="{Binding DigitalDeviceSettingSaveCommand}" Style="{StaticResource PrimaryButton}" />
+                                            <Button x:Name="btnEventSettingSave" Content="Save" Width="200" Height="28" Command="{Binding DigitalDeviceSettingSaveCommand}" Style="{StaticResource SaveButton}" />
                                         </StackPanel>
                                         <DataGrid x:Name="dgAlarmSettingD" ItemsSource="{Binding lSwitchDI}" Style="{StaticResource SettingDataGrid}">
                                             <DataGrid.Resources>
@@ -367,7 +377,7 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="Utility" Style="{StaticResource SectionTitle}" Grid.Column="0" VerticalAlignment="Center"/>
-                                                <Button Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="66" Height="28" HorizontalAlignment="Right" Command="{Binding InterlockSettingSaveCommand}" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" />
+                                                <Button Grid.Column="1" x:Name="InterlockSave" Content="Save" Width="66" Height="28" HorizontalAlignment="Right" Command="{Binding InterlockSettingSaveCommand}" VerticalAlignment="Top" Style="{StaticResource SaveButton}" />
                                             </Grid>
                                             <Grid>
                                                 <Grid.Margin>
@@ -552,11 +562,6 @@
                                                         <Thickness Bottom="{StaticResource p_3}" />
                                                     </Setter.Value>
                                                 </Setter>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Source={x:Static model:PLCConnectionState.Instance}, Path=Online, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
-                                                        <Setter Property="IsReadOnly" Value="True" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
                                             </Style>
                                         </StackPanel.Resources>
                                         <Grid>
@@ -571,7 +576,7 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Style="{StaticResource SectionTitle}" Content="Device Naming" VerticalAlignment="Top"/>
-                                            <Button Grid.Column="1" x:Name="DeviceNameSave" Content="Save" Width="66" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource PrimaryButton}" Command="{Binding AnalogDeviceSettingSaveCommand}" />
+                                            <Button Grid.Column="1" x:Name="DeviceNameSave" Content="Save" Width="66" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource SaveButton}" Command="{Binding SaveDeviceNamingCommand}" />
                                         </Grid>
                                         <DataGrid x:Name="dgMaxValueSetting" ItemsSource="{Binding lAnalogDeviceIO}" Style="{StaticResource DeviceNamingSettingDataGrid}" Height="300">
                                             <DataGrid.Resources>
