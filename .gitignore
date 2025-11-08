@@ -361,36 +361,26 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/MS_PLC/MS_PLC.~u
-/MS_PLC/MS/_CompileInfo
-/MS_PLC/MS_PLC.tsproj.bak
-/MS_PLC/MS_PLC.project.~u
-/MS_PLC/_Boot
-/MS_PLC/MS/_CompileInfo_Upload
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/Tc2_ControllerToolbox/3.6.1.0/Tc2_ControllerToolbox.compiled-library-ge33
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/Tc2_ModbusRTU/3.6.1.0/Tc2_ModbusRTU.compiled-library-ge33
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/Tc2_SerialCom/3.4.6.0/Tc2_SerialCom.compiled-library-ge33
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/tc2_standard/3.4.5.0/tc2_standard.compiled-library
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/tc2_standard/3.4.5.0/Tc2_Standard.compiled-library-ge33
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/tc2_system/3.6.4.0/Tc2_System.compiled-library-ge33
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/Tc2_Utilities/3.9.2.0/Tc2_Utilities.compiled-library-ge33
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/Tc3_EventLogger/3.3.13.0/Tc3_EventLogger.compiled-library-ge33
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/tc3_module/3.4.5.0/tc3_module.compiled-library
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh/tc3_module/3.4.5.0/Tc3_Module.compiled-library-ge33
-/MS_PLC/_Boot/TargetDescription.xml
-/MS_PLC/_Boot/TwinCAT RT (x64)/CurrentConfig
-/MS_PLC/_Boot/TwinCAT RT (x64)/Plc
-/MS_PLC/_Boot/TwinCAT RT (x64)
-/MS_PLC/MS/_Libraries/beckhoff automation gmbh
-/MS_PLC/_Boot/TwinCAT CE7 (ARMV7)/Plc
-/MS_PLC/_Boot/TwinCAT CE7 (ARMV7)/CurrentConfig
-/MS_PLC/TrialLicense.tclrs
-/MS_PLC/MS_PLC.tsproj
-/MS_PLC/MS_PLC.sln
-/MS_PLC/_Boot/CurrentConfig
-/MS_PLC/_Boot
-/MS_PLC/_Boot/TargetDescription.xml
-/MS_PLC/MS/MS.tmc
-/MS_PLC/MS/MS.tmc
+/MU_PLC/MU_PLC.~u
+/MU_PLC/MU/_CompileInfo
+/MU_PLC/MU_PLC.tsproj.bak
+/MU_PLC/MU_PLC.project.~u
+/MU_PLC/_Boot
+/MU_PLC/MU/_CompileInfo_Upload
+/MU_PLC/_Boot/TargetDescription.xml
+/MU_PLC/_Boot/TwinCAT RT (x64)/CurrentConfig
+/MU_PLC/_Boot/TwinCAT RT (x64)/Plc
+/MU_PLC/_Boot/TwinCAT RT (x64)
+/MU_PLC/MU/_Libraries/beckhoff automation gmbh
+/MU_PLC/_Boot/TwinCAT CE7 (ARMV7)/Plc
+/MU_PLC/_Boot/TwinCAT CE7 (ARMV7)/CurrentConfig
+/MU_PLC/TrialLicense.tclrs
+/MU_PLC/MU_PLC.tsproj
+/MU_PLC/MU_PLC.sln
+/MU_PLC/_Boot/CurrentConfig
+/MU_PLC/_Boot
+/MU_PLC/_Boot/TargetDescription.xml
+/MU_PLC/MU/MU.tmc
 /MU_PLC/MU_PLC.~u
 /MU_PLC/MU/MU.tmcRefac
+/SapphireXR.~u
