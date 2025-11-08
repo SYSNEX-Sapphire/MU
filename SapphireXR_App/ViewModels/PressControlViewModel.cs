@@ -30,14 +30,17 @@ namespace SapphireXR_App.ViewModels
                                     throw new Exception("Faiure happend in reading max value for flow control view window. Logic error in FlowControlViewModel constructor: "
                                              + "the value of \"fcID\", the third argument of the constructor \"" + fcID + "\" is not valid flow controller ID:" + redMaxValue == null ? "Null" : redMaxValue.ToString());
                                 }
+                                DeviationEnabled = true;
                                 break;
 
                             case PressControlMode.Position:
                                 MaxValue = 100;
+                                DeviationEnabled = false;
                                 break;
                         }
                         TargetValue = "";
-                        RampTimeEnabled = currentMode == ControlMode;
+                        RampTimeEnabled = ControlMode == PressControlMode.Pressure;
+                        updateDeviation();
                         break;
 
                     case nameof(RampTimeEnabled):
@@ -45,12 +48,27 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
-            ControlMode = currentMode = (PressControlMode)PLCService.ReadPressureControlMode();
+            ControlMode = (PressControlMode)PLCService.ReadPressureControlMode();
+            DeviationEnabled = ControlMode == PressControlMode.Pressure;
+        }
+
+        protected override void updateDeviation()
+        {
+            switch (ControlMode)
+            {
+                case PressControlMode.Pressure:
+                    base.updateDeviation();
+                    break;
+
+                case PressControlMode.Position:
+                    Deviation = string.Empty;
+                    break;
+            }
         }
 
         protected override bool canConfirmExecute()
         {
-            if(currentMode == ControlMode)
+            if(ControlMode == PressControlMode.Pressure)
             {
                 return base.canConfirmExecute();
             }
@@ -97,7 +115,7 @@ namespace SapphireXR_App.ViewModels
                             {
                                 PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.PressureControlMode, false);
                             }
-                            PLCService.WriteFlowControllerTargetValue(controllerID, controlValues.targetValue.Value, currentMode == ControlMode ? controlValues.rampTime.Value : (short)0);
+                            PLCService.WriteFlowControllerTargetValue(controllerID, controlValues.targetValue.Value, ControlMode == PressControlMode.Pressure ? controlValues.rampTime.Value : (short)0);
                             //App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success));
                             ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success);
                         }
@@ -126,6 +144,7 @@ namespace SapphireXR_App.ViewModels
         private bool rampTimeEnabled = true;
         [ObservableProperty]
         private PressControlMode controlMode;
-        private PressControlMode currentMode;
+        [ObservableProperty]
+        private bool deviationEnabled;
     }
 }

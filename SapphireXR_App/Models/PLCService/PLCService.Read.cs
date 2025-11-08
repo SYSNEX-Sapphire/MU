@@ -166,14 +166,7 @@ namespace SapphireXR_App.Models
 
         public static float ReadCurrentValue(string controllerID)
         {
-            if (aDeviceCurrentValues != null)
-            {
-                return aDeviceCurrentValues[dIndexController[controllerID]];
-            }
-            else
-            {
-                return float.NaN;
-            }
+            return aDeviceCurrentValues[dIndexController[controllerID]];
         }
 
         public static short ReadUserState()
