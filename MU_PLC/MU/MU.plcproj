@@ -117,6 +117,33 @@
     <Compile Include="DUTs\E_TowerLamp.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Interlock\Interlock.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interlock\InterlockEnableThreshold.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interlock\InterlockSetting.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interlock\InterlockState.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interlock\LogicalInterlockSubstate.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\AnalogIO.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\DigitalIO.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\IO\IO.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\MainPRGControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\OperationMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -345,10 +372,13 @@
     <Folder Include="DUTs" />
     <Folder Include="DUTs\DUTs" />
     <Folder Include="DUTs\DUTs\ENUM" />
+    <Folder Include="DUTs\IO" />
+    <Folder Include="DUTs\Interlock" />
     <Folder Include="DUTs\Recipe" />
     <Folder Include="GVLs" />
     <Folder Include="FUNCTION" />
     <Folder Include="DATA TYPES" />
+    <Folder Include="NewFolder1" />
     <Folder Include="POUs" />
     <Folder Include="POUs\FUNCTION" />
     <Folder Include="POUs\VARIABLE_LINK" />
