@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="MainPRGControl" Id="{e9b74498-a16d-451c-b77e-7a119a24aa05}">
+    <Declaration><![CDATA[TYPE MainPRGControl :
+STRUCT
+	controlModeCmd : E_ControlMode := E_ControlMode.Manual;
+	controlMode	: E_ControlMode := controlModeCmd;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

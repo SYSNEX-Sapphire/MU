@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="IO" Id="{9dc4041b-3ca8-4a93-8be5-c9832a984f11}">
+    <Declaration><![CDATA[TYPE IO :
+STRUCT
+	digital: DigitalIO;
+	analog: AnalogIO;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

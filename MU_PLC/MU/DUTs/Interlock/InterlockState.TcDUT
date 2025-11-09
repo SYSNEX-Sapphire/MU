@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="InterlockState" Id="{ae594bee-db28-4782-9cde-bc0fe5f8df3e}">
+    <Declaration><![CDATA[TYPE InterlockState :
+STRUCT
+	aLogicalInterlock				: ARRAY[1..GVL_CONSTANT.NumLogicalInterlockState] OF BOOL;
+	aInterlockSubstate				: LogicalInterlockSubstate;
+	aAlarmState						: ARRAY[1..GVL_CONSTANT.NumInterlockAlarmWarningState] OF BOOL;
+	aWarningState					: ARRAY[1..GVL_CONSTANT.NumInterlockAlarmWarningState] OF BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

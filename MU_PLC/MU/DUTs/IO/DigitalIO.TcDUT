@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="DigitalIO" Id="{f019d5b9-b558-4ed4-8f2f-b38b2ac5bb1f}">
+    <Declaration><![CDATA[TYPE DigitalIO :
+STRUCT
+	(* Digital IO to Byte *)
+	aDigitalInputIO 	: ARRAY[1..GVL_CONSTANT.NumDigitalInput] OF BOOL; //KL1408 9EA
+	aDigitalOutputIO : ARRAY[1..GVL_CONSTANT.NumDigitalOutput] OF BOOL; //KL2408 4EA
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

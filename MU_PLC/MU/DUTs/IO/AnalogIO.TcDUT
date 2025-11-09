@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="AnalogIO" Id="{ad882b48-8342-4544-89f0-366bfb2c6710}">
+    <Declaration><![CDATA[TYPE AnalogIO :
+STRUCT
+	(* Analog Input to INT*)
+	aAnalogInputIO 	: ARRAY[1..GVL_CONSTANT.NumAnalogInput] OF INT;
+	aAnalogOutputIO : ARRAY[1..GVL_CONSTANT.NumAnalogOutput] OF INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

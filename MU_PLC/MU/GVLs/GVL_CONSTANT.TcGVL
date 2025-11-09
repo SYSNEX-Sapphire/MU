@@ -15,16 +15,20 @@ VAR_GLOBAL CONSTANT
 	
 	NumAnalogInput : UINT := 40;
 	NumAnalogOutput : UINT := 42;
-	
 	NumDigitalInput : UINT := 9;
 	NumDigitalOutput : UINT := 5;
 	
 	NumOutputCmd : UINT := 3;
 	NumInputState : UINT := 6;
 	
-	NumInterlock : UINT := 5;
-	NumInterlockSet : UINT := 20;
-	NumInterlockEnable : UINT := 6;
+	NumInterlockSettingThreshold : UINT := 20;
+	NumInterlockSettingEnableThreshold : UINT := 20;
+	NumInterlockSettingDigitalEnable : UINT := 6;
+	NumInterlockSettingAnalogEnable : UINT := 6;
+	NumLogicalInterlockState : UINT := 14;
+	NumInterlockAlarmWarningState : UINT := 36;
+	NumInterlockRecipeEnableSubstate : UINT := 11;
+	NumInterlockOpenReactorSubstate : UINT := 12;
 	
 	NumSolValve : UINT := 28;
 	NumMonitoring : UINT := 18;

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="InterlockEnableThreshold" Id="{bea031ee-3aca-4b50-8698-0175e27c6d87}">
+    <Declaration><![CDATA[TYPE InterlockEnableThreshold :
+STRUCT
+	enable : BOOL;
+	threshold : REAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
