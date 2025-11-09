@@ -95,36 +95,19 @@ namespace SapphireXR_App.ViewModels
 
             private static string GetFlowControllerID(string flowControlState)
             {
-                string flowControllerID = "";
                 switch (flowControlState)
                 {
                     case "STemp":
-                        flowControllerID = "Temperature";
-                        break;
+                        return "R01";
 
                     case "RPress":
-                        flowControllerID = "Pressure";
-                        break;
+                        return "R02";
 
                     case "SRotation":
-                        flowControllerID = "Rotation";
-                        break;
-
-                    default:
-                        switch (flowControlState[0])
-                        {
-                            case 'M':
-                                flowControllerID = "MFC" + flowControlState.Substring(1, flowControlState.Length - 1);
-                                break;
-
-                            case 'E':
-                                flowControllerID = "EPC" + flowControlState.Substring(1, flowControlState.Length - 1);
-                                break;
-                        }
-                        break;
+                        return "R03";
                 }
 
-                return flowControllerID;
+                throw new ArgumentException($"{flowControlState} is not valid property in recipe");
             }
 
             private void onRecipePropertyChanged(object? sender, PropertyChangedEventArgs args)
@@ -159,8 +142,7 @@ namespace SapphireXR_App.ViewModels
                                         {
                                             if (CheckDigit(args.PropertyName, 1) == true)
                                             {
-                                                string flowControllerID = GetFlowControllerID(args.PropertyName);
-                                                propagateControlValue(flowControllerID, getControlValue(flowControllerID));
+                                                propagateControlValue(args.PropertyName, getControlValue(args.PropertyName));
                                             }
                                         }
                                         break;
@@ -236,25 +218,25 @@ namespace SapphireXR_App.ViewModels
                 valveStatePublishers["V19"].Publish(value.V19);
                 valveStatePublishers["V20"].Publish(value.V20);
 
-                flowValuePublishers["MFC01"].Publish(value.M01);
-                flowValuePublishers["MFC02"].Publish(value.M02);
-                flowValuePublishers["MFC03"].Publish(value.M03);
-                flowValuePublishers["MFC04"].Publish(value.M04);
-                flowValuePublishers["MFC05"].Publish(value.M05);
-                flowValuePublishers["MFC06"].Publish(value.M06);
-                flowValuePublishers["MFC07"].Publish(value.M07);
-                flowValuePublishers["MFC08"].Publish(value.M08);
-                flowValuePublishers["MFC09"].Publish(value.M09);
-                flowValuePublishers["MFC10"].Publish(value.M10);
-                flowValuePublishers["MFC11"].Publish(value.M11);
-                flowValuePublishers["MFC12"].Publish(value.M12);
-                flowValuePublishers["EPC01"].Publish(value.E01);
-                flowValuePublishers["EPC02"].Publish(value.E02);
-                flowValuePublishers["EPC03"].Publish(value.E03);
-                flowValuePublishers["EPC04"].Publish(value.E04);
-                flowValuePublishers["Temperature"].Publish(value.STemp);
-                flowValuePublishers["Pressure"].Publish(value.RPress);
-                flowValuePublishers["Rotation"].Publish(value.SRotation);
+                flowValuePublishers["M01"].Publish(value.M01);
+                flowValuePublishers["M02"].Publish(value.M02);
+                flowValuePublishers["M03"].Publish(value.M03);
+                flowValuePublishers["M04"].Publish(value.M04);
+                flowValuePublishers["M05"].Publish(value.M05);
+                flowValuePublishers["M06"].Publish(value.M06);
+                flowValuePublishers["M07"].Publish(value.M07);
+                flowValuePublishers["M08"].Publish(value.M08);
+                flowValuePublishers["M09"].Publish(value.M09);
+                flowValuePublishers["M10"].Publish(value.M10);
+                flowValuePublishers["M11"].Publish(value.M11);
+                flowValuePublishers["M12"].Publish(value.M12);
+                flowValuePublishers["E01"].Publish(value.E01);
+                flowValuePublishers["E02"].Publish(value.E02);
+                flowValuePublishers["E03"].Publish(value.E03);
+                flowValuePublishers["E04"].Publish(value.E04);
+                flowValuePublishers["R01"].Publish(value.STemp);
+                flowValuePublishers["R02"].Publish(value.RPress);
+                flowValuePublishers["R03"].Publish(value.SRotation);
             }
 
             public void clean()
@@ -464,79 +446,79 @@ namespace SapphireXR_App.ViewModels
 
                 switch (flowControllerID)
                 {
-                    case "MFC01":
+                    case "M01":
                         currentSelected.M01 = value;
                         break;
 
-                    case "MFC02":
+                    case "M02":
                         currentSelected.M02 = value;
                         break;
 
-                    case "MFC03":
+                    case "M03":
                         currentSelected.M03 = value;
                         break;
 
-                    case "MFC04":
+                    case "M04":
                         currentSelected.M04 = value;
                         break;
 
-                    case "MFC05":
+                    case "M05":
                         currentSelected.M05 = value;
                         break;
 
-                    case "MFC06":
+                    case "M06":
                         currentSelected.M06 = value;
                         break;
 
-                    case "MFC07":
+                    case "M07":
                         currentSelected.M07 = value;
                         break;
 
-                    case "MFC08":
+                    case "M08":
                         currentSelected.M08 = value;
                         break;
 
-                    case "MFC09":
+                    case "M09":
                         currentSelected.M09 = value;
                         break;
 
-                    case "MFC10":
+                    case "M10":
                         currentSelected.M10 = value;
                         break;
 
-                    case "MFC11":
+                    case "M11":
                         currentSelected.M11 = value;
                         break;
 
-                    case "MFC12":
+                    case "M12":
                         currentSelected.M12 = value;
                         break;
 
-                    case "EPC01":
+                    case "E01":
                         currentSelected.E01 = value;
                         break;
 
-                    case "EPC02":
+                    case "E02":
                         currentSelected.E02 = value;
                         break;
 
-                    case "EPC03":
+                    case "E03":
                         currentSelected.E03 = value;
                         break;
 
-                    case "EPC04":
+                    case "E04":
                         currentSelected.E04 = value;
                         break;
 
-                    case "Temperature":
+                    case "R01":
                         currentSelected.STemp = value;
                         break;
 
-                    case "Pressure":
+                    case "R02":
                         currentSelected.RPress = value;
                         break;
 
-                    case "Rotation":
+                    case "R03":
                         currentSelected.SRotation = value;
                         break;
 
@@ -554,63 +536,63 @@ namespace SapphireXR_App.ViewModels
 
                 switch (flowControllerID)
                 {
-                    case "MFC01":
+                    case "M01":
                         return currentSelected.M01;
 
-                    case "MFC02":
+                    case "M02":
                         return currentSelected.M02;
 
-                    case "MFC03":
+                    case "M03":
                         return currentSelected.M03;
 
-                    case "MFC04":
+                    case "M04":
                         return currentSelected.M04;
 
-                    case "MFC05":
+                    case "M05":
                         return currentSelected.M05;
 
-                    case "MFC06":
+                    case "M06":
                         return currentSelected.M06;
 
-                    case "MFC07":
+                    case "M07":
                         return currentSelected.M07;
 
-                    case "MFC08":
+                    case "M08":
                         return currentSelected.M08;
 
-                    case "MFC09":
+                    case "M09":
                         return currentSelected.M09;
 
-                    case "MFC10":
+                    case "M10":
                         return currentSelected.M10;
 
-                    case "MFC11":
+                    case "M11":
                         return currentSelected.M11;
 
-                    case "MFC12":
+                    case "M12":
                         return currentSelected.M12;
 
-                    case "EPC01":
+                    case "E01":
                         return currentSelected.E01;
 
-                    case "EPC02":
+                    case "E02":
                         return currentSelected.E02;
 
-                    case "EPC03":
+                    case "E03":
                         return currentSelected.E03;
 
-                    case "EPC04":
+                    case "E04":
                         return currentSelected.E04;
 
-                    case "Temperature":
+                    case "R01":
                         return currentSelected.STemp;
                         
 
-                    case "Pressure":
+                    case "R02":
                         return currentSelected.RPress;
                         
 
-                    case "Rotation":
+                    case "R03":
                         return currentSelected.SRotation;
                         
 

@@ -35,61 +35,61 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
             {
                 switch (plotModel.Title)
                 {
-                    case "MFC01":
+                    case "M01":
                         return recipe.M01;
 
-                    case "MFC02":
+                    case "M02":
                         return recipe.M02;
 
-                    case "MFC03":
+                    case "M03":
                         return recipe.M03;
 
-                    case "MFC04":
+                    case "M04":
                         return recipe.M04;
 
-                    case "MFC05":
+                    case "M05":
                         return recipe.M05;
 
-                    case "MFC06":
+                    case "M06":
                         return recipe.M06;
 
-                    case "MFC07":
+                    case "M07":
                         return recipe.M07;
 
-                    case "MFC08":
+                    case "M08":
                         return recipe.M08;
 
-                    case "MFC09":
+                    case "M09":
                         return recipe.M09;
 
-                    case "MFC10":
+                    case "M10":
                         return recipe.M10;
 
-                    case "MFC11":
+                    case "M11":
                         return recipe.M11;
 
-                    case "MFC12":
+                    case "M12":
                         return recipe.M12;
 
-                    case "EPC01":
+                    case "E01":
                         return recipe.E01;
 
-                    case "EPC02":
+                    case "E02":
                         return recipe.E02;
 
-                    case "EPC03":
+                    case "E03":
                         return recipe.E03;
 
-                    case "EPC04":
+                    case "E04":
                         return recipe.E04;
 
-                    case "Temperature":
+                    case "R01":
                         return recipe.STemp;
 
-                    case "Pressure":
+                    case "R02":
                         return recipe.RPress;
 
-                    case "Rotation":
+                    case "R03":
                         return recipe.SRotation;
 
                     default:

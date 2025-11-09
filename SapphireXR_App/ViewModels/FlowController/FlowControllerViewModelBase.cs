@@ -11,34 +11,6 @@ namespace SapphireXR_App.ViewModels.FlowController
 {
     public abstract partial class FlowControllerViewModelBase : ViewModelBase, INotifyPropertyChanged
     {
-        private class FlowControllerLabelUpdater : IObserver<(string, string)>
-        {
-            public FlowControllerLabelUpdater(FlowControllerViewModelBase vm)
-            {
-                flowControllerViewModelBase = vm;
-            }
-
-            void IObserver<(string, string)>.OnCompleted()
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<(string, string)>.OnError(Exception error)
-            {
-                throw new NotImplementedException();
-            }
-
-            void IObserver<(string, string)>.OnNext((string, string) value)
-            {
-                if(flowControllerViewModelBase.ControllerID == value.Item1)
-                {
-                    flowControllerViewModelBase.Name = value.Item2;
-                }
-            }
-
-            private FlowControllerViewModelBase flowControllerViewModelBase;
-        }
-
         static FlowControllerViewModelBase()
         {
             MouseEnterColor = Application.Current.Resources.MergedDictionaries[0]["ValveOnMouseEnterColor"] as SolidColorBrush ?? MouseEnterColor;
@@ -99,29 +71,21 @@ namespace SapphireXR_App.ViewModels.FlowController
         {
             Type = type;
             ControllerID = controllerID;
-            var getName = (Dictionary<string, string> renameMapping) =>
-            {
-                string? name = renameMapping.Where((KeyValuePair<string, string> keyValue) => keyValue.Value == ControllerID).Select((KeyValuePair<string, string> keyValue) => keyValue.Key).FirstOrDefault();
-                if (name != null)
-                {
-                    Name = Util.GetFlowControllerName(name!);
-                }
-            };
             switch (Type)
             {
                 case "MFC":
                     ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["MFCDisplayColor2"] as SolidColorBrush ?? ControllerBorderBackground;
-                    getName(Util.RecipeFlowControlFieldToControllerID);
+                    Name = Util.GetFlowControllerName(controllerID);
                     break;
 
                 case "EPC":
                     ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["EPCDisplayColor1"] as SolidColorBrush ?? ControllerBorderBackground;
-                    getName(Util.RecipeFlowControlFieldToControllerID);
+                    Name = Util.GetFlowControllerName(controllerID);
                     break;
 
                 case "Reactor":
                     ControllerBorderBackground = Application.Current.Resources.MergedDictionaries[0]["ReactorDisplayColor1"] as SolidColorBrush ?? ControllerBorderBackground;
-                    getName(ReactorID);
+                    Name = Util.GetFlowControllerName(controllerID);
                     break;
             }
             BorderBackground = ControllerBorderBackground;

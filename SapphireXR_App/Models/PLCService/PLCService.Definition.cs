@@ -123,8 +123,8 @@ namespace SapphireXR_App.Models
 
         public static readonly Dictionary<string, int> dIndexController = new Dictionary<string, int>
         {
-            { "MFC01", 0 }, { "MFC02", 1 }, { "MFC03", 2 }, { "MFC04", 3 }, { "MFC05", 4 }, { "MFC06", 5 }, { "MFC07", 6 }, { "MFC08", 7 }, { "MFC09", 8 }, { "MFC10", 9 },
-            { "MFC11", 10 }, { "MFC12", 11 }, { "EPC01", 12 },  { "EPC02", 13 }, { "EPC03", 14 }, { "EPC04", 15 }, {"Temperature", 16}, {"Pressure", 17}, {"Rotation", 18}
+            { "M01", 0 }, { "M02", 1 }, { "M03", 2 }, { "M04", 3 }, { "M05", 4 }, { "M06", 5 }, { "M07", 6 }, { "M08", 7 }, { "M09", 8 }, { "M10", 9 },
+            { "M11", 10 }, { "M12", 11 }, { "E01", 12 },  { "E02", 13 }, { "E03", 14 }, { "E04", 15 }, {"R01", 16}, {"R02", 17}, {"R03", 18}
         };
         public static readonly int NumControllers = dIndexController.Count;
 

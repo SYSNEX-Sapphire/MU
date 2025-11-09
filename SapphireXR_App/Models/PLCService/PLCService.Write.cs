@@ -273,7 +273,7 @@ namespace SapphireXR_App.Models
             {
                 if (targetValue != null)
                 {
-                    WriteFlowControllerTargetValue(Util.RecipeFlowControlFieldToControllerID[id], targetValue.Value, rampTime);
+                    WriteFlowControllerTargetValue(id, targetValue.Value, rampTime);
                 }
             }
         }

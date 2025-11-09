@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows;
 
 namespace SapphireXR_App.Models
 {
@@ -22,7 +21,6 @@ namespace SapphireXR_App.Models
     {
         [ObservableProperty]
         private int maxValue;
-
     }
 
     public partial class SwitchDI : WarningAlarmDevice
@@ -42,5 +40,4 @@ namespace SapphireXR_App.Models
         [ObservableProperty]
         private bool _isEnable;
     }
- 
 }

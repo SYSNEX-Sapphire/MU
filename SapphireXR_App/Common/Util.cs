@@ -306,13 +306,6 @@ namespace SapphireXR_App.Common
                "LoopRepeat", "LoopEndStep", "Susceptor Temp.", "Reactor Press.", "Sus. Rotation", "Compare Temp."]);
         }
 
-        public static readonly Dictionary<string, string> RecipeFlowControlFieldToControllerID = new Dictionary<string, string>
-        {
-            { "M01", "MFC01" }, { "M02", "MFC02" }, { "M03", "MFC03" }, { "M04", "MFC04" }, { "M05", "MFC05" },{ "M06", "MFC06" }, { "M07", "MFC07" }, { "M08", "MFC08" }, 
-            { "M09", "MFC09" }, { "M10", "MFC10" }, { "M11", "MFC11" }, { "M12", "MFC12" }, { "E01", "EPC01" },  { "E02", "EPC02" }, { "E03", "EPC03" }, { "E04", "EPC04" }, 
-            { "STemp", "Temperature" }, { "RPress", "Pressure" }, { "SRotation", "Rotation" },
-        };
-
         public static readonly Dictionary<string, string> RecipeColumnHeaderToControllerID = new Dictionary<string, string>
         {
             { "M01", "MFC01" }, { "M02", "MFC02" }, { "M03", "MFC03" }, { "M04", "MFC04" }, { "M05", "MFC05" }, { "M06", "MFC06" }, { "M07", "MFC07" }, { "M08", "MFC08" }, 

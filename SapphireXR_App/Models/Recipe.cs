@@ -95,79 +95,79 @@ namespace SapphireXR_App.Models
                 switch(args.PropertyName)
                 {
                     case nameof(M01):
-                        M01 = constraintValue("MFC01", M01);
+                        M01 = constraintValue("M01", M01);
                         break;
 
                     case nameof(M02):
-                        M02 = constraintValue("MFC02", M02);
+                        M02 = constraintValue("M02", M02);
                         break;
 
                     case nameof(M03):
-                        M03 = constraintValue("MFC03", M03);
+                        M03 = constraintValue("M03", M03);
                         break;
 
                     case nameof(M04):
-                        M04 = constraintValue("MFC04", M04);
+                        M04 = constraintValue("M04", M04);
                         break;
 
                     case nameof(M05):
-                        M05 = constraintValue("MFC05", M05);
+                        M05 = constraintValue("M05", M05);
                         break;
 
                     case nameof(M06):
-                        M06 = constraintValue("MFC06", M06);
+                        M06 = constraintValue("M06", M06);
                         break;
 
                     case nameof(M07):
-                        M07 = constraintValue("MFC07", M07);
+                        M07 = constraintValue("M07", M07);
                         break;
 
                     case nameof(M08):
-                        M08 = constraintValue("MFC08", M08);
+                        M08 = constraintValue("M08", M08);
                         break;
 
                     case nameof(M09):
-                        M09 = constraintValue("MFC09", M09);
+                        M09 = constraintValue("M09", M09);
                         break;
 
                     case nameof(M10):
-                        M10 = constraintValue("MFC10", M10);
+                        M10 = constraintValue("M10", M10);
                         break;
 
                     case nameof(M11):
-                        M11 = constraintValue("MFC11", M11);
+                        M11 = constraintValue("M11", M11);
                         break;
 
                     case nameof(M12):
-                        M12 = constraintValue("MFC12", M12);
+                        M12 = constraintValue("M12", M12);
                         break;
 
                     case nameof(E01):
-                        E01 = constraintValue("EPC01", E01);
+                        E01 = constraintValue("E01", E01);
                         break;
 
                     case nameof(E02):
-                        E02 = constraintValue("EPC02", E02);
+                        E02 = constraintValue("E02", E02);
                         break;
 
                     case nameof(E03):
-                        E03 = constraintValue("EPC03", E03);
+                        E03 = constraintValue("E03", E03);
                         break;
 
                     case nameof(E04):
-                        E04 = constraintValue("EPC04", E04);
+                        E04 = constraintValue("E04", E04);
                         break;
 
                     case nameof(STemp):
-                        STemp = constraintValue("Temperature", STemp);
+                        STemp = constraintValue("R01", STemp);
                         break;
 
                     case nameof(RPress):
-                        RPress = constraintValue("Pressure", RPress);
+                        RPress = constraintValue("R02", RPress);
                         break;
 
                     case nameof(SRotation):
-                        SRotation = constraintValue("Rotation", SRotation);
+                        SRotation = constraintValue("R03", SRotation);
                         break;
 
                     case nameof(LoopRepeat):
@@ -359,22 +359,22 @@ namespace SapphireXR_App.Models
             aRecipeShort[3] = rhs.JumpStride;
             aRecipeShort[4] = rhs.LoopCount;
             //Float Type Array
-            aRecipeFloat[0] = (rhs.M01 ?? alternative.M01) / SettingViewModel.ReadMaxValue("MFC01")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[1] = (rhs.M02 ?? alternative.M02) / SettingViewModel.ReadMaxValue("MFC02")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[2] = (rhs.M03 ?? alternative.M03) / SettingViewModel.ReadMaxValue("MFC03")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[3] = (rhs.M04 ?? alternative.M04) / SettingViewModel.ReadMaxValue("MFC04")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[4] = (rhs.M05 ?? alternative.M05) / SettingViewModel.ReadMaxValue("MFC05")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[5] = (rhs.M06 ?? alternative.M06) / SettingViewModel.ReadMaxValue("MFC06")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[6] = (rhs.M07 ?? alternative.M07) / SettingViewModel.ReadMaxValue("MFC07")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[7] = (rhs.M08 ?? alternative.M08) / SettingViewModel.ReadMaxValue("MFC08")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[8] = (rhs.M09 ?? alternative.M09) / SettingViewModel.ReadMaxValue("MFC09")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[9] = (rhs.M10 ?? alternative.M10) / SettingViewModel.ReadMaxValue("MFC10")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[10] = (rhs.M11 ?? alternative.M11) / SettingViewModel.ReadMaxValue("MFC11")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[11] = (rhs.M12 ?? alternative.M12) / SettingViewModel.ReadMaxValue("MFC12")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[12] = (rhs.E01 ?? alternative.E01) / SettingViewModel.ReadMaxValue("EPC01")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[13] = (rhs.E02 ?? alternative.E02) / SettingViewModel.ReadMaxValue("EPC02")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[14] = (rhs.E03 ?? alternative.E03) / SettingViewModel.ReadMaxValue("EPC03")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[15] = (rhs.E04 ?? alternative.E04) / SettingViewModel.ReadMaxValue("EPC04")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[0] = (rhs.M01 ?? alternative.M01) / SettingViewModel.ReadMaxValue("M01")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[1] = (rhs.M02 ?? alternative.M02) / SettingViewModel.ReadMaxValue("M02")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[2] = (rhs.M03 ?? alternative.M03) / SettingViewModel.ReadMaxValue("M03")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[3] = (rhs.M04 ?? alternative.M04) / SettingViewModel.ReadMaxValue("M04")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[4] = (rhs.M05 ?? alternative.M05) / SettingViewModel.ReadMaxValue("M05")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[5] = (rhs.M06 ?? alternative.M06) / SettingViewModel.ReadMaxValue("M06")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[6] = (rhs.M07 ?? alternative.M07) / SettingViewModel.ReadMaxValue("M07")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[7] = (rhs.M08 ?? alternative.M08) / SettingViewModel.ReadMaxValue("M08")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[8] = (rhs.M09 ?? alternative.M09) / SettingViewModel.ReadMaxValue("M09")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[9] = (rhs.M10 ?? alternative.M10) / SettingViewModel.ReadMaxValue("M10")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[10] = (rhs.M11 ?? alternative.M11) / SettingViewModel.ReadMaxValue("M11")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[11] = (rhs.M12 ?? alternative.M12) / SettingViewModel.ReadMaxValue("M12")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[12] = (rhs.E01 ?? alternative.E01) / SettingViewModel.ReadMaxValue("E01")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[13] = (rhs.E02 ?? alternative.E02) / SettingViewModel.ReadMaxValue("E02")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[14] = (rhs.E03 ?? alternative.E03) / SettingViewModel.ReadMaxValue("E03")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[15] = (rhs.E04 ?? alternative.E04) / SettingViewModel.ReadMaxValue("E04")!.Value * PLCService.AnalogControllerOutputVoltage;
             aRecipeFloat[16] = rhs.STemp ?? alternative.STemp;
             aRecipeFloat[17] = rhs.RPress ?? alternative.RPress;
             aRecipeFloat[18] = rhs.SRotation ?? alternative.SRotation;
@@ -428,22 +428,22 @@ namespace SapphireXR_App.Models
     {
         public void update(PlcRecipe recipe)
         {
-            M01 = recipe.aRecipeFloat[0] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC01")!.Value;
-            M02 = recipe.aRecipeFloat[1] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC02")!.Value;
-            M03 = recipe.aRecipeFloat[2] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC03")!.Value;
-            M04 = recipe.aRecipeFloat[3] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC04")!.Value;
-            M05 = recipe.aRecipeFloat[4] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC05")!.Value;
-            M06 = recipe.aRecipeFloat[5] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC06")!.Value;
-            M07 = recipe.aRecipeFloat[6] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC07")!.Value;
-            M08 = recipe.aRecipeFloat[7] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC08")!.Value;
-            M09 = recipe.aRecipeFloat[8] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC09")!.Value;
-            M10 = recipe.aRecipeFloat[9] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC10")!.Value;
-            M11 = recipe.aRecipeFloat[10] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC11")!.Value;
-            M12 = recipe.aRecipeFloat[11] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("MFC12")!.Value;
-            E01 = recipe.aRecipeFloat[12] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("EPC01")!.Value;
-            E02 = recipe.aRecipeFloat[13] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("EPC02")!.Value;
-            E03 = recipe.aRecipeFloat[14] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("EPC03")!.Value;
-            E04 = recipe.aRecipeFloat[15] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("EPC04")!.Value;
+            M01 = recipe.aRecipeFloat[0] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M01")!.Value;
+            M02 = recipe.aRecipeFloat[1] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M02")!.Value;
+            M03 = recipe.aRecipeFloat[2] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M03")!.Value;
+            M04 = recipe.aRecipeFloat[3] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M04")!.Value;
+            M05 = recipe.aRecipeFloat[4] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M05")!.Value;
+            M06 = recipe.aRecipeFloat[5] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M06")!.Value;
+            M07 = recipe.aRecipeFloat[6] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M07")!.Value;
+            M08 = recipe.aRecipeFloat[7] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M08")!.Value;
+            M09 = recipe.aRecipeFloat[8] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M09")!.Value;
+            M10 = recipe.aRecipeFloat[9] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M10")!.Value;
+            M11 = recipe.aRecipeFloat[10] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M11")!.Value;
+            M12 = recipe.aRecipeFloat[11] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M12")!.Value;
+            E01 = recipe.aRecipeFloat[12] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E01")!.Value;
+            E02 = recipe.aRecipeFloat[13] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E02")!.Value;
+            E03 = recipe.aRecipeFloat[14] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E03")!.Value;
+            E04 = recipe.aRecipeFloat[15] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E04")!.Value;
             STemp = recipe.aRecipeFloat[16];
             RPress = recipe.aRecipeFloat[17];
             SRotation = recipe.aRecipeFloat[18];
