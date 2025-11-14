@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+             xmlns:b="clr-namespace:SapphireXR_App.Behavior"
              xmlns:local="clr-namespace:SapphireXR_App.Controls"
              xmlns:view="clr-namespace:SapphireXR_App.Views"
              mc:Ignorable="d"
@@ -37,7 +38,7 @@
         <Border Grid.Row="1" BorderBrush="LightGray"  BorderThickness="1,0,1,1"  Background="{Binding BorderBackground}" 
         CornerRadius="0,0,3,3" x:Name="controllerBorder">
             <StackPanel Orientation="Horizontal">
-                <view:FloatingPointBoxWithMax x:Name="flowCurrent" local:SelectAllFocusBehavior.Enable="True" BorderThickness="0" Height="28" Width="68" FontSize="20" Background="{Binding BorderBackground}"
+                <view:FloatingPointBoxWithMax x:Name="flowCurrent" b:SelectAllFocusBehavior.Enable="True" BorderThickness="0" Height="28" Width="68" FontSize="20" Background="{Binding BorderBackground}"
                         HorizontalContentAlignment="Right" VerticalAlignment="Center" Padding="0" Text="{Binding ControlValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" MaxValue="{Binding MaxValue}"/>
             </StackPanel>
         </Border>

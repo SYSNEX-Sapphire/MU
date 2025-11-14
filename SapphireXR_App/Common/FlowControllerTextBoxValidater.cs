@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.ViewModels;
+using SapphireXR_App.WindowServices;
 using System.ComponentModel;
 using System.Windows.Controls;
 
@@ -174,10 +175,26 @@ namespace SapphireXR_App.Common
                 string? flowControlField = dataGridCell.Column.Header as string;
                 if (flowControlField != null)
                 {
-                    string? flowControllerID = null;
-                    if (Util.RecipeColumnHeaderToControllerID.TryGetValue(flowControlField, out flowControllerID) == true)
+                    switch(flowControlField)
                     {
-                        return validate(textBox, flowControllerID, numberType);
+                        case "Susceptor Temp.":
+                        case "Reactor Press.":
+                        case "Sus. Rotation":
+                            string? controllerID;
+                            if (DeviceDependency.DependentConfiguration.RecipeReactorColumnHeaderToControllerID.TryGetValue(flowControlField, out controllerID) == true)
+                            {
+                                flowControlField = controllerID;
+                            }
+                            else
+                            {
+                                flowControlField = null;
+                            }
+                            break;
+
+                    }
+                    if (flowControlField != null)
+                    {
+                        return validate(textBox, flowControlField, numberType);
                     }
                 }
             }

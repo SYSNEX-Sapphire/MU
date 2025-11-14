@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SapphireXR_App.DeviceDependency;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
@@ -7,12 +8,10 @@ using SapphireXR_App.WindowServices;
 using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Windows.Media;
 using static SapphireXR_App.ViewModels.ManualBatchViewModel;
 
@@ -217,11 +216,11 @@ namespace SapphireXR_App.Common
             {
                 PLCService.WriteFlowControllerTargetValue(batch.AnalogIOUserStates.Select((AnalogIOUserState analogIOUserState) => (analogIOUserState.ID, analogIOUserState.Value)).ToArray(),
                     (short)batch.RampingTime);
-                BitArray valveStates = new BitArray(PLCService.RecipeValves.Count);
+                BitArray valveStates = new BitArray(DependentConfiguration.RecipeValves.Count);
                 foreach (DigitalIOUserState digitalIOUserState in batch.DigitalIOUserStates)
                 {
                     int index;
-                    if (PLCService.ValveIDtoOutputSolValveIdx.TryGetValue(digitalIOUserState.ID, out index) == true && index < valveStates.Count)
+                    if (DependentConfiguration.ValveIDtoOutputSolValveIdx.TryGetValue(digitalIOUserState.ID, out index) == true && index < valveStates.Count)
                     {
                         valveStates[index] = digitalIOUserState.On;
                     }
@@ -299,18 +298,5 @@ namespace SapphireXR_App.Common
                 MessageBox.Show(message);
             }
         }
-
-        public static void ConstraintEmptyToZeroOnDataGridCellCommitForRecipeRunEdit(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            ConstraintEmptyToZeroOnDataGridCellCommit(sender, e, ["Ramp", "Hold", "M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "E01", "E02", "E03", "E04",
-               "LoopRepeat", "LoopEndStep", "Susceptor Temp.", "Reactor Press.", "Sus. Rotation", "Compare Temp."]);
-        }
-
-        public static readonly Dictionary<string, string> RecipeColumnHeaderToControllerID = new Dictionary<string, string>
-        {
-            { "M01", "MFC01" }, { "M02", "MFC02" }, { "M03", "MFC03" }, { "M04", "MFC04" }, { "M05", "MFC05" }, { "M06", "MFC06" }, { "M07", "MFC07" }, { "M08", "MFC08" }, 
-            { "M09", "MFC09" }, { "M10", "MFC10" }, { "M11", "MFC11" }, { "M12", "MFC12" }, { "E01", "EPC01" },  { "E02", "EPC02" }, { "E03", "EPC03" }, { "E04", "EPC04" },
-            { "Susceptor Temp.", "Temperature" }, { "Reactor Press.", "Pressure" }, { "Sus. Rotation", "Rotation" },
-        };
     }
 }

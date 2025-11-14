@@ -71,7 +71,7 @@ namespace SapphireXR_App.ViewModels
 
             private void initializePublishSubscribe()
             {
-                foreach ((string valveID, int index) in PLCService.ValveIDtoOutputSolValveIdx)
+                foreach ((string valveID, int index) in DeviceDependency.DependentConfiguration.ValveIDtoOutputSolValveIdx)
                 {
                     string topicName = "Valve.OnOff." + valveID + ".CurrentRecipeStep";
 
@@ -82,7 +82,7 @@ namespace SapphireXR_App.ViewModels
                     valveStateSubscribers.Add(valveStateSubscriber);
                 }
                
-                foreach ((string flowControllerID, int index) in PLCService.dIndexController)
+                foreach ((string flowControllerID, int index) in DeviceDependency.DependentConfiguration.dIndexController)
                 {
                     string topicName = "FlowControl." + flowControllerID + ".CurrentValue.CurrentRecipeStep";
                     flowValuePublishers[flowControllerID] = ObservableManager<float?>.Get(topicName);

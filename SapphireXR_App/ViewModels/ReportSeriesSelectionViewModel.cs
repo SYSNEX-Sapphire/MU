@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using SapphireXR_App.Models;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Controls;
 using System.Collections;
 using SapphireXR_App.Common;
+using SapphireXR_App.DeviceDependency.Model;
 
 namespace SapphireXR_App.ViewModels
 {

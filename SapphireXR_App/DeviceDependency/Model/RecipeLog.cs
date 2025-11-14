@@ -1,4 +1,6 @@
-﻿namespace SapphireXR_App.Models
+﻿using SapphireXR_App.Models;
+
+namespace SapphireXR_App.DeviceDependency.Model
 {
     public class RecipeLog
     {

@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
-using static SapphireXR_App.Common.RecipeValidator;
+using static SapphireXR_App.DeviceDependency.Common.RecipeValidator;
 
 namespace SapphireXR_App.Models
 {
@@ -359,22 +359,22 @@ namespace SapphireXR_App.Models
             aRecipeShort[3] = rhs.JumpStride;
             aRecipeShort[4] = rhs.LoopCount;
             //Float Type Array
-            aRecipeFloat[0] = (rhs.M01 ?? alternative.M01) / SettingViewModel.ReadMaxValue("M01")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[1] = (rhs.M02 ?? alternative.M02) / SettingViewModel.ReadMaxValue("M02")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[2] = (rhs.M03 ?? alternative.M03) / SettingViewModel.ReadMaxValue("M03")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[3] = (rhs.M04 ?? alternative.M04) / SettingViewModel.ReadMaxValue("M04")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[4] = (rhs.M05 ?? alternative.M05) / SettingViewModel.ReadMaxValue("M05")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[5] = (rhs.M06 ?? alternative.M06) / SettingViewModel.ReadMaxValue("M06")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[6] = (rhs.M07 ?? alternative.M07) / SettingViewModel.ReadMaxValue("M07")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[7] = (rhs.M08 ?? alternative.M08) / SettingViewModel.ReadMaxValue("M08")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[8] = (rhs.M09 ?? alternative.M09) / SettingViewModel.ReadMaxValue("M09")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[9] = (rhs.M10 ?? alternative.M10) / SettingViewModel.ReadMaxValue("M10")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[10] = (rhs.M11 ?? alternative.M11) / SettingViewModel.ReadMaxValue("M11")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[11] = (rhs.M12 ?? alternative.M12) / SettingViewModel.ReadMaxValue("M12")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[12] = (rhs.E01 ?? alternative.E01) / SettingViewModel.ReadMaxValue("E01")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[13] = (rhs.E02 ?? alternative.E02) / SettingViewModel.ReadMaxValue("E02")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[14] = (rhs.E03 ?? alternative.E03) / SettingViewModel.ReadMaxValue("E03")!.Value * PLCService.AnalogControllerOutputVoltage;
-            aRecipeFloat[15] = (rhs.E04 ?? alternative.E04) / SettingViewModel.ReadMaxValue("E04")!.Value * PLCService.AnalogControllerOutputVoltage;
+            aRecipeFloat[0] = (rhs.M01 ?? alternative.M01) / SettingViewModel.ReadMaxValue("M01")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[1] = (rhs.M02 ?? alternative.M02) / SettingViewModel.ReadMaxValue("M02")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[2] = (rhs.M03 ?? alternative.M03) / SettingViewModel.ReadMaxValue("M03")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[3] = (rhs.M04 ?? alternative.M04) / SettingViewModel.ReadMaxValue("M04")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[4] = (rhs.M05 ?? alternative.M05) / SettingViewModel.ReadMaxValue("M05")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[5] = (rhs.M06 ?? alternative.M06) / SettingViewModel.ReadMaxValue("M06")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[6] = (rhs.M07 ?? alternative.M07) / SettingViewModel.ReadMaxValue("M07")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[7] = (rhs.M08 ?? alternative.M08) / SettingViewModel.ReadMaxValue("M08")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[8] = (rhs.M09 ?? alternative.M09) / SettingViewModel.ReadMaxValue("M09")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[9] = (rhs.M10 ?? alternative.M10) / SettingViewModel.ReadMaxValue("M10")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[10] = (rhs.M11 ?? alternative.M11) / SettingViewModel.ReadMaxValue("M11")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[11] = (rhs.M12 ?? alternative.M12) / SettingViewModel.ReadMaxValue("M12")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[12] = (rhs.E01 ?? alternative.E01) / SettingViewModel.ReadMaxValue("E01")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[13] = (rhs.E02 ?? alternative.E02) / SettingViewModel.ReadMaxValue("E02")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[14] = (rhs.E03 ?? alternative.E03) / SettingViewModel.ReadMaxValue("E03")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
+            aRecipeFloat[15] = (rhs.E04 ?? alternative.E04) / SettingViewModel.ReadMaxValue("E04")!.Value * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage;
             aRecipeFloat[16] = rhs.STemp ?? alternative.STemp;
             aRecipeFloat[17] = rhs.RPress ?? alternative.RPress;
             aRecipeFloat[18] = rhs.SRotation ?? alternative.SRotation;
@@ -426,24 +426,48 @@ namespace SapphireXR_App.Models
 
     public class AnalogRecipe
     {
+        public AnalogRecipe(Recipe recipe)
+        {
+            M01 = recipe.M01!.Value;
+            M02 = recipe.M02!.Value;
+            M03 = recipe.M03!.Value;
+            M04 = recipe.M04!.Value;
+            M05 = recipe.M05!.Value;
+            M06 = recipe.M06!.Value;
+            M07 = recipe.M07!.Value;
+            M08 = recipe.M08!.Value;
+            M09 = recipe.M09!.Value;
+            M10 = recipe.M10!.Value;
+            M11 = recipe.M11!.Value;
+            M12 = recipe.M12!.Value;
+            E01 = recipe.E01!.Value;
+            E02 = recipe.E02!.Value;
+            E03 = recipe.E03!.Value;
+            E04 = recipe.E04!.Value;
+            RPress = recipe.RPress!.Value;
+            SRotation = recipe.SRotation!.Value;
+            STemp = recipe.STemp!.Value;
+            CTemp = recipe.CTemp!.Value;
+        }
+
         public void update(PlcRecipe recipe)
         {
-            M01 = recipe.aRecipeFloat[0] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M01")!.Value;
-            M02 = recipe.aRecipeFloat[1] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M02")!.Value;
-            M03 = recipe.aRecipeFloat[2] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M03")!.Value;
-            M04 = recipe.aRecipeFloat[3] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M04")!.Value;
-            M05 = recipe.aRecipeFloat[4] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M05")!.Value;
-            M06 = recipe.aRecipeFloat[5] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M06")!.Value;
-            M07 = recipe.aRecipeFloat[6] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M07")!.Value;
-            M08 = recipe.aRecipeFloat[7] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M08")!.Value;
-            M09 = recipe.aRecipeFloat[8] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M09")!.Value;
-            M10 = recipe.aRecipeFloat[9] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M10")!.Value;
-            M11 = recipe.aRecipeFloat[10] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M11")!.Value;
-            M12 = recipe.aRecipeFloat[11] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M12")!.Value;
-            E01 = recipe.aRecipeFloat[12] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E01")!.Value;
-            E02 = recipe.aRecipeFloat[13] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E02")!.Value;
-            E03 = recipe.aRecipeFloat[14] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E03")!.Value;
-            E04 = recipe.aRecipeFloat[15] / PLCService.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E04")!.Value;
+            M01 = recipe.aRecipeFloat[0] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M01")!.Value;
+            M02 = recipe.aRecipeFloat[1] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M02")!.Value;
+            M03 = recipe.aRecipeFloat[2] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M03")!.Value;
+            M04 = recipe.aRecipeFloat[3] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M04")!.Value;
+            M05 = recipe.aRecipeFloat[4] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M05")!.Value;
+            M06 = recipe.aRecipeFloat[5] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M06")!.Value;
+            M07 = recipe.aRecipeFloat[6] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M07")!.Value;
+            M08 = recipe.aRecipeFloat[7] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M08")!.Value;
+            M09 = recipe.aRecipeFloat[8] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M09")!.Value;
+            M10 = recipe.aRecipeFloat[9] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M10")!.Value;
+            M11 = recipe.aRecipeFloat[10] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M11")!.Value;
+            M12 = recipe.aRecipeFloat[11] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("M12")!.Value;
+            E01 = recipe.aRecipeFloat[12] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E01")!.Value;
+            E02 = recipe.aRecipeFloat[13] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E02")!.Value;
+            E03 = recipe.aRecipeFloat[14] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E03")!.Value;
+            E04 = recipe.aRecipeFloat[15] / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * SettingViewModel.ReadMaxValue("E04")!.Value;
             STemp = recipe.aRecipeFloat[16];
             RPress = recipe.aRecipeFloat[17];
             SRotation = recipe.aRecipeFloat[18];

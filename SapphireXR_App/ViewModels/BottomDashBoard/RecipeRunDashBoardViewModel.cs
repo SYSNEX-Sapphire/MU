@@ -192,7 +192,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
 
         private void initSeriesUpdater()
         {
-            foreach (var (id, index) in PLCService.dIndexController)
+            foreach (var (id, index) in DeviceDependency.DependentConfiguration.dIndexController)
             {
                 ControlTargetValueSeriesUpdaterForRecipeRun controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdaterForRecipeRun(id);
                 ObservableManager<int>.Subscribe("FlowControl." + id + ".ControlValue", controlCurrentValueSeriesUpdater);

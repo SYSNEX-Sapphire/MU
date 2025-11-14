@@ -13,7 +13,7 @@ namespace SapphireXR_App.ViewModels
             if (args != null)
             {
                 string? id = args as string;
-                if (id != null && PLCService.dMonitoringMeterIndex.ContainsKey(id) == true)
+                if (id != null && DeviceDependency.DependentConfiguration.dMonitoringMeterIndex.ContainsKey(id) == true)
                 {
                     ObservableManager<float>.Subscribe("MonitoringPresentValue." + id + ".CurrentValue", this);
                 }

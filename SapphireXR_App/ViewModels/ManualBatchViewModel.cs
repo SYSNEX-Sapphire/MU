@@ -239,11 +239,11 @@ namespace SapphireXR_App.ViewModels
         public ICommand AddCommand => new RelayCommand(() =>
         {
             Batch newBatch = new Batch() { Name = "UserState" };
-            foreach(string flowController in PLCService.RecipeFlowControllers)
+            foreach(string flowController in DeviceDependency.DependentConfiguration.RecipeFlowControllers)
             {
                 newBatch.AnalogIOUserStates.Add(new AnalogIOUserState() { ID = flowController, MaxValue = (int)SettingViewModel.ReadMaxValue(flowController)!, FullIDName = flowController, Name = SettingViewModel.ReadFlowControllerDeviceName(flowController)! });
             }
-            foreach(string valve in PLCService.RecipeValves)
+            foreach(string valve in DeviceDependency.DependentConfiguration.RecipeValves)
             {
                 newBatch.DigitalIOUserStates.Add(new DigitalIOUserState() { ID = valve, Name = SettingViewModel.ReadValveDeviceName(valve)! });
             }

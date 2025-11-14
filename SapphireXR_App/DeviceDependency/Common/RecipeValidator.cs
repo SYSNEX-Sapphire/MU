@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SapphireXR_App.Models;
 
-namespace SapphireXR_App.Common
+namespace SapphireXR_App.DeviceDependency.Common
 {
     internal static class RecipeValidator
     {

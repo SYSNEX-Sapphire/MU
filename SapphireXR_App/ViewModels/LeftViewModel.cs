@@ -290,7 +290,7 @@ namespace SapphireXR_App.ViewModels
 
         public void updateRecipeAvailbleSubstate(BitArray recipeAvaibleSubstate)
         {
-            for (int substate = 0; substate < PLCService.NumRecipeEnableSubConditions; substate++)
+            for (int substate = 0; substate < DeviceDependency.DependentConfiguration.NumRecipeEnableSubConditions; substate++)
             {
                 RecipeEnableConditions[substate].StateColor = UpdateStateColor(recipeAvaibleSubstate[substate]);
             }
@@ -298,7 +298,7 @@ namespace SapphireXR_App.ViewModels
 
         public void updateReactorAvailbleSubstate(BitArray reactorAvaibleSubstate)
         {
-            for (int substate = 0; substate < PLCService.NumReactorEnableSubConditions; substate++)
+            for (int substate = 0; substate < DeviceDependency.DependentConfiguration.NumReactorEnableSubConditions; substate++)
             {
                 ReactorEnableConditions[substate].StateColor = UpdateStateColor(reactorAvaibleSubstate[substate]);
             }
@@ -328,7 +328,7 @@ namespace SapphireXR_App.ViewModels
                         bool onOff = PLCService.ReadBuzzerOnOff();
                         BuzzerIcon = onOff == true ? BuzzerOnIcon : BuzzerOffIcon;
 
-                        PLCService.WriteInterlockEnableState(onOff, PLCService.InterlockEnableSetting.Buzzer);
+                        PLCService.WriteInterlockEnableState(onOff, DeviceDependency.DependentConfiguration.InterlockEnableSetting.Buzzer);
                     }
                     catch(Exception)
                     {

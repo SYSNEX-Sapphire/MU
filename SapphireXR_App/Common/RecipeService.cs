@@ -1,8 +1,9 @@
 ﻿using CsvHelper;
 using Microsoft.Win32;
+using SapphireXR_App.DeviceDependency.Common;
 using SapphireXR_App.Models;
 using System.IO;
-using static SapphireXR_App.Common.RecipeValidator;
+using static SapphireXR_App.DeviceDependency.Common.RecipeValidator;
 
 namespace SapphireXR_App.Common
 {
@@ -67,29 +68,7 @@ namespace SapphireXR_App.Common
             }
 
             Recipe first = recipes.First();
-            AnalogRecipe analogRecipe = new()
-            {
-                M01 = first.M01!.Value,
-                M02 = first.M02!.Value,
-                M03 = first.M03!.Value,
-                M04 = first.M04!.Value,
-                M05 = first.M05!.Value,
-                M06 = first.M06!.Value,
-                M07 = first.M07!.Value,
-                M08 = first.M08!.Value,
-                M09 = first.M09!.Value,
-                M10 = first.M10!.Value,
-                M11 = first.M11!.Value,
-                M12 = first.M12!.Value,
-                E01 = first.E01!.Value,
-                E02 = first.E02!.Value,
-                E03 = first.E03!.Value,
-                E04 = first.E04!.Value,
-                RPress = first.RPress!.Value,
-                SRotation = first.SRotation!.Value,
-                STemp = first.STemp!.Value,
-                CTemp = first.CTemp!.Value
-            };
+            AnalogRecipe analogRecipe = new(first);
 
             PlcRecipe[] aRecipePLC = new PlcRecipe[recipes.Count];
             int i = 0;

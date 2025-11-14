@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SapphireXR_App.Common;
+using SapphireXR_App.DeviceDependency;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using System.Collections;
@@ -98,11 +99,11 @@ namespace SapphireXR_App.ViewModels
                 {
                     foreach ((string name, InterLockD interlockD) in dInterLockD)
                     {
-                        PLCService.InterlockEnableSetting? plcArg = null;
+                        DependentConfiguration.InterlockEnableSetting? plcArg = null;
                         switch (name)
                         {
                             case "SusceptorRotationMotor":
-                                plcArg = PLCService.InterlockEnableSetting.SusceptorRotationMotor;
+                                plcArg = DependentConfiguration.InterlockEnableSetting.SusceptorRotationMotor;
                                 break;
                         }
                         if (plcArg != null)
@@ -135,7 +136,7 @@ namespace SapphireXR_App.ViewModels
                 {
                     foreach ((string name, InterLockA interlockA) in dInterLockA)
                     {
-                        PLCService.InterlockEnableSetting interlockEnableSetting;
+                        DependentConfiguration.InterlockEnableSetting interlockEnableSetting;
                         if (InterlockSettingNameToPLCInterlockEnableSettingEnum.TryGetValue(name, out interlockEnableSetting) == true)
                         {
                             interlockA.PropertyChanged += (sender, args) =>
@@ -155,7 +156,7 @@ namespace SapphireXR_App.ViewModels
                                 }
                             };
                         }
-                        PLCService.InterlockValueSetting interlockValueSetting;
+                        DependentConfiguration.InterlockValueSetting interlockValueSetting;
                         if (InterlockSettingNameToPLCInterlockValueSettingEnum.TryGetValue(name, out interlockValueSetting) == true)
                         {
                             interlockA.PropertyChanged += (sender, args) =>
@@ -289,28 +290,28 @@ namespace SapphireXR_App.ViewModels
                         case nameof(InductionHeaterPowerOnOff):
                             if (InductionHeaterPowerOnOff != null)
                             {
-                                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.GraphiteHeaterPower, InductionHeaterPowerOnOff.Value);
+                                PLCService.WriteOutputCmd1(DependentConfiguration.OutputCmd1Index.GraphiteHeaterPower, InductionHeaterPowerOnOff.Value);
                             }
                             break;
 
                         case nameof(ThermalBathPowerOnOff):
                             if(ThermalBathPowerOnOff != null)
                             {
-                                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.ThermalBathPower, ThermalBathPowerOnOff.Value);
+                                PLCService.WriteOutputCmd1(DependentConfiguration.OutputCmd1Index.ThermalBathPower, ThermalBathPowerOnOff.Value);
                             }
                             break;
 
                         case nameof(VaccumPumpPowerOnOff):
                             if(VaccumPumpPowerOnOff != null)
                             {
-                                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpPower, VaccumPumpPowerOnOff.Value);
+                                PLCService.WriteOutputCmd1(DependentConfiguration.OutputCmd1Index.VaccumPumpPower, VaccumPumpPowerOnOff.Value);
                             }
                             break;
 
                         case nameof(LineHeaterPowerOnOff):
                             if(LineHeaterPowerOnOff != null)
                             {
-                                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.LineHeaterPower, LineHeaterPowerOnOff.Value);
+                                PLCService.WriteOutputCmd1(DependentConfiguration.OutputCmd1Index.LineHeaterPower, LineHeaterPowerOnOff.Value);
                             }
                             break;
                     }
@@ -564,66 +565,66 @@ namespace SapphireXR_App.ViewModels
         private void updateIOState(BitArray ioStateList)
         {
             int io = 0;
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.PowerResetSwitch];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_UpperLimit];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.Cover_LowerLimit];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CylinderAutoSwicthClosed];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CylinderAutoSwicthOpen];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_24V480];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_24V72];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_15VPlus];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SMPS_15VMinus];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_GraphiteHeater];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_ThermalBath];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_VaccumPump];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_LineHeater];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_RotationMotor];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_CoverLiftMotor];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_ThrottleValve];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_GasDetector];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_CabitnetLamp];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.CB_MFCPower];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader1];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader2];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader3];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader4];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader5];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader6];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader7];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.LineHeader8];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.GasDetectorH2];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.GasDetectorH2S];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.GasDetectorH2Se];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.FireSensor];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ExternalScrubberFault];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ExternalH2GasCabinetFault];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ExternalH2SGasCabinetFault];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ExternalH2SeGasCabinetFault];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ExternalUserInputAlarm];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ThermalBath1_Deviaiton];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ThermalBath1_CutOff];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ThermalBath2_Deviaiton];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ThermalBath2_CutOff];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ThermalBath3_Deviaiton];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ThermalBath3_CutOff];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ThermalBath4_Deviaiton];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ThermalBath4_CutOff];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_RED];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_YELLOW];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_GREEN];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_BLUE];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_WHITE];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.SingalTower_BUZZER];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ClampLock];
-            IOList[io++].OnOff = ioStateList[(int)PLCService.IOListIndex.ClampRelease];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.PowerResetSwitch];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.Cover_UpperLimit];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.Cover_LowerLimit];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CylinderAutoSwicthClosed];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CylinderAutoSwicthOpen];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SMPS_24V480];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SMPS_24V72];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SMPS_15VPlus];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SMPS_15VMinus];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_GraphiteHeater];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_ThermalBath];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_VaccumPump];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_LineHeater];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_RotationMotor];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_CoverLiftMotor];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_ThrottleValve];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_GasDetector];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_CabitnetLamp];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.CB_MFCPower];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.LineHeader1];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.LineHeader2];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.LineHeader3];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.LineHeader4];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.LineHeader5];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.LineHeader6];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.LineHeader7];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.LineHeader8];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.GasDetectorH2];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.GasDetectorH2S];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.GasDetectorH2Se];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.FireSensor];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ExternalScrubberFault];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ExternalH2GasCabinetFault];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ExternalH2SGasCabinetFault];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ExternalH2SeGasCabinetFault];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ExternalUserInputAlarm];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ThermalBath1_Deviaiton];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ThermalBath1_CutOff];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ThermalBath2_Deviaiton];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ThermalBath2_CutOff];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ThermalBath3_Deviaiton];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ThermalBath3_CutOff];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ThermalBath4_Deviaiton];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ThermalBath4_CutOff];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SingalTower_RED];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SingalTower_YELLOW];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SingalTower_GREEN];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SingalTower_BLUE];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SingalTower_WHITE];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.SingalTower_BUZZER];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ClampLock];
+            IOList[io++].OnOff = ioStateList[(int)DependentConfiguration.IOListIndex.ClampRelease];
         }
 
         public void initializeSettingToPLC()
         {
             PLCService.WriteAlarmWarningSetting(lAnalogDeviceIO ?? [], lSwitchDI ?? []);
-            for (uint reactor = 0; reactor < PLCService.NumReactor; ++reactor)
+            for (uint reactor = 0; reactor < DependentConfiguration.NumReactor; ++reactor)
             {
-                PLCService.WriteReactorMaxValue((PLCService.Reactor)reactor, dAnalogDeviceIO.Where(analogDeviceIO => analogDeviceIO.Key == ReactorEnumToNameMap[(PLCService.Reactor)reactor]).Select(analogDeviceIO => analogDeviceIO.Value.MaxValue).First());
+                PLCService.WriteReactorMaxValue((DependentConfiguration.Reactor)reactor, dAnalogDeviceIO.Where(analogDeviceIO => analogDeviceIO.Key == ReactorEnumToNameMap[(DependentConfiguration.Reactor)reactor]).Select(analogDeviceIO => analogDeviceIO.Value.MaxValue).First());
             }
             PLCService.CommitReactorMaxValueToPLC();
 
@@ -635,22 +636,22 @@ namespace SapphireXR_App.ViewModels
             PLCService.CommitDigitalDeviceInterlockSettingToPLC();
 
             BitArray outputCmd1 = PLCService.ReadOutputCmd1();
-            InductionHeaterPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.GraphiteHeaterPower];
-            ThermalBathPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.ThermalBathPower];
-            VaccumPumpPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpPower];
-            LineHeaterPowerOnOff = outputCmd1[(int)PLCService.OutputCmd1Index.LineHeaterPower];
+            InductionHeaterPowerOnOff = outputCmd1[(int)DependentConfiguration.OutputCmd1Index.GraphiteHeaterPower];
+            ThermalBathPowerOnOff = outputCmd1[(int)DependentConfiguration.OutputCmd1Index.ThermalBathPower];
+            VaccumPumpPowerOnOff = outputCmd1[(int)DependentConfiguration.OutputCmd1Index.VaccumPumpPower];
+            LineHeaterPowerOnOff = outputCmd1[(int)DependentConfiguration.OutputCmd1Index.LineHeaterPower];
 
             if (dInterLockA != null)
             {
                 foreach ((string name, InterLockA interlockA) in dInterLockA)
                 {
-                    PLCService.InterlockEnableSetting interlockEnableSetting;
+                    DependentConfiguration.InterlockEnableSetting interlockEnableSetting;
                     if (InterlockSettingNameToPLCInterlockEnableSettingEnum.TryGetValue(name, out interlockEnableSetting) == true)
                     {
                         PLCService.WriteInterlockEnableState(interlockA.IsEnable, interlockEnableSetting);
                           
                     }
-                    PLCService.InterlockValueSetting interlockValueSetting;
+                    DependentConfiguration.InterlockValueSetting interlockValueSetting;
                     if(InterlockSettingNameToPLCInterlockValueSettingEnum.TryGetValue(name, out interlockValueSetting) == true)
                     {
                         try
@@ -667,11 +668,11 @@ namespace SapphireXR_App.ViewModels
             {
                 foreach((string name, InterLockD interlockD) in dInterLockD)
                 {
-                    PLCService.InterlockEnableSetting? plcArg = null;
+                    DependentConfiguration.InterlockEnableSetting? plcArg = null;
                     switch (name)
                     {
                         case "SusceptorRotationMotor":
-                            plcArg = PLCService.InterlockEnableSetting.SusceptorRotationMotor;
+                            plcArg = DependentConfiguration.InterlockEnableSetting.SusceptorRotationMotor;
                             break;
                     }
                     if(plcArg != null)
@@ -688,7 +689,7 @@ namespace SapphireXR_App.ViewModels
         {
             List<Device> valveDeviceIO = new List<Device>();
 
-            foreach(string valveID in PLCService.ValveIDtoOutputSolValveIdx.Keys)
+            foreach(string valveID in DependentConfiguration.ValveIDtoOutputSolValveIdx.Keys)
             {
                 valveDeviceIO.Add(new () { ID = valveID, Name = valveID });
             }

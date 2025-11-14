@@ -1,4 +1,5 @@
 ﻿using SapphireXR_App.Common;
+using SapphireXR_App.DeviceDependency;
 using SapphireXR_App.ViewModels;
 using System.Collections;
 using System.Windows;
@@ -17,7 +18,7 @@ namespace SapphireXR_App.Models
         public static void WriteValveState(string valveID, bool onOff)
         {
             int index;
-            if (baReadValveStatePLC != null && ValveIDtoOutputSolValveIdx.TryGetValue(valveID, out index) == true)
+            if (baReadValveStatePLC != null && DependentConfiguration.ValveIDtoOutputSolValveIdx.TryGetValue(valveID, out index) == true)
             {
                 baReadValveStatePLC[index] = onOff;
                 DoWriteValveState(baReadValveStatePLC);
@@ -65,7 +66,7 @@ namespace SapphireXR_App.Models
             Ads.WriteAny(hControlModeCmd, (short)controlMode);
         }
 
-        public static void WriteOutputCmd1(OutputCmd1Index index, bool powerOn)
+        public static void WriteOutputCmd1(DeviceDependency.DependentConfiguration.OutputCmd1Index index, bool powerOn)
         {
             if (bOutputCmd1 != null)
             {
@@ -106,25 +107,25 @@ namespace SapphireXR_App.Models
 
         public static void WriteAnalogDeviceAlarmState(string deviceID, bool bitValue)
         {
-            WriteDeviceAlarmWarningSettingState(deviceID, 1, bitValue, dAnalogDeviceAlarmWarningBit);
+            WriteDeviceAlarmWarningSettingState(deviceID, 1, bitValue, DependentConfiguration.dAnalogDeviceAlarmWarningBit);
             InterlockEnableLowerIndiceToCommit.Add(1);
         }
 
         public static void WriteAnalogDeviceWarningState(string deviceID, bool bitValue)
         {
-            WriteDeviceAlarmWarningSettingState(deviceID, 2, bitValue, dAnalogDeviceAlarmWarningBit);
+            WriteDeviceAlarmWarningSettingState(deviceID, 2, bitValue, DependentConfiguration.dAnalogDeviceAlarmWarningBit);
             InterlockEnableLowerIndiceToCommit.Add(2);
         }
 
         public static void WriteDigitalDeviceAlarmState(string deviceID, bool bitValue)
         {
-            WriteDeviceAlarmWarningSettingState(deviceID, 3, bitValue, dDigitalDeviceAlarmWarningBit);
+            WriteDeviceAlarmWarningSettingState(deviceID, 3, bitValue, DependentConfiguration.dDigitalDeviceAlarmWarningBit);
             InterlockEnableUpperIndiceToCommit.Add(3);
         }
 
         public static void WriteDigitalDeviceWarningState(string deviceID, bool bitValue)
         {
-            WriteDeviceAlarmWarningSettingState(deviceID, 4, bitValue, dDigitalDeviceAlarmWarningBit);
+            WriteDeviceAlarmWarningSettingState(deviceID, 4, bitValue, DependentConfiguration.dDigitalDeviceAlarmWarningBit);
             InterlockEnableUpperIndiceToCommit.Add(4);
         }
 
@@ -164,20 +165,20 @@ namespace SapphireXR_App.Models
             {
                 if (analogDeviceIO.ID != null)
                 {
-                    setBit(analogDeviceIO.ID, 1, analogDeviceIO.AlarmSet, dAnalogDeviceAlarmWarningBit);
-                    setBit(analogDeviceIO.ID, 2, analogDeviceIO.WarningSet, dAnalogDeviceAlarmWarningBit);
+                    setBit(analogDeviceIO.ID, 1, analogDeviceIO.AlarmSet, DependentConfiguration.dAnalogDeviceAlarmWarningBit);
+                    setBit(analogDeviceIO.ID, 2, analogDeviceIO.WarningSet, DependentConfiguration.dAnalogDeviceAlarmWarningBit);
                 }
             }
             foreach (SwitchDI switchID in switchDIs)
             {
                 if (switchID.ID != null)
                 {
-                    setBit(switchID.ID, 3, switchID.AlarmSet, dDigitalDeviceAlarmWarningBit);
-                    setBit(switchID.ID, 4, switchID.WarningSet, dDigitalDeviceAlarmWarningBit);
+                    setBit(switchID.ID, 3, switchID.AlarmSet, DependentConfiguration.dDigitalDeviceAlarmWarningBit);
+                    setBit(switchID.ID, 4, switchID.WarningSet, DependentConfiguration.dDigitalDeviceAlarmWarningBit);
                 }
             }
 
-            for (uint alarmWarningSettingIndex = 1; alarmWarningSettingIndex < (NumAlarmWarningArraySize - 1); alarmWarningSettingIndex++)
+            for (uint alarmWarningSettingIndex = 1; alarmWarningSettingIndex < (DependentConfiguration.NumAlarmWarningArraySize - 1); alarmWarningSettingIndex++)
             {
                 Ads.WriteAny(hInterlockEnable[alarmWarningSettingIndex], InterlockEnables[alarmWarningSettingIndex]);
             }
@@ -237,7 +238,7 @@ namespace SapphireXR_App.Models
             WriteFirstInterlockSetting(onOff, 2);
         }
 
-        public static void WriteInterlockEnableState(bool onOff, InterlockEnableSetting interlockEnableSetting)
+        public static void WriteInterlockEnableState(bool onOff, DependentConfiguration.InterlockEnableSetting interlockEnableSetting)
         {
             InterlockEnables[0] = SetBit(onOff, InterlockEnables[0], (int)interlockEnableSetting);
         }
@@ -247,7 +248,7 @@ namespace SapphireXR_App.Models
             Ads.WriteAny(hInterlockEnable[0], InterlockEnables[0]);
         }
 
-        public static void WriteInterlockValueState(float value, InterlockValueSetting interlockEnableSetting)
+        public static void WriteInterlockValueState(float value, DependentConfiguration.InterlockValueSetting interlockEnableSetting)
         {
             InterlockSetIndiceToCommit[((int)interlockEnableSetting) - 1] = value;
         }
@@ -280,7 +281,7 @@ namespace SapphireXR_App.Models
 
         public static void WriteFlowControllerTargetValue(string controllerID, float targetValue, short rampTime)
         {
-            int controllerIDIndex = dIndexController[controllerID];
+            int controllerIDIndex = DependentConfiguration.dIndexController[controllerID];
             switch (controllerIDIndex)
             {
                 case 16:
@@ -304,7 +305,7 @@ namespace SapphireXR_App.Models
                     {
                         throw new ArgumentException(controllerID + " is invalid");
                     }
-                    Ads.WriteAny(hAnalogControllers[controllerIDIndex].hCVControllerInput, new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = ((float)targetValue / (float)maxValue * AnalogControllerOutputVoltage) });
+                    Ads.WriteAny(hAnalogControllers[controllerIDIndex].hCVControllerInput, new RampGeneratorInput { restart = true, rampTime = (ushort)rampTime, targetValue = ((float)targetValue / (float)maxValue * DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage) });
                     break;
             }
         }
@@ -314,14 +315,14 @@ namespace SapphireXR_App.Models
             Ads.WriteAny(hInterlockset[lineHeaterNum + 11], targetValue);
         }
 
-        public static void WriteReactorMaxValue(Reactor reactor, float maxValue)
+        public static void WriteReactorMaxValue(DependentConfiguration.Reactor reactor, float maxValue)
         {
             ReactorMaxValueToCommit[reactor] = maxValue;
         }
 
         public static void CommitReactorMaxValueToPLC()
         {
-            foreach ((Reactor reactor, float maxValue) in ReactorMaxValueToCommit)
+            foreach ((DependentConfiguration.Reactor reactor, float maxValue) in ReactorMaxValueToCommit)
             {
                 Ads.WriteAny(hReactorMaxValue[(int)reactor], maxValue);
             }

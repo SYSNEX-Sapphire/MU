@@ -6,7 +6,6 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
-using SapphireXR_App.Models;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -16,6 +15,7 @@ using OxyPlot.Annotations;
 using SapphireXR_App.WindowServices;
 using System.Windows.Media;
 using OxyPlot.Wpf;
+using SapphireXR_App.DeviceDependency.Model;
 
 namespace SapphireXR_App.ViewModels
 {

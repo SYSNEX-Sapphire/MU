@@ -85,7 +85,7 @@ namespace SapphireXR_App.ViewModels.BottomDashBoard
 
         private void seriesUpdaterSetting()
         {
-            foreach (var (id, index) in PLCService.dIndexController)
+            foreach (var (id, index) in DeviceDependency.DependentConfiguration.dIndexController)
             {
                 ControlTargetValueSeriesUpdaterFromCurrentPLCState controlCurrentValueSeriesUpdater = new ControlTargetValueSeriesUpdaterFromCurrentPLCState(id);
                 ObservableManager<(float, float)>.Subscribe("FlowControl." + id + ".ControlTargetValue.CurrentPLCState", controlCurrentValueSeriesUpdater);

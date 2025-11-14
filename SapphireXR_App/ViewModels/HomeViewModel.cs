@@ -162,7 +162,7 @@ namespace SapphireXR_App.ViewModels
                     prevThrottleValveControlMode = CurrentThrottleValveControlMode;
                 }
                 BitArray outputCmd1 = PLCService.ReadOutputCmd1();
-                IsVaccumPumpOn = outputCmd1[(int)PLCService.OutputCmd1Index.VaccumPumpControl];
+                IsVaccumPumpOn = outputCmd1[(int)DeviceDependency.DependentConfiguration.OutputCmd1Index.VaccumPumpControl];
             }
             catch (Exception ex)
             {
@@ -174,7 +174,7 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpControl, on);
+                PLCService.WriteOutputCmd1(DeviceDependency.DependentConfiguration.OutputCmd1Index.VaccumPumpControl, on);
             }
             catch (Exception exception)
             {
@@ -198,7 +198,7 @@ namespace SapphireXR_App.ViewModels
             {
                 if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.DialogResult.Ok)
                 {
-                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.VaccumPumpReset, true);
+                    PLCService.WriteOutputCmd1(DeviceDependency.DependentConfiguration.OutputCmd1Index.VaccumPumpReset, true);
                 }
             }
             catch (Exception exception)
@@ -223,7 +223,7 @@ namespace SapphireXR_App.ViewModels
             {
                 if (ValveOperationEx.Show("Motor Reset", "Reset 하시겠습니까?") == Enums.DialogResult.Ok)
                 {
-                    PLCService.WriteOutputCmd1(PLCService.OutputCmd1Index.RotationReset, true);
+                    PLCService.WriteOutputCmd1(DeviceDependency.DependentConfiguration.OutputCmd1Index.RotationReset, true);
                     MotorResetEnable = false;
                     
                 }
