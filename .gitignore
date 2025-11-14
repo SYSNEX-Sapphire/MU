@@ -367,19 +367,10 @@ FodyWeavers.xsd
 /MU_PLC/MU_PLC.project.~u
 /MU_PLC/_Boot
 /MU_PLC/MU/_CompileInfo_Upload
-/MU_PLC/_Boot/TargetDescription.xml
-/MU_PLC/_Boot/TwinCAT RT (x64)/CurrentConfig
-/MU_PLC/_Boot/TwinCAT RT (x64)/Plc
-/MU_PLC/_Boot/TwinCAT RT (x64)
 /MU_PLC/MU/_Libraries/beckhoff automation gmbh
-/MU_PLC/_Boot/TwinCAT CE7 (ARMV7)/Plc
-/MU_PLC/_Boot/TwinCAT CE7 (ARMV7)/CurrentConfig
 /MU_PLC/TrialLicense.tclrs
 /MU_PLC/MU_PLC.tsproj
 /MU_PLC/MU_PLC.sln
-/MU_PLC/_Boot/CurrentConfig
-/MU_PLC/_Boot
-/MU_PLC/_Boot/TargetDescription.xml
 /MU_PLC/MU/MU.tmc
 /MU_PLC/MU_PLC.~u
 /MU_PLC/MU/MU.tmcRefac
