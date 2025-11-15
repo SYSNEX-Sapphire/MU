@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_MFC_INDEX" Id="{b39b1f9d-8e31-41d7-ad97-865de2be95a5}">
+    <Declaration><![CDATA[TYPE E_MFC_INDEX :
+(
+	MFC_CH_1,
+	MFC_CH_2,
+	MFC_CH_3,
+	MFC_CH_4,
+	MFC_CH_5,
+	MFC_CH_6,
+	MFC_CH_7,
+	MFC_CH_8,
+	MFC_CH_9,
+	MFC_CH_10,
+	MFC_CH_11
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_ComState" Id="{325f89ff-7e10-4e89-8b95-b5d412afb396}">
+    <Declaration><![CDATA[TYPE E_ComState :
+(
+	IDLE,
+	OPEN,
+	CONNECTED,
+	EXIST_MSG,
+	SENDING,
+	WAITING_RESPONSE,
+	PARSING,
+	CLOSING,
+	ERROR
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="ST_UTILITY" Id="{6ebdcb84-dcf3-412e-a439-13c136cc2936}">
+  <DUT Name="ST_UTILITY" Id="{20f1ecec-1dc6-4727-9841-30df89d490e8}">
     <Declaration><![CDATA[TYPE ST_UTILITY :
 STRUCT
 	TOTAL_FLOW_CAL:DINT;

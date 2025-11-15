@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL_INTERFACE_UI" Id="{39e04069-2aa1-47f6-95f8-4e7243c4d4fa}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	MainModule:ST_MAIN_MODULE;
+	fbLineHeater_Manager:FB_LINE_HEATER_MANAGER;
+	RotationResetTon: TON;
+	MAXVALUE: ARRAY[1..20] OF INT;
+	
+	Horiba_Mfc : ARRAY[1..10] OF ST_MfcData := [
+											(Addr:='@01'),(Addr:='@02'),(Addr:='@03'),(Addr:='@04'),(Addr:='@05'),
+											(Addr:='@06'),(Addr:='@07'),(Addr:='@08'),(Addr:='@09'),(Addr:='@0A')];
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

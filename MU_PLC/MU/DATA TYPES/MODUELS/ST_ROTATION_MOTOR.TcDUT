@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <DUT Name="ST_ROTATION_MOTOR" Id="{8dae23f0-9ce7-4cdf-b0f1-1ff17a0be558}">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ROTATION_MOTOR" Id="{8f21ebf1-de96-4041-af96-ebe243217a37}">
     <Declaration><![CDATA[TYPE ST_ROTATION_MOTOR :
 STRUCT
 	CURRENT_STATUS:DINT;

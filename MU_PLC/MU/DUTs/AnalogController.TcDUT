@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <DUT Name="AnalogController" Id="{4bd54bf5-cb89-4b47-8a5b-7834b54c8812}">
     <Declaration><![CDATA[TYPE AnalogController :
 STRUCT
 	pv : REAL;
+	
 	cvController : FB_ControlRampGenerator;
 END_STRUCT
 END_TYPE
