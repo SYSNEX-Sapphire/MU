@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <GVL Name="GVL_CONSTANT" Id="{98785915-f5a2-4621-8795-7e3f35033e2f}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL CONSTANT
+	MFC_SEND_CYCLE_TIME:TIME :=T#200MS;
+	
 	EL3064MaxValueH	: REAL := 16383; //0~5V Half Input
 	EL3064MaxValue 	: REAL := 32767; //0~10V
 	EL4004MaxValueH	: REAL := 16383; //0~5V Half Output
@@ -15,22 +17,25 @@ VAR_GLOBAL CONSTANT
 	
 	NumAnalogInput : UINT := 40;
 	NumAnalogOutput : UINT := 42;
-	NumDigitalInput : UINT := 9;
-	NumDigitalOutput : UINT := 5;
+	NumDigitalInput : UINT := 80; //jhkang Spare 포함
+	NumDigitalOutput : UINT := 50;//jhkang Spare 포함
 	
 	NumOutputCmd : UINT := 3;
 	NumInputState : UINT := 6;
 	
 	NumInterlockSettingThreshold : UINT := 20;
+	NumInterlockSettingEnable : UINT := 8;
 	NumInterlockSettingEnableThreshold : UINT := 20;
-	NumInterlockSettingDigitalEnable : UINT := 6;
-	NumInterlockSettingAnalogEnable : UINT := 6;
+	NumInterlockSettingDigitalEnable : UINT := 18;
+	NumInterlockSettingAnalogEnable : UINT := 15;
+	NumInterlockSettingInterlockEnable : UINT := 15;
+	
 	NumLogicalInterlockState : UINT := 14;
 	NumInterlockAlarmWarningState : UINT := 36;
 	NumInterlockRecipeEnableSubstate : UINT := 11;
 	NumInterlockOpenReactorSubstate : UINT := 12;
 	
-	NumSolValve : UINT := 28;
+	NumSolValve : UINT := 33;
 	NumMonitoring : UINT := 18;
 	
 	MaxRecipeStep : UINT := 100;
@@ -38,6 +43,9 @@ VAR_GLOBAL CONSTANT
 	RecipeNumReactorCondition : UINT := 5;
 	
 	AnalogControllerOutputVoltage : REAL := 5;
+	
+	cSTX : BYTE := 16#02;
+	cETX : BYTE := 16#03;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

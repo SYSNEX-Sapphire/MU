@@ -11,6 +11,17 @@ VAR_GLOBAL
 	
 	LineHeater_data_1	:ST_LineHeater_Data;
 	LineHeater_data_2	:ST_LineHeater_Data;
+	
+	(*HORIBA MFC용 *)
+	fbSL : SerialLineControl;
+	
+	
+	TxBufferTB_MFC : ComBuffer; (* Receive data buffer; used with all receive function blocks *)
+	RxBufferTB_MFC : ComBuffer; (* Transmit data buffer; used with all receive function blocks *)
+	
+	EL6021_In AT %I* : ARRAY[0..21] OF BYTE; (* Terminal → PLC *)
+	EL6021_Out AT %Q* : ARRAY[0..21] OF BYTE; (* PLC → Terminal *)
+	
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

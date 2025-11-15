@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="P91_Monitoring" Id="{4f91223e-09c8-40bc-a729-040528b0179c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P91_Monitoring
 VAR
@@ -26,18 +26,20 @@ bUtilityFault.3		:= GVL_IO_GAS_CABINET.DI_05_ExternalUserInputAlarm;
 TimeCycle(IN:=TRUE, PT:=T#100MS); // 100MS Refresh Reading Time
 IF TimeCycle.Q THEN
 	TimeCycle(IN:=FALSE);
-	_DOR_EXHAUST();
+	_DOR_EXHAUST()
+;
+
 	// Reactor Ultimate Pressure Gauge
-	GVL_IO.aMonitoring_PV[1] := GVL_IO.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_Ultimate_Pressure] / GVL_CONSTANT.EL3064MaxValue * 10; //Ultimate Pressure 10Torr, 0~10V, Cal. x10
+	GVL_IO.aMonitoring_PV[1] := GVL_IO.io.analog.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_Ultimate_Pressure] / GVL_CONSTANT.EL3064MaxValue * 10; //Ultimate Pressure 10Torr, 0~10V, Cal. x10
 	GVL_IO.aMonitoring_PV[2] := JhValue_EXHAUST;
 	GVL_IO.aMonitoring_PV[3] := JhValue_DOR;
-	GVL_IO.aMonitoring_PV[4] := GVL_IO.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_GAS_Pressure_N2] / GVL_CONSTANT.EL3064MaxValue * 10; //N2 Cal. 6.89 bar  
-	GVL_IO.aMonitoring_PV[5] := GVL_IO.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_GAS_Pressure_H2] / GVL_CONSTANT.EL3064MaxValue * 10; //H2 Cal. 6.89 bar
-	GVL_IO.aMonitoring_PV[6] := GVL_IO.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_GAS_Pressure_H2S] / GVL_CONSTANT.EL3064MaxValue * 10; //NH3 Cal. 6.89 bar
-	GVL_IO.aMonitoring_PV[7] := GVL_IO.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_GAS_Pressure_H2Se] / GVL_CONSTANT.EL3064MaxValue * 10; // Cal. 6.89 bar
-	GVL_IO.aMonitoring_PV[8] := GVL_IO.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_CoolingWafer_SH] * 0.1; //  // PT100, Shower Head, Cal. 0.1
-	GVL_IO.aMonitoring_PV[9] := GVL_IO.aAnalogInputIO2[1] / GVL_CONSTANT.EL3102MAxValue * 10;
-	GVL_IO.aMonitoring_PV[10] := GVL_IO.aAnalogInputIO2[2] / GVL_CONSTANT.EL3102MAxValue * 10 ; 
+	GVL_IO.aMonitoring_PV[4] := GVL_IO.io.analog.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_GAS_Pressure_N2] / GVL_CONSTANT.EL3064MaxValue * 10; //N2 Cal. 6.89 bar  
+	GVL_IO.aMonitoring_PV[5] := GVL_IO.io.analog.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_GAS_Pressure_H2] / GVL_CONSTANT.EL3064MaxValue * 10; //H2 Cal. 6.89 bar
+	GVL_IO.aMonitoring_PV[6] := GVL_IO.io.analog.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_GAS_Pressure_H2S] / GVL_CONSTANT.EL3064MaxValue * 10; //NH3 Cal. 6.89 bar
+	GVL_IO.aMonitoring_PV[7] := GVL_IO.io.analog.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_GAS_Pressure_H2Se] / GVL_CONSTANT.EL3064MaxValue * 10; // Cal. 6.89 bar
+	GVL_IO.aMonitoring_PV[8] := GVL_IO.io.analog.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_CoolingWafer_SH] * 0.1; //  // PT100, Shower Head, Cal. 0.1
+//	GVL_IO.aMonitoring_PV[9] := GVL_IO.io.analog.aAnalogInputIO2[1] / GVL_CONSTANT.EL3102MAxValue * 10;
+//	GVL_IO.aMonitoring_PV[10] := GVL_IO.io.analog.aAnalogInputIO2[2] / GVL_CONSTANT.EL3102MAxValue * 10 ; 
 	GVL_IO.aMonitoring_PV[11] := WORD_TO_REAL(P11_E3508.wE3508_PowerRate)*0.1; //divided to 10 PowerRate
 	GVL_IO.aMonitoring_PV[12] := P12_IQ_PLUS.wByteValvePosition_PV_Monitoring;
 	GVL_IO.aMonitoring_PV[13] := P14_ThermalBath.rTemperature_PV[1];
@@ -45,44 +47,49 @@ IF TimeCycle.Q THEN
 	GVL_IO.aMonitoring_PV[15] := P14_ThermalBath.rTemperature_PV[3];
 	GVL_IO.aMonitoring_PV[16] := P14_ThermalBath.rTemperature_PV[4];
 	
-	// A Line으로 들어가는 MFC 총량
+//jhkang_251112
+//aController_PV 협의 필요 
+//	GVL_IO.aMonitoring_PV[17] := GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_01];
 	
-	GVL_IO.aMonitoring_PV[17] := GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_01];
-	
-	IF  GVL_IO_VALVE.DO_00_V17GasH2SeManifoldRun = TRUE THEN
-		GVL_IO.aMonitoring_PV[17]:=GVL_IO.aMonitoring_PV[17] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_03];
-	END_IF
-		IF  GVL_IO_VALVE.DO_00_V18GasH2SManifoldRun = TRUE THEN
-		GVL_IO.aMonitoring_PV[17]:=GVL_IO.aMonitoring_PV[17] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_04];
-	END_IF
-		IF  GVL_IO_VALVE.DO_00_V19Source_4ChalcogenManifoldRun = TRUE THEN
-		GVL_IO.aMonitoring_PV[17]:=GVL_IO.aMonitoring_PV[17] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_08];
-	END_IF
-	
-	
+//	IF  GVL_IO_VALVE.DO_00_V17GasH2SeManifoldRun = TRUE THEN
+//		GVL_IO.aMonitoring_PV[17]:=GVL_IO.aMonitoring_PV[17] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_03];
+//	END_IF
+//		IF  GVL_IO_VALVE.DO_00_V18GasH2SManifoldRun = TRUE THEN
+//		GVL_IO.aMonitoring_PV[17]:=GVL_IO.aMonitoring_PV[17] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_04];
+//	END_IF
+//		IF  GVL_IO_VALVE.DO_00_V19Source_4ChalcogenManifoldRun = TRUE THEN
+//		GVL_IO.aMonitoring_PV[17]:=GVL_IO.aMonitoring_PV[17] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_08];
+//	END_IF
 	
 	
 	
-	GVL_IO.aMonitoring_PV[18] := GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_02];
-	IF  GVL_IO_VALVE.DO_00_V14Source_1TMInManifoldRun = TRUE THEN
-		GVL_IO.aMonitoring_PV[18]:=GVL_IO.aMonitoring_PV[18] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_05];
-	END_IF
-	IF  GVL_IO_VALVE.DO_00_V15Source_2TMGaManifoldRun = TRUE THEN
-		GVL_IO.aMonitoring_PV[18]:=GVL_IO.aMonitoring_PV[18] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_06];
-	END_IF
-	IF  GVL_IO_VALVE.DO_00_V16Source_3DMSeManifoldRun = TRUE THEN
-		GVL_IO.aMonitoring_PV[18]:=GVL_IO.aMonitoring_PV[18] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_07];
-	END_IF
+//	GVL_IO.aMonitoring_PV[18] := GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_02];
+//	IF  GVL_IO_VALVE.DO_00_V14Source_1TMInManifoldRun = TRUE THEN
+//		GVL_IO.aMonitoring_PV[18]:=GVL_IO.aMonitoring_PV[18] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_05];
+//	END_IF
+//	IF  GVL_IO_VALVE.DO_00_V15Source_2TMGaManifoldRun = TRUE THEN
+//		GVL_IO.aMonitoring_PV[18]:=GVL_IO.aMonitoring_PV[18] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_06];
+//	END_IF
+//	IF  GVL_IO_VALVE.DO_00_V16Source_3DMSeManifoldRun = TRUE THEN
+//		GVL_IO.aMonitoring_PV[18]:=GVL_IO.aMonitoring_PV[18] + GVL_IO.aController_PV[E_aAnalogInputIO_Index.E_PV_MFC_07];
+//	END_IF
 END_IF]]></ST>
     </Implementation>
     <Action Name="_DOR_EXHAUST" Id="{3a544091-2a8a-431a-9449-2e6822a37084}">
       <Implementation>
-        <ST><![CDATA[GVL_SEQUENCE.FB_DOR_PRESSURE_AVG(newValue:=F_GetDorPressure(GVL_IO.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_DOR_PRESSURE]),Output=>JhValue_DOR);
-GVL_SEQUENCE.FB_EXHAUST_AVG(newValue:=F_GetDorPressure(GVL_IO.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_Exhaust_Pressure]),Output=>JhValue_EXHAUST);]]></ST>
+        <ST><![CDATA[GVL_SEQUENCE.FB_DOR_PRESSURE_AVG(newValue:=F_GetDorPressure(GVL_IO.io.analog.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_DOR_PRESSURE]),Output=>JhValue_DOR);
+GVL_SEQUENCE.FB_EXHAUST_AVG(newValue:=F_GetDorPressure(GVL_IO.io.analog.aAnalogInputIO[E_aAnalogInputIO_Index.E_PV_Exhaust_Pressure]),Output=>JhValue_EXHAUST);]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="P91_Monitoring">
-      <LineId Id="315" Count="59" />
+      <LineId Id="385" Count="13" />
+      <LineId Id="457" Count="1" />
+      <LineId Id="399" Count="16" />
+      <LineId Id="446" Count="0" />
+      <LineId Id="416" Count="0" />
+      <LineId Id="445" Count="0" />
+      <LineId Id="419" Count="11" />
+      <LineId Id="433" Count="11" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="P91_Monitoring._DOR_EXHAUST">

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="P12_IQ_PLUS" Id="{e511b755-5d71-4ab9-9c97-639ef910a29b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P12_IQ_PLUS
 VAR
@@ -52,128 +52,133 @@ VAR CONSTANT
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//Model : IQ Plus 
-//Pressure Range : 0 ~ 1,000 Torr
-IF GVL_COMMAND_FROM_UI.CMD_THROTTLE_PRESSURE_POSITION_MODE THEN //true: Pressure False:Position
-	GVL_DEVICE_NET_IQ_PLUS.nOutputSetType := 1; // Pressure Control
-ELSE
-	GVL_DEVICE_NET_IQ_PLUS.nOutputSetType := 2; // Position Control
-END_IF
+      <ST><![CDATA[//jhkang_251112
+////Model : IQ Plus 
+////Pressure Range : 0 ~ 1,000 Torr
+//IF GVL_COMMAND_FROM_UI.CMD_THROTTLE_PRESSURE_POSITION_MODE THEN //true: Pressure False:Position
+//	GVL_DEVICE_NET_IQ_PLUS.nOutputSetType := 1; // Pressure Control
+//ELSE
+//	GVL_DEVICE_NET_IQ_PLUS.nOutputSetType := 2; // Position Control
+//END_IF
 
-nSetType := GVL_DEVICE_NET_IQ_PLUS.nOutputSetType;
-nOutputSetType:=nSetType;
-
-
-_DIgitalInput();
-_CalData();
-_DigitalOutput();
+//nSetType := GVL_DEVICE_NET_IQ_PLUS.nOutputSetType;
+//nOutputSetType:=nSetType;
 
 
-nTValveMode := WORD_TO_USINT(GVL_IO.aOutputCmd[2]); //Throttle Valve Mode Setting 0:Normal 1:Close 2:Open 3:Hold 4:Reset]]></ST>
+//_DIgitalInput();
+//_CalData();
+//_DigitalOutput();
+
+
+//nTValveMode := WORD_TO_USINT(GVL_IO.aOutputCmd[2]); //Throttle Valve Mode Setting 0:Normal 1:Close 2:Open 3:Hold 4:Reset]]></ST>
     </Implementation>
     <Action Name="_CalData" Id="{217fbe83-a237-4fef-960a-68490e85a19a}">
       <Implementation>
-        <ST><![CDATA[// nOutputMode
-// 0 : uses setpoint and setpoint type to control the valve.
-// 1 : Does not use setpoint and setpoint type to operate the valve.
-// 2 : Does not use setpoint and setpoint type to operate the valve.
-// 3 : Holds valve in current position.
-// 4 : Reset the controller.
+        <ST><![CDATA[//jhkang_251112
+//// nOutputMode
+//// 0 : uses setpoint and setpoint type to control the valve.
+//// 1 : Does not use setpoint and setpoint type to operate the valve.
+//// 2 : Does not use setpoint and setpoint type to operate the valve.
+//// 3 : Holds valve in current position.
+//// 4 : Reset the controller.
 
-GVL_IO.nIQPLUS_SetType 	:= GVL_DEVICE_NET_IQ_PLUS.nOutputSetType;
-GVL_IO.nIQPLUS_Mode 	:= GVL_DEVICE_NET_IQ_PLUS.nOutputMode;
-GVL_DEVICE_NET_IQ_PLUS.nOutputMode := GVL_COMMAND_FROM_UI.CMD_THROTTLE_OUTPUT_MODE;
-GVL_IO.aMonitoring_PV[E_Morning_Index.E_Morning_TV_Position] := wByteValvePosition_PV/SetPointFactor;
+//GVL_IO.nIQPLUS_SetType 	:= GVL_DEVICE_NET_IQ_PLUS.nOutputSetType;
+//GVL_IO.nIQPLUS_Mode 	:= GVL_DEVICE_NET_IQ_PLUS.nOutputMode;
+//GVL_DEVICE_NET_IQ_PLUS.nOutputMode := GVL_COMMAND_FROM_UI.CMD_THROTTLE_OUTPUT_MODE;
+//GVL_IO.aMonitoring_PV[E_Morning_Index.E_Morning_TV_Position] := wByteValvePosition_PV/SetPointFactor;
 
-(* Read from Device Value *)
-// 2USINT to WORD
-wByteCDG1_PV 		:= USINT_TO_WORD_jh(GVL_DEVICE_NET_IQ_PLUS.aInputPressurePV_CDG1);
-wByteCDG2_PV 		:= USINT_TO_WORD_jh(GVL_DEVICE_NET_IQ_PLUS.aInputPressurePV_CDG2);
-wByteValvePosition_PV:= USINT_TO_WORD_jh(GVL_DEVICE_NET_IQ_PLUS.aInputValvePosionPV);
-wByteValvePosition_PV_Monitoring:=REAL_TO_WORD(wByteValvePosition_PV/SetPointFactor);
-GVL_IO.aMonitoring_PV[12] := wByteValvePosition_PV_Monitoring;
-
-
-
-
-wControlValue		:= GVL_IO.wIqPlus_CV;
-
-//From IQ Plus
-CDG1_RealValue :=wByteCDG1_PV/PressureFactor; 
-GVL_IO.wIqPlus_CDG1_PV 	:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
-GVL_IO.wIqPlus_CDG2_PV:=GVL_IO.wIqPlus_CDG1_PV;
-
-IF GVL_IO.wIqPlus_CDG1_PV > 1000 OR GVL_IO.wIqPlus_CDG1_PV <=5 THEN
-	GVL_IO.wIqPlus_CDG1_PV:=0;
-	GVL_IO.wIqPlus_CDG2_PV:=0;
-END_IF
-
-CDG_1_Value_RealType:=wByteCDG1_PV/PressureFactor;
+//(* Read from Device Value *)
+//// 2USINT to WORD
+//wByteCDG1_PV 		:= USINT_TO_WORD_jh(GVL_DEVICE_NET_IQ_PLUS.aInputPressurePV_CDG1);
+//wByteCDG2_PV 		:= USINT_TO_WORD_jh(GVL_DEVICE_NET_IQ_PLUS.aInputPressurePV_CDG2);
+//wByteValvePosition_PV:= USINT_TO_WORD_jh(GVL_DEVICE_NET_IQ_PLUS.aInputValvePosionPV);
+//wByteValvePosition_PV_Monitoring:=REAL_TO_WORD(wByteValvePosition_PV/SetPointFactor);
+//GVL_IO.aMonitoring_PV[12] := wByteValvePosition_PV_Monitoring;
 
 
-//nSetType //1:Pressure Conrol, 2:Position Control
 
-IF GVL_DEVICE_NET_IQ_PLUS.nOutputMode = 0 AND nSetType = 1 THEN(*Pressure Mode*)
-	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor * 0.1); //Pressure Control
-ELSIF GVL_DEVICE_NET_IQ_PLUS.nOutputMode = 0 AND nSetType = 2 THEN (*Position Mode*)
-	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor); // Position Control
-END_IF
 
-wOutputSVBytes 		:= WORD_TO_USINT_Bit(wTypedControlValue);
-GVL_DEVICE_NET_IQ_PLUS.aOutputSVBytes[1] 	:= wOutputSVBytes.Lower;
-GVL_DEVICE_NET_IQ_PLUS.aOutputSVBytes[2] 	:= wOutputSVBytes.Upper;
+//wControlValue		:= GVL_IO.wIqPlus_CV;
 
-//Valve Status Initailize
-IF GVL_DEVICE_NET_IQ_PLUS.nInputStatus <> nInputStatusOld THEN
-	// Staus Initializing
-	ingPressureControl := FALSE;
-	ingPositionControl := FALSE;
-	isValveOpen := FALSE;
-	isValveNotInitialized := FALSE;	
-	isValveClosed := FALSE;
-	isValveFaultState := FALSE;
-	ingValveInitializing := FALSE;
-	ingHoldState := FALSE;
-	isPressureControl:=FALSE;
-	// Status Update	
-	nInputStatusOld := GVL_DEVICE_NET_IQ_PLUS.nInputStatus;
-END_IF
+////From IQ Plus
+//CDG1_RealValue :=wByteCDG1_PV/PressureFactor; 
+//GVL_IO.wIqPlus_CDG1_PV 	:= REAL_TO_WORD(wByteCDG1_PV/PressureFactor);
+//GVL_IO.wIqPlus_CDG2_PV:=GVL_IO.wIqPlus_CDG1_PV;
 
-//Update Valve Status
-CASE GVL_DEVICE_NET_IQ_PLUS.nInputStatus OF
-	0 : ingPressureControl := TRUE; //Pressure Control Performing.
-	1 : ingPositionControl := TRUE; //Position Control Performing.	
-	2 : isValveOpen := TRUE; //Valve Open, Stopped, Not Controlling.
-	3 : isValveNotInitialized := TRUE; //Valve not initialized power on or RESET Command.
-	4 : isValveClosed := TRUE; //Valve Closed, Stopped, Not Controlling.
-	5 : isValveFaultState := TRUE; //Has faulted during valve initialization or operation.
-	6 : ingValveInitializing := TRUE; //Initailizing Process.
-	7 :	isPressureControl:=TRUE;
-	8 : ingHoldState := TRUE; //intermediate position, not at open or close and not controlling pressure.
-END_CASE
+//IF GVL_IO.wIqPlus_CDG1_PV > 1000 OR GVL_IO.wIqPlus_CDG1_PV <=5 THEN
+//	GVL_IO.wIqPlus_CDG1_PV:=0;
+//	GVL_IO.wIqPlus_CDG2_PV:=0;
+//END_IF
+
+//CDG_1_Value_RealType:=wByteCDG1_PV/PressureFactor;
+
+
+////nSetType //1:Pressure Conrol, 2:Position Control
+
+//IF GVL_DEVICE_NET_IQ_PLUS.nOutputMode = 0 AND nSetType = 1 THEN(*Pressure Mode*)
+//	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor * 0.1); //Pressure Control
+//ELSIF GVL_DEVICE_NET_IQ_PLUS.nOutputMode = 0 AND nSetType = 2 THEN (*Position Mode*)
+//	wTypedControlValue := REAL_TO_WORD(wControlValue * SetPointFactor); // Position Control
+//END_IF
+
+//wOutputSVBytes 		:= WORD_TO_USINT_Bit(wTypedControlValue);
+//GVL_DEVICE_NET_IQ_PLUS.aOutputSVBytes[1] 	:= wOutputSVBytes.Lower;
+//GVL_DEVICE_NET_IQ_PLUS.aOutputSVBytes[2] 	:= wOutputSVBytes.Upper;
+
+////Valve Status Initailize
+//IF GVL_DEVICE_NET_IQ_PLUS.nInputStatus <> nInputStatusOld THEN
+//	// Staus Initializing
+//	ingPressureControl := FALSE;
+//	ingPositionControl := FALSE;
+//	isValveOpen := FALSE;
+//	isValveNotInitialized := FALSE;	
+//	isValveClosed := FALSE;
+//	isValveFaultState := FALSE;
+//	ingValveInitializing := FALSE;
+//	ingHoldState := FALSE;
+//	isPressureControl:=FALSE;
+//	// Status Update	
+//	nInputStatusOld := GVL_DEVICE_NET_IQ_PLUS.nInputStatus;
+//END_IF
+
+
+
+////Update Valve Status
+//CASE GVL_DEVICE_NET_IQ_PLUS.nInputStatus OF
+//	0 : ingPressureControl := TRUE; //Pressure Control Performing.
+//	1 : ingPositionControl := TRUE; //Position Control Performing.	
+//	2 : isValveOpen := TRUE; //Valve Open, Stopped, Not Controlling.
+//	3 : isValveNotInitialized := TRUE; //Valve not initialized power on or RESET Command.
+//	4 : isValveClosed := TRUE; //Valve Closed, Stopped, Not Controlling.
+//	5 : isValveFaultState := TRUE; //Has faulted during valve initialization or operation.
+//	6 : ingValveInitializing := TRUE; //Initailizing Process.
+//	7 :	isPressureControl:=TRUE;
+//	8 : ingHoldState := TRUE; //intermediate position, not at open or close and not controlling pressure.
+//END_CASE
 ]]></ST>
       </Implementation>
     </Action>
     <Action Name="_DigitalInput" Id="{73e09c08-1d98-4ed0-a3b1-c8db67cd4ed9}">
       <Implementation>
         <ST><![CDATA[
-(* Command *)
+//jhkang_251112
+//(* Command *)
 
-bPumpOn:= GVL_COMMAND_FROM_UI.CMD_VACUUM_PUMP_ON;
-bPumpReset:=GVL_COMMAND_FROM_UI.CMD_VACUUM_PUMP_RESET;
-(* Read from Power Distribution Pannel *)
-bVacuumPumpCB		:= GVL_IO_GAS_CABINET.DI_02_VacuumPumpELCB;
-bThrottleValveCP 	:= GVL_IO_GAS_CABINET.DI_02_T_VCP;
+//bPumpOn:= GVL_COMMAND_FROM_UI.CMD_VACUUM_PUMP_ON;
+//bPumpReset:=GVL_COMMAND_FROM_UI.CMD_VACUUM_PUMP_RESET;
+//(* Read from Power Distribution Pannel *)
+//bVacuumPumpCB		:= GVL_IO_GAS_CABINET.DI_02_VacuumPumpELCB;
+//bThrottleValveCP 	:= GVL_IO_GAS_CABINET.DI_02_T_VCP;
 
-(* Read from Vacuum Pump *)
-isPumpFault			:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFail;
-isPumpWarning		:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpWarning;
-isPumpAlarm			:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpAlarm;
-isPumpRunning		:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFBRunning;
-isFBRunning			:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpRunning;
+//(* Read from Vacuum Pump *)
+//isPumpFault			:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFail;
+//isPumpWarning		:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpWarning;
+//isPumpAlarm			:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpAlarm;
+//isPumpRunning		:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFBRunning;
+//isFBRunning			:= GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpRunning;
 
 
-GVL_IO.isPumpRunning := GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFBRunning;]]></ST>
+//GVL_IO.isPumpRunning := GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFBRunning;]]></ST>
       </Implementation>
     </Action>
     <Action Name="_DigitalOutput" Id="{dfe410ef-844e-42de-9444-2091e0770430}">
@@ -186,6 +191,7 @@ GVL_IO_REACTOR_CABINET.DO_05_VacuumPumpReset := bPumpReset;]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="P12_IQ_PLUS">
+      <LineId Id="878" Count="0" />
       <LineId Id="557" Count="2" />
       <LineId Id="774" Count="0" />
       <LineId Id="828" Count="0" />
@@ -202,6 +208,7 @@ GVL_IO_REACTOR_CABINET.DO_05_VacuumPumpReset := bPumpReset;]]></ST>
       <LineId Id="775" Count="0" />
     </LineIds>
     <LineIds Name="P12_IQ_PLUS._CalData">
+      <LineId Id="274" Count="0" />
       <LineId Id="181" Count="9" />
       <LineId Id="192" Count="0" />
       <LineId Id="194" Count="7" />
@@ -218,10 +225,13 @@ GVL_IO_REACTOR_CABINET.DO_05_VacuumPumpReset := bPumpReset;]]></ST>
       <LineId Id="265" Count="0" />
       <LineId Id="267" Count="0" />
       <LineId Id="259" Count="0" />
-      <LineId Id="214" Count="39" />
+      <LineId Id="214" Count="26" />
+      <LineId Id="275" Count="2" />
+      <LineId Id="242" Count="11" />
       <LineId Id="67" Count="0" />
     </LineIds>
     <LineIds Name="P12_IQ_PLUS._DigitalInput">
+      <LineId Id="30" Count="0" />
       <LineId Id="2" Count="1" />
       <LineId Id="5" Count="2" />
       <LineId Id="9" Count="0" />

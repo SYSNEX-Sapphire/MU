@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="P23_Background_MFC" Id="{b66dfb88-da7e-4612-abb3-6daa7898cf2c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P23_Background_MFC
+VAR
+	fbCtrl		: SerialLineControl;
+	bCtrlError	: BOOL;
+	eCtrlErrorID	: ComError_t;
+	fbConfig		: KL6configuration;
+	bConfigError	: BOOL;
+	eConfigErrorID: ComError_t;
+	bConfigExe	: BOOL := TRUE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+fbCtrl(
+	Mode:= SERIALLINEMODE_KL6_22B_STANDARD,
+	pComIn:= ADR(GVL_Serial.EL6021_In),
+	pComOut:= ADR(GVL_Serial.EL6021_Out),
+	SizeComIn:= SIZEOF(GVL_Serial.EL6021_In),
+	Error=> ,
+	ErrorID=> ,
+	TxBuffer:= GVL_Serial.TxBufferTB_MFC,
+	RxBuffer:= GVL_Serial.RxBufferTB_MFC );
+	
+IF fbCtrl.Error THEN
+	bCtrlError := TRUE;
+	eCtrlErrorID := fbCtrl.ErrorID;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="P23_Background_MFC">
+      <LineId Id="74" Count="9" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="86" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

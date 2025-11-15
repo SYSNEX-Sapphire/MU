@@ -4,45 +4,45 @@
     <Declaration><![CDATA[FUNCTION F_Variable_Valve: BOOL
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[GVL_IO_VALVE.DO_00_V01ChalcogenCarrierChange :=GVL_IO.aOutputSolValve.0;
-GVL_IO_VALVE.DO_00_V02MOCarreirChange :=GVL_IO.aOutputSolValve.1;
-GVL_IO_VALVE.DO_00_V03H2SeSourceChange :=GVL_IO.aOutputSolValve.2;
-GVL_IO_VALVE.DO_00_V04H2SSourceChange :=GVL_IO.aOutputSolValve.3;
-GVL_IO_VALVE.DO_00_V05Source_1TMInCarrierChange :=GVL_IO.aOutputSolValve.4;
-GVL_IO_VALVE.DO_00_V06Source_1TMInBypass :=GVL_IO.aOutputSolValve.5;
-GVL_IO_VALVE.DO_00_V07Source_2TMGaCarrierChange :=GVL_IO.aOutputSolValve.6;
-GVL_IO_VALVE.DO_00_V08Source_2TMGaBypass :=GVL_IO.aOutputSolValve.7;
-GVL_IO_VALVE.DO_00_V09Source_3DMSeCarrierChange :=GVL_IO.aOutputSolValve.8;
-GVL_IO_VALVE.DO_00_V10Source_3DMSeBypass :=GVL_IO.aOutputSolValve.9;
-GVL_IO_VALVE.DO_00_V11Source_4ChalcogenCarrierChange :=GVL_IO.aOutputSolValve.10;
-GVL_IO_VALVE.DO_00_V12Source_4ChalcogenBypass :=GVL_IO.aOutputSolValve.11;
-GVL_IO_VALVE.DO_00_V13ReactorPurgeCarrierChange :=GVL_IO.aOutputSolValve.12;
-GVL_IO_VALVE.DO_00_V14Source_1TMInManifoldRun :=GVL_IO.aOutputSolValve.13;
-GVL_IO_VALVE.DO_00_V15Source_2TMGaManifoldRun :=GVL_IO.aOutputSolValve.14;
-GVL_IO_VALVE.DO_00_V16Source_3DMSeManifoldRun :=GVL_IO.aOutputSolValve.15;
-GVL_IO_VALVE.DO_00_V17GasH2SeManifoldRun :=GVL_IO.aOutputSolValve.16;
-GVL_IO_VALVE.DO_00_V18GasH2SManifoldRun :=GVL_IO.aOutputSolValve.17;
-GVL_IO_VALVE.DO_00_V19Source_4ChalcogenManifoldRun :=GVL_IO.aOutputSolValve.18;
-GVL_IO_VALVE.DO_00_V20VentPress_Change :=GVL_IO.aOutputSolValve.19;
-GVL_IO_VALVE.DO_00_V21PumpByPass :=NOT GVL_IO.aOutputSolValve.20;
-GVL_IO_VALVE.DO_00_V22DORVaccumON :=GVL_IO.aOutputSolValve.21;
-GVL_IO_VALVE.DO_00_V23DORFilling :=GVL_IO.aOutputSolValve.22;
-GVL_IO_VALVE.DO_00_V24Source_1LeakTest_IN :=GVL_IO.aOutputSolValve.23;
-GVL_IO_VALVE.DO_00_V25Source_1LeakTest_OUT :=GVL_IO.aOutputSolValve.24;
-GVL_IO_VALVE.DO_00_V26Source_2LeakTest_IN :=GVL_IO.aOutputSolValve.25;
-GVL_IO_VALVE.DO_00_V27Source_2LeakTest_OUT :=GVL_IO.aOutputSolValve.26;
-GVL_IO_VALVE.DO_00_V28Source_3LeakTest_IN :=GVL_IO.aOutputSolValve.27;
-GVL_IO_VALVE.DO_00_V29Source_3LeakTest_OUT :=GVL_IO.aOutputSolValve.28;
-GVL_IO_VALVE.DO_00_V30Source_4LeakTest_IN :=GVL_IO.aOutputSolValve.29;
-GVL_IO_VALVE.DO_00_V31Source_4LeakTest_OUT :=GVL_IO.aOutputSolValve.30;
-GVL_IO_VALVE.DO_00_V32SourceVacuumON :=GVL_IO.aOutputSolValve.31;
+      <ST><![CDATA[GVL_IO_VALVE.DO_00_V01ChalcogenCarrierChange :=GVL_IO.aOutputSolValve[1];
+GVL_IO_VALVE.DO_00_V02MOCarreirChange :=GVL_IO.aOutputSolValve[2];
+GVL_IO_VALVE.DO_00_V03H2SeSourceChange:=GVL_IO.aOutputSolValve[3];
+GVL_IO_VALVE.DO_00_V04H2SSourceChange :=GVL_IO.aOutputSolValve[4];
+GVL_IO_VALVE.DO_00_V05Source_1TMInCarrierChange :=GVL_IO.aOutputSolValve[5];
+GVL_IO_VALVE.DO_00_V06Source_1TMInBypass :=GVL_IO.aOutputSolValve[6];
+GVL_IO_VALVE.DO_00_V07Source_2TMGaCarrierChange :=GVL_IO.aOutputSolValve[7];
+GVL_IO_VALVE.DO_00_V08Source_2TMGaBypass :=GVL_IO.aOutputSolValve[8];
+GVL_IO_VALVE.DO_00_V09Source_3DMSeCarrierChange :=GVL_IO.aOutputSolValve[9];
+GVL_IO_VALVE.DO_00_V10Source_3DMSeBypass :=GVL_IO.aOutputSolValve[10];
+GVL_IO_VALVE.DO_00_V11Source_4ChalcogenCarrierChange :=GVL_IO.aOutputSolValve[11];
+GVL_IO_VALVE.DO_00_V12Source_4ChalcogenBypass :=GVL_IO.aOutputSolValve[12];
+GVL_IO_VALVE.DO_00_V13ReactorPurgeCarrierChange :=GVL_IO.aOutputSolValve[13];
+GVL_IO_VALVE.DO_00_V14Source_1TMInManifoldRun :=GVL_IO.aOutputSolValve[14];
+GVL_IO_VALVE.DO_00_V15Source_2TMGaManifoldRun :=GVL_IO.aOutputSolValve[15];
+GVL_IO_VALVE.DO_00_V16Source_3DMSeManifoldRun :=GVL_IO.aOutputSolValve[16];
+GVL_IO_VALVE.DO_00_V17GasH2SeManifoldRun :=GVL_IO.aOutputSolValve[17];
+GVL_IO_VALVE.DO_00_V18GasH2SManifoldRun  :=GVL_IO.aOutputSolValve[18];
+GVL_IO_VALVE.DO_00_V19Source_4ChalcogenManifoldRun :=GVL_IO.aOutputSolValve[19];
+GVL_IO_VALVE.DO_00_V20VentPress_Change :=GVL_IO.aOutputSolValve[20];
+GVL_IO_VALVE.DO_00_V21PumpByPass :=NOT GVL_IO.aOutputSolValve[21];
+GVL_IO_VALVE.DO_00_V22DORVaccumON :=GVL_IO.aOutputSolValve[22];
+GVL_IO_VALVE.DO_00_V23DORFilling  :=GVL_IO.aOutputSolValve[23];
+GVL_IO_VALVE.DO_00_V24Source_1LeakTest_IN :=GVL_IO.aOutputSolValve[24];
+GVL_IO_VALVE.DO_00_V25Source_1LeakTest_OUT:=GVL_IO.aOutputSolValve[25];
+GVL_IO_VALVE.DO_00_V26Source_2LeakTest_IN :=GVL_IO.aOutputSolValve[26];
+GVL_IO_VALVE.DO_00_V27Source_2LeakTest_OUT:=GVL_IO.aOutputSolValve[27];
+GVL_IO_VALVE.DO_00_V28Source_3LeakTest_IN :=GVL_IO.aOutputSolValve[28];
+GVL_IO_VALVE.DO_00_V29Source_3LeakTest_OUT:=GVL_IO.aOutputSolValve[29];
+GVL_IO_VALVE.DO_00_V30Source_4LeakTest_IN :=GVL_IO.aOutputSolValve[30];
+GVL_IO_VALVE.DO_00_V31Source_4LeakTest_OUT:=GVL_IO.aOutputSolValve[31];
+GVL_IO_VALVE.DO_00_V32SourceVacuumON :=GVL_IO.aOutputSolValve[32];
 
 
 
 ]]></ST>
     </Implementation>
     <LineIds Name="F_Variable_Valve">
-      <LineId Id="789" Count="34" />
+      <LineId Id="825" Count="34" />
       <LineId Id="479" Count="0" />
     </LineIds>
   </POU>

@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_RS_485" Id="{32fd6766-f533-4360-b206-acf29707e36e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RS_485
+VAR
+	Execute: BOOL;
+	SendTimer: TON;
+	fbTx :FB_FrameFifo;
+	fbRx :FB_FrameFifo;(* Rx fifo *)
+	SendErrorCount: INT;
+	sSendData: STRING;
+	sFromServer: STRING;
+	
+	fbsend:SendString;
+	fbReceive: ReceiveString;
+	
+	bSendBusy:BOOL;
+	Send_Error_ID:INT;
+	Message: STRING;
+	
+	eState:E_ComState;
+	ResponseTon: TON;
+	SendMessageIndex: INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Execute THEN
+	
+	SendTimer( IN := TRUE, PT := GVL_CONSTANT.MFC_SEND_CYCLE_TIME);
+	
+	IF sendtimer.Q THEN
+  		IF  fbtx.nCount < 5 THEN
+			SendTimer( IN := FALSE);
+			SendErrorCount:=0;
+			
+			_Make_Message();
+		ELSE
+			SendErrorCount :=  SendErrorCount+1;
+			IF SendErrorCount > 10 THEN
+				
+				SendErrorCount:=0;
+				fbtx.Clear();
+				
+			END_IF
+		END_IF
+	END_IF
+	
+	_Send_Received_Seq();
+	
+ELSE
+	SendTimer( IN := FALSE);
+	fbtx.Clear();
+END_IF
+
+REPEAT
+	fbRx.RemoveHead();(* Fetch string from rx fifo *)
+	IF fbRx.bOk THEN(* Success *)
+		sFromServer := fbRx.sGet;
+	END_IF
+UNTIL NOT fbRx.bOk
+END_REPEAT
+]]></ST>
+    </Implementation>
+    <Action Name="_Make_Message" Id="{be4cbf91-f7eb-443c-ac3e-5bf2fab3f002}">
+      <Implementation>
+        <ST><![CDATA[//"@ADR" + STX + "RFV" + ETX + BCC
+SendMessageIndex :=  SendMessageIndex +1;
+
+CASE SendMessageIndex OF
+	0:
+		sSendData := F_BuildFrame(
+END_CASE
+
+
+IF sSendData <> '' THEN
+	fbTx.AddTail(sPut:=sSendData);
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_Received_Message" Id="{18298bf7-a05f-4afc-ac68-91cedbab7e99}">
+      <Implementation>
+        <ST><![CDATA[////	Receive string data:
+////	The block receives any data strings beginning with a STX ($02) and ending with an ETX ($03) character.
+//TimeWaitReceive(IN := bSendingOK, PT := T#250MS); //Wait receiving data
+//IF TimeWaitReceive.Q THEN
+//	TimeWaitReceive(IN:= FALSE);
+//	fbReceive(
+//		Prefix:= '$02',
+//		Suffix:= '$03',
+//		Timeout:= T#1S,
+//		ReceivedString:= sReceivedString,
+//		RXbuffer:= GVL_Serial.RxBufferTB,
+//		StringReceived=> bStringReceived,
+//		Busy=> bReceiveBusy,
+//		Error=> ,
+//		RxTimeout=> bReceiveTimeout );
+		
+//	IF bReceiveTimeout THEN
+//		isBath_Err[nReceivedBathNumber] := TRUE;
+//		bReceiveTimeout := FALSE;
+//	END_IF
+	
+//	IF fbReceive.Error <> COMERROR_NOERROR THEN
+//		eReceiveErrorID := fbReceive.Error;
+//	END_IF
+	
+//	IF bStringReceived THEN
+//		bStringReceived :=FALSE;
+//		bReceivedOK := TRUE;
+//		bSendingEnable := TRUE;
+//		sReceivedBathNumber := MID(STR:=sReceivedString, len:=1, pos:=3); //ReceivedString : '$0201$06PV100250$03'
+//		nReceivedBathNumber := STRING_TO_INT(sReceivedBathNumber);
+//		sReceivedAffirmation := MID(STR:=sReceivedString, len:=1, pos:=4); //Affirmation
+		
+//		IF bSetValueMode THEN //Write SV Mode
+//			IF sReceivedAffirmation = '$06' THEN //'$06' ReceivedString : '$0201$06$03'
+//				isBath_Err[nReceivedBathNumber] := FALSE;
+//			ELSE
+//				//isBath_Err[nReceivedBathNumber] := TRUE;
+//			END_IF
+//			bSetValueMode := FALSE;
+//		ELSE //Read PV Mode
+//			sReceivedData := MID(STR:=sReceivedString, len:=5, pos:=8); //ReceivedString : '$0201$06PV100250$03'
+//			IF sReceivedData = '' THEN
+//				isBath_Err[nReceivedBathNumber] := TRUE;
+//				;
+//			ELSIF sReceivedData = 'HHHHH' THEN
+//				rTemperature_PV[nReceivedBathNumber] := -99.0;
+//				isBath_TC_Broken[nReceivedBathNumber] := TRUE;
+//				isBath_Err[nReceivedBathNumber] := FALSE;
+//			ELSE
+//				rTemperature_PV[nReceivedBathNumber] := (STRING_TO_REAL(sReceivedData))/10;
+//				isBath_TC_Broken[nReceivedBathNumber] := FALSE;
+//				isBath_Err[nReceivedBathNumber] := FALSE;
+//			END_IF
+//		END_IF
+//	END_IF
+	
+	
+
+//	bSendingEnable := TRUE;
+//END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="_Send_Received_Seq" Id="{bf670ca1-3e9d-40bd-a1d1-9147e676c0af}">
+      <Implementation>
+        <ST><![CDATA[
+CASE eState OF
+	E_ComState.IDLE:
+		Message:='Wait Message';
+		IF fbTx.nCount > 0 THEN
+			eState := E_ComState.OPEN;
+		END_IF
+		
+	E_ComState.OPEN:
+		eState := E_ComState.CONNECTED;
+		
+	E_ComState.CONNECTED:
+		eState := E_ComState.SENDING;
+		
+		
+	E_ComState.EXIST_MSG:
+		IF fbTx.nCount > 0 THEN
+			fbTx.RemoveHead( sGet => sSendData );
+			IF fbTx.bOk THEN(* Success *)
+				eState := E_ComState.SENDING;
+			END_IF
+		ELSE
+			eState:=E_ComState.IDLE;
+		END_IF
+		
+
+	E_ComState.SENDING:
+		IF fbsend.Busy = FALSE AND LEN(sSendData) > 2 THEN
+			fbSend(	
+				SendString:= sSendData,
+				TXbuffer:= GVL_Serial.TxBufferTB_MFC,
+				Busy=> bSendBusy,
+				Error=>);
+			
+			IF fbSend.Error <> COMERROR_NOERROR THEN
+				Send_Error_ID := fbSend.Error;
+				eState:=E_ComState.CLOSING;
+			ELSE
+				Send_Error_ID := COMERROR_NOERROR;
+				eState:=E_ComState.WAITING_RESPONSE;
+			END_IF
+		END_IF
+	
+	E_ComState.WAITING_RESPONSE:
+		ResponseTon(IN:=TRUE,PT:=T#200MS);
+			IF ResponseTon.Q THEN
+				ResponseTon(IN:= FALSE);
+				IF fbReceive.Busy = FALSE THEN
+					fbReceive(
+						Prefix:= '$02',
+						Suffix:= '$03',
+						Timeout:= T#1S,
+						ReceivedString:= sFromServer,
+						RXbuffer:= GVL_Serial.RxBufferTB_MFC,
+						StringReceived=>,
+						Busy=> ,
+						Error=> ,
+						RxTimeout=>  );
+						
+						eState:=E_ComState.PARSING;
+				END_IF
+			END_IF
+			
+		E_ComState.PARSING:
+		;
+		
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="FB_RS_485">
+      <LineId Id="1249" Count="0" />
+      <LineId Id="1295" Count="0" />
+      <LineId Id="1250" Count="5" />
+      <LineId Id="1294" Count="0" />
+      <LineId Id="1256" Count="10" />
+      <LineId Id="1296" Count="2" />
+      <LineId Id="1267" Count="11" />
+      <LineId Id="1220" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RS_485._Make_Message">
+      <LineId Id="69" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RS_485._Received_Message">
+      <LineId Id="91" Count="10" />
+      <LineId Id="103" Count="32" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="136" Count="9" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="149" Count="1" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RS_485._Send_Received_Seq">
+      <LineId Id="40" Count="0" />
+      <LineId Id="2" Count="1" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="34" Count="2" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="44" Count="1" />
+      <LineId Id="49" Count="2" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="65" Count="9" />
+      <LineId Id="82" Count="1" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="84" Count="1" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

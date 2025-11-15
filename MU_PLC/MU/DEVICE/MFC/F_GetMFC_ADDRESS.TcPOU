@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_GetMFC_ADDRESS" Id="{b710c175-ad90-4980-8390-bd60871de09f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_GetMFC_ADDRESS : string(3)
+VAR_INPUT
+	mfcIndex : E_MFC_INDEX;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE mfcIndex OF
+	E_MFC_INDEX.MFC_CH_1:
+		F_GetMFC_ADDRESS:='@01';
+	E_MFC_INDEX.MFC_CH_2:
+		F_GetMFC_ADDRESS:='@02';
+	E_MFC_INDEX.MFC_CH_3:
+		F_GetMFC_ADDRESS:='@03';
+	E_MFC_INDEX.MFC_CH_4:
+		F_GetMFC_ADDRESS:='@04';
+	E_MFC_INDEX.MFC_CH_5:
+		F_GetMFC_ADDRESS:='@05';
+	E_MFC_INDEX.MFC_CH_6:
+		F_GetMFC_ADDRESS:='@06';
+	E_MFC_INDEX.MFC_CH_7:
+		F_GetMFC_ADDRESS:='@07';
+	E_MFC_INDEX.MFC_CH_8:
+		F_GetMFC_ADDRESS:='@08';
+	E_MFC_INDEX.MFC_CH_9:
+		F_GetMFC_ADDRESS:='@09';
+	E_MFC_INDEX.MFC_CH_10:
+		F_GetMFC_ADDRESS:='@0A';
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="F_GetMFC_ADDRESS">
+      <LineId Id="9" Count="20" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

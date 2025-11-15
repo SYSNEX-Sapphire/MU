@@ -96,15 +96,15 @@ bLineHeaterCP.7 	:= GVL_IO_GAS_CABINET.DI_04_LineHeater_8CP;]]></ST>
     </Action>
     <Action Name="_GetSP" Id="{7b5a566c-409f-4ac0-878f-eada1ac61ae6}">
       <Implementation>
-        <ST><![CDATA[
-rTemperatureSV[1] := GVL_IO.aInterlockSet[13];
-rTemperatureSV[2] := GVL_IO.aInterlockSet[14];
-rTemperatureSV[3] := GVL_IO.aInterlockSet[15];
-rTemperatureSV[4] := GVL_IO.aInterlockSet[16];
-rTemperatureSV[5] := GVL_IO.aInterlockSet[17];
-rTemperatureSV[6] := GVL_IO.aInterlockSet[18];
-rTemperatureSV[7] := GVL_IO.aInterlockSet[19];
-rTemperatureSV[8] := GVL_IO.aInterlockSet[20];]]></ST>
+        <ST><![CDATA[//jhkang_251112
+//rTemperatureSV[1] := GVL_IO.aInterlockSet[13];
+//rTemperatureSV[2] := GVL_IO.aInterlockSet[14];
+//rTemperatureSV[3] := GVL_IO.aInterlockSet[15];
+//rTemperatureSV[4] := GVL_IO.aInterlockSet[16];
+//rTemperatureSV[5] := GVL_IO.aInterlockSet[17];
+//rTemperatureSV[6] := GVL_IO.aInterlockSet[18];
+//rTemperatureSV[7] := GVL_IO.aInterlockSet[19];
+//rTemperatureSV[8] := GVL_IO.aInterlockSet[20];]]></ST>
       </Implementation>
     </Action>
     <Action Name="_SendTemp" Id="{6923cb2d-46df-49ee-941e-35090a9ce3ea}">
@@ -141,17 +141,19 @@ END_CASE]]></ST>
     </Action>
     <Action Name="_Update_Data" Id="{e9f12455-21d4-4682-890d-00e0e68cf189}">
       <Implementation>
-        <ST><![CDATA[rTemperaturePV[1] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_1_PV_VALUE;
-rTemperaturePV[2] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_2_PV_VALUE;
-rTemperaturePV[3] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_3_PV_VALUE;
-rTemperaturePV[4] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_4_PV_VALUE;
+        <ST><![CDATA[//jhkang_251112
 
-rTemperaturePV[5] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_1_PV_VALUE;
-rTemperaturePV[6] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_2_PV_VALUE;
-rTemperaturePV[7] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_3_PV_VALUE;
-rTemperaturePV[8] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_4_PV_VALUE;
+//rTemperaturePV[1] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_1_PV_VALUE;
+//rTemperaturePV[2] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_2_PV_VALUE;
+//rTemperaturePV[3] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_3_PV_VALUE;
+//rTemperaturePV[4] := GVL_Serial.LineHeater_data_1.LINE_HEATER_CH_4_PV_VALUE;
 
-GVL_IO.aLineHeater_rTemperaturePV := rTemperaturePV;]]></ST>
+//rTemperaturePV[5] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_1_PV_VALUE;
+//rTemperaturePV[6] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_2_PV_VALUE;
+//rTemperaturePV[7] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_3_PV_VALUE;
+//rTemperaturePV[8] := GVL_Serial.LineHeater_data_2.LINE_HEATER_CH_4_PV_VALUE;
+
+//GVL_IO.aLineHeater_rTemperaturePV := rTemperaturePV;]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="P13_LineHeater">
@@ -189,6 +191,7 @@ GVL_IO.aLineHeater_rTemperaturePV := rTemperaturePV;]]></ST>
       <LineId Id="3" Count="0" />
     </LineIds>
     <LineIds Name="P13_LineHeater._Update_Data">
+      <LineId Id="12" Count="1" />
       <LineId Id="2" Count="9" />
       <LineId Id="1" Count="0" />
     </LineIds>

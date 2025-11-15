@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_CalcBCC" Id="{1b07d96f-6ebe-4d26-826e-f8bac4362544}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CalcBCC : BYTE
+VAR_INPUT 
+	sCore : STRING(160); (* STX..ETX를 포함한 코어 문자열 *) 
+END_VAR
+VAR 
+	i:INT; 
+	b:BYTE; 
+	sum:UDINT; 
+	stxSeen:BOOL; 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[sum:=0; 
+stxSeen:=FALSE;
+
+FOR i:=1 TO LEN(sCore) DO
+	b := TO_BYTE(sCore[i]);
+	IF NOT stxSeen THEN
+		IF b = GVL_CONSTANT.cSTX THEN 
+			stxSeen:=TRUE; 
+		END_IF
+	ELSE
+		IF b = GVL_CONSTANT.cETX THEN 
+			EXIT; 
+		END_IF
+			sum := sum + b;
+	END_IF
+END_FOR
+F_CalcBCC := TO_BYTE(sum MOD 128);]]></ST>
+    </Implementation>
+    <LineIds Name="F_CalcBCC">
+      <LineId Id="16" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="17" Count="3" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="23" Count="2" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

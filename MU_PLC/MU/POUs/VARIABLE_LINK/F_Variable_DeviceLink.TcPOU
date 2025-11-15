@@ -1,216 +1,216 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="F_Variable_DeviceLink" Id="{aa039e23-7245-4b4f-9453-7c5a8340a52e}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_Variable_DeviceLink: BOOL
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[GVL_IO.aDigitalInputIO[1].0:=GVL_IO_GAS_CABINET.DI_01_ResetButton ;
-GVL_IO.aDigitalInputIO[1].1:=GVL_IO_GAS_CABINET.DI_01_GasCabinetLampButton ;//ok
-GVL_IO.aDigitalInputIO[1].2:=GVL_IO_GAS_CABINET.DI_01_PneumaticPressureSensor ;
-GVL_IO.aDigitalInputIO[1].3:=GVL_IO_GAS_CABINET.DI_01_GasCabinetDoorClose ;
-GVL_IO.aDigitalInputIO[1].4:=GVL_IO_GAS_CABINET.DI_01_ControlCabinetDoorClose ;
-GVL_IO.aDigitalInputIO[1].5:=GVL_IO_GAS_CABINET.DI_01_SMPS_1Alarm ;
-GVL_IO.aDigitalInputIO[1].6:=GVL_IO_GAS_CABINET.DI_01_SMPS_2Alarm ;
-GVL_IO.aDigitalInputIO[1].7:=GVL_IO_GAS_CABINET.DI_01_SMPS_3Alarm ;
+      <ST><![CDATA[
 
-GVL_IO.aDigitalInputIO[2].0:=GVL_IO_GAS_CABINET.DI_02_SMPS_4Alarm ;
-GVL_IO.aDigitalInputIO[2].1:=GVL_IO_GAS_CABINET.DI_02_GraphiteHeaterELCB ;
-GVL_IO.aDigitalInputIO[2].2:=GVL_IO_GAS_CABINET.DI_02_ThermalBathsELCB ;
-GVL_IO.aDigitalInputIO[2].3:=GVL_IO_GAS_CABINET.DI_02_VacuumPumpELCB ;
-GVL_IO.aDigitalInputIO[2].4:=GVL_IO_GAS_CABINET.DI_02_LineHeatersELCB ;
-GVL_IO.aDigitalInputIO[2].5:=GVL_IO_GAS_CABINET.DI_02_RotationMotorCP ;
-GVL_IO.aDigitalInputIO[2].6:=GVL_IO_GAS_CABINET.DI_02_CoverLiftMotorCP ;
-GVL_IO.aDigitalInputIO[2].7:=GVL_IO_GAS_CABINET.DI_02_T_VCP ;
+//GVL_IO.io.digital.aDigitalInputIO[1]:=GVL_IO_GAS_CABINET.DI_01_ResetButton ;
+//GVL_IO.io.digital.aDigitalInputIO[2]:=GVL_IO_GAS_CABINET.DI_01_GasCabinetLampButton ;//ok
+//GVL_IO.io.digital.aDigitalInputIO[3]:=GVL_IO_GAS_CABINET.DI_01_PneumaticPressureSensor ;
+//GVL_IO.io.digital.aDigitalInputIO[4]:=GVL_IO_GAS_CABINET.DI_01_GasCabinetDoorClose ;
+//GVL_IO.io.digital.aDigitalInputIO[5]:=GVL_IO_GAS_CABINET.DI_01_ControlCabinetDoorClose ;
+//GVL_IO.io.digital.aDigitalInputIO[6]:=GVL_IO_GAS_CABINET.DI_01_SMPS_1Alarm ;
+//GVL_IO.io.digital.aDigitalInputIO[7]:=GVL_IO_GAS_CABINET.DI_01_SMPS_2Alarm ;
+//GVL_IO.io.digital.aDigitalInputIO[8]:=GVL_IO_GAS_CABINET.DI_01_SMPS_3Alarm ;
 
-GVL_IO.aDigitalInputIO[3].0:=GVL_IO_GAS_CABINET.DI_03_GasDetectorCP ;
-GVL_IO.aDigitalInputIO[3].1:=GVL_IO_GAS_CABINET.DI_03_CabinetLampsCP ;
-GVL_IO.aDigitalInputIO[3].2:=GVL_IO_GAS_CABINET.DI_03_MFCPowerCP ;
-GVL_IO.aDigitalInputIO[3].3:=GVL_IO_GAS_CABINET.DI_03_LineHeater_1CP ;
-GVL_IO.aDigitalInputIO[3].4:=GVL_IO_GAS_CABINET.DI_03_LineHeater_2CP ;
-GVL_IO.aDigitalInputIO[3].5:=GVL_IO_GAS_CABINET.DI_03_LineHeater_3CP ;
-GVL_IO.aDigitalInputIO[3].6:=GVL_IO_GAS_CABINET.DI_03_LineHeater_4CP ;
-GVL_IO.aDigitalInputIO[3].7:=GVL_IO_GAS_CABINET.DI_03_LineHeater_5CP ;
+//GVL_IO.io.digital.aDigitalInputIO[9]:=GVL_IO_GAS_CABINET.DI_02_SMPS_4Alarm ;
+//GVL_IO.io.digital.aDigitalInputIO[10]:=GVL_IO_GAS_CABINET.DI_02_GraphiteHeaterELCB ;
+//GVL_IO.io.digital.aDigitalInputIO[11]:=GVL_IO_GAS_CABINET.DI_02_ThermalBathsELCB ;
+//GVL_IO.io.digital.aDigitalInputIO[12]:=GVL_IO_GAS_CABINET.DI_02_VacuumPumpELCB ;
+//GVL_IO.io.digital.aDigitalInputIO[13]:=GVL_IO_GAS_CABINET.DI_02_LineHeatersELCB ;
+//GVL_IO.io.digital.aDigitalInputIO[14]:=GVL_IO_GAS_CABINET.DI_02_RotationMotorCP ;
+//GVL_IO.io.digital.aDigitalInputIO[15]:=GVL_IO_GAS_CABINET.DI_02_CoverLiftMotorCP ;
+//GVL_IO.io.digital.aDigitalInputIO[16]:=GVL_IO_GAS_CABINET.DI_02_T_VCP ;
 
-GVL_IO.aDigitalInputIO[4].0:=GVL_IO_GAS_CABINET.DI_04_LineHeater_6CP ;
-GVL_IO.aDigitalInputIO[4].1:=GVL_IO_GAS_CABINET.DI_04_LineHeater_7CP ;
-GVL_IO.aDigitalInputIO[4].2:=GVL_IO_GAS_CABINET.DI_04_LineHeater_8CP ;
-GVL_IO.aDigitalInputIO[4].3:=GVL_IO_GAS_CABINET.DI_04_GasDetectorH2 ;
-GVL_IO.aDigitalInputIO[4].4:=GVL_IO_GAS_CABINET.DI_04_GasDetectorH2S ;
-GVL_IO.aDigitalInputIO[4].5:=GVL_IO_GAS_CABINET.DI_04_GasDetectorH2Se ;
-GVL_IO.aDigitalInputIO[4].6:=GVL_IO_GAS_CABINET.DI_04_FireSensor ;
-GVL_IO.aDigitalInputIO[4].7:=GVL_IO_GAS_CABINET.DI_04_ExternalScrubberFault ;
+//GVL_IO.io.digital.aDigitalInputIO[17]:=GVL_IO_GAS_CABINET.DI_03_GasDetectorCP ;
+//GVL_IO.io.digital.aDigitalInputIO[18]:=GVL_IO_GAS_CABINET.DI_03_CabinetLampsCP ;
+//GVL_IO.io.digital.aDigitalInputIO[19]:=GVL_IO_GAS_CABINET.DI_03_MFCPowerCP ;
+//GVL_IO.io.digital.aDigitalInputIO[20]:=GVL_IO_GAS_CABINET.DI_03_LineHeater_1CP ;
+//GVL_IO.io.digital.aDigitalInputIO[21]:=GVL_IO_GAS_CABINET.DI_03_LineHeater_2CP ;
+//GVL_IO.io.digital.aDigitalInputIO[22]:=GVL_IO_GAS_CABINET.DI_03_LineHeater_3CP ;
+//GVL_IO.io.digital.aDigitalInputIO[23]:=GVL_IO_GAS_CABINET.DI_03_LineHeater_4CP ;
+//GVL_IO.io.digital.aDigitalInputIO[24]:=GVL_IO_GAS_CABINET.DI_03_LineHeater_5CP ;
 
-GVL_IO.aDigitalInputIO[5].0:=GVL_IO_GAS_CABINET.DI_05_ExternalH2GasCabinetFault ;
-GVL_IO.aDigitalInputIO[5].1:=GVL_IO_GAS_CABINET.DI_05_ExternalH2SGasCabinetFault ;
-GVL_IO.aDigitalInputIO[5].2:=GVL_IO_GAS_CABINET.DI_05_ExternalH2SeGasCabinetFault ;
-GVL_IO.aDigitalInputIO[5].3:=GVL_IO_GAS_CABINET.DI_05_ExternalUserInputAlarm ;
-GVL_IO.aDigitalInputIO[5].4:=GVL_IO_GAS_CABINET.DI_05_ThermalBath_1DeviationAlarm ;
-GVL_IO.aDigitalInputIO[5].5:=GVL_IO_GAS_CABINET.DI_05_ThermalBath_1CutOffAlarm ;
-GVL_IO.aDigitalInputIO[5].6:=GVL_IO_GAS_CABINET.DI_05_ThermalBath_2DeviationAlarm ;
-GVL_IO.aDigitalInputIO[5].7:=GVL_IO_GAS_CABINET.DI_05_ThermalBath_2CutOffAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[25]:=GVL_IO_GAS_CABINET.DI_04_LineHeater_6CP ;
+//GVL_IO.io.digital.aDigitalInputIO[26]:=GVL_IO_GAS_CABINET.DI_04_LineHeater_7CP ;
+//GVL_IO.io.digital.aDigitalInputIO[27]:=GVL_IO_GAS_CABINET.DI_04_LineHeater_8CP ;
+//GVL_IO.io.digital.aDigitalInputIO[28]:=GVL_IO_GAS_CABINET.DI_04_GasDetectorH2 ;
+//GVL_IO.io.digital.aDigitalInputIO[29]:=GVL_IO_GAS_CABINET.DI_04_GasDetectorH2S ;
+//GVL_IO.io.digital.aDigitalInputIO[30]:=GVL_IO_GAS_CABINET.DI_04_GasDetectorH2Se ;
+//GVL_IO.io.digital.aDigitalInputIO[31]:=GVL_IO_GAS_CABINET.DI_04_FireSensor ;
+//GVL_IO.io.digital.aDigitalInputIO[32]:=GVL_IO_GAS_CABINET.DI_04_ExternalScrubberFault ;
 
-GVL_IO.aDigitalInputIO[6].0:=GVL_IO_GAS_CABINET.DI_06_ThermalBath_3DeviationAlarm ;
-GVL_IO.aDigitalInputIO[6].1:=GVL_IO_GAS_CABINET.DI_06_ThermalBath_3CutOffAlarm ;
-GVL_IO.aDigitalInputIO[6].2:=GVL_IO_GAS_CABINET.DI_06_ThermalBath_4DeviationAlarm ;
-GVL_IO.aDigitalInputIO[6].3:=GVL_IO_GAS_CABINET.DI_06_ThermalBath_4CutOffAlarm ;
-GVL_IO.aDigitalInputIO[6].4:=GVL_IO_GAS_CABINET.DI_06_Spare_01 ;
-GVL_IO.aDigitalInputIO[6].5:=GVL_IO_GAS_CABINET.DI_06_Spare_02 ;
-GVL_IO.aDigitalInputIO[6].6:=GVL_IO_GAS_CABINET.DI_06_Spare_03 ;
-GVL_IO.aDigitalInputIO[6].7:=GVL_IO_GAS_CABINET.DI_06_Spare_04 ;
+//GVL_IO.io.digital.aDigitalInputIO[33]:=GVL_IO_GAS_CABINET.DI_05_ExternalH2GasCabinetFault ;
+//GVL_IO.io.digital.aDigitalInputIO[34]:=GVL_IO_GAS_CABINET.DI_05_ExternalH2SGasCabinetFault ;
+//GVL_IO.io.digital.aDigitalInputIO[35]:=GVL_IO_GAS_CABINET.DI_05_ExternalH2SeGasCabinetFault ;
+//GVL_IO.io.digital.aDigitalInputIO[36]:=GVL_IO_GAS_CABINET.DI_05_ExternalUserInputAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[37]:=GVL_IO_GAS_CABINET.DI_05_ThermalBath_1DeviationAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[38]:=GVL_IO_GAS_CABINET.DI_05_ThermalBath_1CutOffAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[39]:=GVL_IO_GAS_CABINET.DI_05_ThermalBath_2DeviationAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[40]:=GVL_IO_GAS_CABINET.DI_05_ThermalBath_2CutOffAlarm ;
 
-GVL_IO.aDigitalInputIO[7].0:=GVL_IO_REACTOR_CABINET.DI_01_MaintenanceModeKey ;
-GVL_IO.aDigitalInputIO[7].1:=GVL_IO_REACTOR_CABINET.DI_01_ReactorCabinetLampButton ;
-GVL_IO.aDigitalInputIO[7].2:=GVL_IO_REACTOR_CABINET.DI_01_DORVACButton ; //Sheet에서는 빠짐
-GVL_IO.aDigitalInputIO[7].3:=GVL_IO_REACTOR_CABINET.DI_01_DORATMButton ;//Sheet에서는 빠짐
-GVL_IO.aDigitalInputIO[7].4:=GVL_IO_REACTOR_CABINET.DI_01_ReactorDoorUpButton ;//Sheet에서는 빠짐
-GVL_IO.aDigitalInputIO[7].5:=GVL_IO_REACTOR_CABINET.DI_01_ReactorDoorDownButton ;//Sheet에서는 빠짐
-GVL_IO.aDigitalInputIO[7].6:=GVL_IO_REACTOR_CABINET.DI_01_ClampLock ;//Sheet에서는 빠짐
-GVL_IO.aDigitalInputIO[7].7:=GVL_IO_REACTOR_CABINET.DI_01_ClampRelease ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalInputIO[41]:=GVL_IO_GAS_CABINET.DI_06_ThermalBath_3DeviationAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[41]:=GVL_IO_GAS_CABINET.DI_06_ThermalBath_3CutOffAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[42]:=GVL_IO_GAS_CABINET.DI_06_ThermalBath_4DeviationAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[43]:=GVL_IO_GAS_CABINET.DI_06_ThermalBath_4CutOffAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[44]:=GVL_IO_GAS_CABINET.DI_06_Spare_01 ;
+//GVL_IO.io.digital.aDigitalInputIO[45]:=GVL_IO_GAS_CABINET.DI_06_Spare_02 ;
+//GVL_IO.io.digital.aDigitalInputIO[46]:=GVL_IO_GAS_CABINET.DI_06_Spare_03 ;
+//GVL_IO.io.digital.aDigitalInputIO[47]:=GVL_IO_GAS_CABINET.DI_06_Spare_04 ;
 
-GVL_IO.aDigitalInputIO[8].0:=GVL_IO_REACTOR_CABINET.DI_02_C_WFlowSensor ;
-GVL_IO.aDigitalInputIO[8].1:=GVL_IO_REACTOR_CABINET.DI_02_SusceptorRotationMotorFault ;
-GVL_IO.aDigitalInputIO[8].2:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFail ;
-GVL_IO.aDigitalInputIO[8].3:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpWarning ;
-GVL_IO.aDigitalInputIO[8].4:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpAlarm ;
-GVL_IO.aDigitalInputIO[8].5:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFBRunning ;
-GVL_IO.aDigitalInputIO[8].6:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFBRunning ;
-GVL_IO.aDigitalInputIO[8].7:=GVL_IO_REACTOR_CABINET.DI_02_ReactorDoorUpLimitSensor ;
+//GVL_IO.io.digital.aDigitalInputIO[48]:=GVL_IO_REACTOR_CABINET.DI_01_MaintenanceModeKey ;
+//GVL_IO.io.digital.aDigitalInputIO[49]:=GVL_IO_REACTOR_CABINET.DI_01_ReactorCabinetLampButton ;
+//GVL_IO.io.digital.aDigitalInputIO[50]:=GVL_IO_REACTOR_CABINET.DI_01_DORVACButton ; //Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalInputIO[51]:=GVL_IO_REACTOR_CABINET.DI_01_DORATMButton ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalInputIO[52]:=GVL_IO_REACTOR_CABINET.DI_01_ReactorDoorUpButton ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalInputIO[53]:=GVL_IO_REACTOR_CABINET.DI_01_ReactorDoorDownButton ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalInputIO[54]:=GVL_IO_REACTOR_CABINET.DI_01_ClampLock ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalInputIO[55]:=GVL_IO_REACTOR_CABINET.DI_01_ClampRelease ;//Sheet에서는 빠짐
 
-GVL_IO.aDigitalInputIO[9].0:=GVL_IO_REACTOR_CABINET.DI_03_ReactorDoorDownLimitSensor ;
-GVL_IO.aDigitalInputIO[9].1:=GVL_IO_REACTOR_CABINET.DI_03_CylinderAutoSwitch_Closed ;
-GVL_IO.aDigitalInputIO[9].2:=GVL_IO_REACTOR_CABINET.DI_03_CylinderAutoSwitch_Opened ;
-GVL_IO.aDigitalInputIO[9].3:=GVL_IO_REACTOR_CABINET.DI_03_ReactorCabinetDoorClose ;
-GVL_IO.aDigitalInputIO[9].4:=GVL_IO_REACTOR_CABINET.DI_03_Spare_01 ;
-GVL_IO.aDigitalInputIO[9].5:=GVL_IO_REACTOR_CABINET.DI_03_Spare_02 ;
-GVL_IO.aDigitalInputIO[9].6:=GVL_IO_REACTOR_CABINET.DI_03_Spare_03 ;
-GVL_IO.aDigitalInputIO[9].7:=GVL_IO_REACTOR_CABINET.DI_03_Spare_04 ;
+//GVL_IO.io.digital.aDigitalInputIO[56]:=GVL_IO_REACTOR_CABINET.DI_02_C_WFlowSensor ;
+//GVL_IO.io.digital.aDigitalInputIO[57]:=GVL_IO_REACTOR_CABINET.DI_02_SusceptorRotationMotorFault ;
+//GVL_IO.io.digital.aDigitalInputIO[58]:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFail ;
+//GVL_IO.io.digital.aDigitalInputIO[59]:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpWarning ;
+//GVL_IO.io.digital.aDigitalInputIO[60]:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpAlarm ;
+//GVL_IO.io.digital.aDigitalInputIO[61]:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFBRunning ;
+//GVL_IO.io.digital.aDigitalInputIO[62]:=GVL_IO_REACTOR_CABINET.DI_02_VacuumPumpFBRunning ;
+//GVL_IO.io.digital.aDigitalInputIO[63]:=GVL_IO_REACTOR_CABINET.DI_02_ReactorDoorUpLimitSensor ;
 
-
-GVL_IO.aDigitalOutputIO[1].0:=GVL_IO_GAS_CABINET.DO_07_SystemPowerOffLock ; //Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[1].1:=GVL_IO_GAS_CABINET.DO_07_ControlCabinetLamp ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[1].2:=GVL_IO_GAS_CABINET.DO_07_GasCabinetLamp ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[1].3:=GVL_IO_GAS_CABINET.DO_07_GraphiteHeaterMC ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[1].4:=GVL_IO_GAS_CABINET.DO_07_ThermalBathsMC ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[1].5:=GVL_IO_GAS_CABINET.DO_07_VacuumPumpMC ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[1].6:=GVL_IO_GAS_CABINET.DO_07_LineHeatersMC ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[1].7:=GVL_IO_GAS_CABINET.DO_07_ResetButtonLamp ;//Sheet에서는 빠짐
-
-GVL_IO.aDigitalOutputIO[2].0:=GVL_IO_GAS_CABINET.DO_08_Spare_01 ;
-GVL_IO.aDigitalOutputIO[2].1:=GVL_IO_GAS_CABINET.DO_08_Spare_02 ;
-GVL_IO.aDigitalOutputIO[2].2:=GVL_IO_GAS_CABINET.DO_08_Spare_03 ;
-GVL_IO.aDigitalOutputIO[2].3:=GVL_IO_GAS_CABINET.DO_08_Spare_04 ;
-GVL_IO.aDigitalOutputIO[2].4:=GVL_IO_GAS_CABINET.DO_08_Spare_05 ;
-GVL_IO.aDigitalOutputIO[2].5:=GVL_IO_GAS_CABINET.DO_08_Spare_06 ;
-GVL_IO.aDigitalOutputIO[2].6:=GVL_IO_GAS_CABINET.DO_08_Spare_07 ;
-GVL_IO.aDigitalOutputIO[2].7:=GVL_IO_GAS_CABINET.DO_08_Spare_08 ;
-
-GVL_IO.aDigitalOutputIO[3].0:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerRed ;
-GVL_IO.aDigitalOutputIO[3].1:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerOrange ;
-GVL_IO.aDigitalOutputIO[3].2:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerGreen ;
-GVL_IO.aDigitalOutputIO[3].3:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBlue ;
-GVL_IO.aDigitalOutputIO[3].4:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerWhite ;
-GVL_IO.aDigitalOutputIO[3].5:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBuzzer ;
-GVL_IO.aDigitalOutputIO[3].6:=GVL_IO_REACTOR_CABINET.DO_04_ReactorCoverUpRelay ; //Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[3].7:=GVL_IO_REACTOR_CABINET.DO_04_ReactorCoverDownRelay ;//Sheet에서는 빠짐
-
-GVL_IO.aDigitalOutputIO[4].0:=GVL_IO_REACTOR_CABINET.DO_05_ClampLock ;
-GVL_IO.aDigitalOutputIO[4].1:=GVL_IO_REACTOR_CABINET.DO_05_ClampRelease ;
-GVL_IO.aDigitalOutputIO[4].2:=GVL_IO_REACTOR_CABINET.DO_05_VacuumPumpStart_Stop ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[4].3:=GVL_IO_REACTOR_CABINET.DO_05_VacuumPumpReset ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[4].4:=GVL_IO_REACTOR_CABINET.DO_05_SusceptorRotationFWD ;
-GVL_IO.aDigitalOutputIO[4].5:=GVL_IO_REACTOR_CABINET.DO_05_SusceptorRotationSTOP ;
-GVL_IO.aDigitalOutputIO[4].6:=GVL_IO_REACTOR_CABINET.DO_05_SusceptorRotationAL_RST ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[4].7:=GVL_IO_REACTOR_CABINET.DO_05_DORVACButtonLamp ;//Sheet에서는 빠짐
-
-GVL_IO.aDigitalOutputIO[5].0:=GVL_IO_REACTOR_CABINET.DO_06_DORATMButtonLamp ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[5].1:=GVL_IO_REACTOR_CABINET.DO_06_ReactorCoverUpButtonLamp ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[5].2:=GVL_IO_REACTOR_CABINET.DO_06_ReactorCoverDownButtonLamp ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[5].3:=GVL_IO_REACTOR_CABINET.DO_06_ClampLockButtonLamp ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[5].4:=GVL_IO_REACTOR_CABINET.DO_06_ClampReleaseButtonLamp ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[5].5:=GVL_IO_REACTOR_CABINET.DO_06_ReactorCabinetLamp ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[5].6:=GVL_IO_REACTOR_CABINET.DO_06_Spare07 ;//Sheet에서는 빠짐
-GVL_IO.aDigitalOutputIO[5].7:=GVL_IO_REACTOR_CABINET.DO_06_Spare08 ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalInputIO[64]:=GVL_IO_REACTOR_CABINET.DI_03_ReactorDoorDownLimitSensor ;
+//GVL_IO.io.digital.aDigitalInputIO[65]:=GVL_IO_REACTOR_CABINET.DI_03_CylinderAutoSwitch_Closed ;
+//GVL_IO.io.digital.aDigitalInputIO[66]:=GVL_IO_REACTOR_CABINET.DI_03_CylinderAutoSwitch_Opened ;
+//GVL_IO.io.digital.aDigitalInputIO[67]:=GVL_IO_REACTOR_CABINET.DI_03_ReactorCabinetDoorClose ;
+//GVL_IO.io.digital.aDigitalInputIO[68]:=GVL_IO_REACTOR_CABINET.DI_03_Spare_01 ;
+//GVL_IO.io.digital.aDigitalInputIO[69]:=GVL_IO_REACTOR_CABINET.DI_03_Spare_02 ;
+//GVL_IO.io.digital.aDigitalInputIO[70]:=GVL_IO_REACTOR_CABINET.DI_03_Spare_03 ;
+//GVL_IO.io.digital.aDigitalInputIO[71]:=GVL_IO_REACTOR_CABINET.DI_03_Spare_04 ;
 
 
-GVL_IO.aAnalogInputIO[1]:=GVL_IO_GAS_CABINET.AI_09_M01_ChalcogenRunPV ;
-GVL_IO.aAnalogInputIO[2]:=GVL_IO_GAS_CABINET.AI_09_M02_MORunPV ;
-GVL_IO.aAnalogInputIO[3]:=GVL_IO_GAS_CABINET.AI_09_M03_H2SeSupplyPV ;
-GVL_IO.aAnalogInputIO[4]:=GVL_IO_GAS_CABINET.AI_09_M04_H2SSupplyPV ;
-GVL_IO.aAnalogInputIO[5]:=GVL_IO_GAS_CABINET.AI_11_M05_Source_1TMInSupplyPV ;
-GVL_IO.aAnalogInputIO[6]:=GVL_IO_GAS_CABINET.AI_11_M06_Source_2TMGaSupplyPV ;
-GVL_IO.aAnalogInputIO[7]:=GVL_IO_GAS_CABINET.AI_11_M07_Source_3DMSeSupplyPV ;
-GVL_IO.aAnalogInputIO[8]:=GVL_IO_GAS_CABINET.AI_11_M08_Source_4ChalcoSupplyPV ;
-GVL_IO.aAnalogInputIO[9]:=GVL_IO_GAS_CABINET.AI_13_M09_LinerPurgePV ;
-GVL_IO.aAnalogInputIO[10]:=GVL_IO_GAS_CABINET.AI_13_M10_HeaterPurgePV ;
-GVL_IO.aAnalogInputIO[11]:=GVL_IO_GAS_CABINET.AI_13_M11_ChalcogenVentPV ;
-GVL_IO.aAnalogInputIO[12]:=GVL_IO_GAS_CABINET.AI_13_M12_MOVentPV ;
-GVL_IO.aAnalogInputIO[13]:=GVL_IO_GAS_CABINET.AI_15_E01Source_1TMInPressurePV ;
-GVL_IO.aAnalogInputIO[14]:=GVL_IO_GAS_CABINET.AI_15_E02Source_2TMGaPressurePV ;
-GVL_IO.aAnalogInputIO[15]:=GVL_IO_GAS_CABINET.AI_15_E03Source_3DMSePressurePV ;
-GVL_IO.aAnalogInputIO[16]:=GVL_IO_GAS_CABINET.AI_15_E04Source_4ChalcoPressurePV ;
+//GVL_IO.io.digital.aDigitalOutputIO[1]:=GVL_IO_GAS_CABINET.DO_07_SystemPowerOffLock ; //Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[2]:=GVL_IO_GAS_CABINET.DO_07_ControlCabinetLamp ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[3]:=GVL_IO_GAS_CABINET.DO_07_GasCabinetLamp ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[4]:=GVL_IO_GAS_CABINET.DO_07_GraphiteHeaterMC ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[5]:=GVL_IO_GAS_CABINET.DO_07_ThermalBathsMC ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[6]:=GVL_IO_GAS_CABINET.DO_07_VacuumPumpMC ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[7]:=GVL_IO_GAS_CABINET.DO_07_LineHeatersMC ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[8]:=GVL_IO_GAS_CABINET.DO_07_ResetButtonLamp ;//Sheet에서는 빠짐
 
-GVL_IO.aAnalogInputIO[19]:=GVL_IO_REACTOR_CABINET.AI_08_R01SusceptorRotationPV ;
-GVL_IO.aAnalogInputIO[20]:=GVL_IO_REACTOR_CABINET.AI_07_P02_ReactorPressure10TorrPV;
-GVL_IO.aAnalogInputIO[21]:=GVL_IO_REACTOR_CABINET.AI_07_P03_ExhaustPressurePV ;
-GVL_IO.aAnalogInputIO[22]:=GVL_IO_REACTOR_CABINET.AI_07_S05_DORPressurePV ;
+//GVL_IO.io.digital.aDigitalOutputIO[9]:=GVL_IO_GAS_CABINET.DO_08_Spare_01 ;
+//GVL_IO.io.digital.aDigitalOutputIO[10]:=GVL_IO_GAS_CABINET.DO_08_Spare_02 ;
+//GVL_IO.io.digital.aDigitalOutputIO[11]:=GVL_IO_GAS_CABINET.DO_08_Spare_03 ;
+//GVL_IO.io.digital.aDigitalOutputIO[12]:=GVL_IO_GAS_CABINET.DO_08_Spare_04 ;
+//GVL_IO.io.digital.aDigitalOutputIO[13]:=GVL_IO_GAS_CABINET.DO_08_Spare_05 ;
+//GVL_IO.io.digital.aDigitalOutputIO[14]:=GVL_IO_GAS_CABINET.DO_08_Spare_06 ;
+//GVL_IO.io.digital.aDigitalOutputIO[15]:=GVL_IO_GAS_CABINET.DO_08_Spare_07 ;
+//GVL_IO.io.digital.aDigitalOutputIO[16]:=GVL_IO_GAS_CABINET.DO_08_Spare_08 ;
 
-GVL_IO.aAnalogInputIO[23]:=GVL_IO_GAS_CABINET.DI_18_S01N2SupplyPressPV ;
-GVL_IO.aAnalogInputIO[24]:=GVL_IO_GAS_CABINET.DI_18_S02H2SupplyPressPV ;
-GVL_IO.aAnalogInputIO[25]:=GVL_IO_GAS_CABINET.DI_18_S03H2SSupplyPressPV ;
-GVL_IO.aAnalogInputIO[26]:=GVL_IO_GAS_CABINET.DI_18_S04H2SeSupplyPressPV ;
-GVL_IO.aAnalogInputIO[27]:=GVL_IO_REACTOR_CABINET.AI_10_R04S_HCoolingWaterPV ;
+//GVL_IO.io.digital.aDigitalOutputIO[17]:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerRed ;
+//GVL_IO.io.digital.aDigitalOutputIO[18]:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerOrange ;
+//GVL_IO.io.digital.aDigitalOutputIO[19]:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerGreen ;
+//GVL_IO.io.digital.aDigitalOutputIO[20]:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBlue ;
+//GVL_IO.io.digital.aDigitalOutputIO[21]:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerWhite ;
+//GVL_IO.io.digital.aDigitalOutputIO[22]:=GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBuzzer ;
+//GVL_IO.io.digital.aDigitalOutputIO[23]:=GVL_IO_REACTOR_CABINET.DO_04_ReactorCoverUpRelay ; //Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[24]:=GVL_IO_REACTOR_CABINET.DO_04_ReactorCoverDownRelay ;//Sheet에서는 빠짐
 
+//GVL_IO.io.digital.aDigitalOutputIO[25]:=GVL_IO_REACTOR_CABINET.DO_05_ClampLock ;
+//GVL_IO.io.digital.aDigitalOutputIO[26]:=GVL_IO_REACTOR_CABINET.DO_05_ClampRelease ;
+//GVL_IO.io.digital.aDigitalOutputIO[27]:=GVL_IO_REACTOR_CABINET.DO_05_VacuumPumpStart_Stop ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[28]:=GVL_IO_REACTOR_CABINET.DO_05_VacuumPumpReset ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[29]:=GVL_IO_REACTOR_CABINET.DO_05_SusceptorRotationFWD ;
+//GVL_IO.io.digital.aDigitalOutputIO[30]:=GVL_IO_REACTOR_CABINET.DO_05_SusceptorRotationSTOP ;
+//GVL_IO.io.digital.aDigitalOutputIO[31]:=GVL_IO_REACTOR_CABINET.DO_05_SusceptorRotationAL_RST ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[32]:=GVL_IO_REACTOR_CABINET.DO_05_DORVACButtonLamp ;//Sheet에서는 빠짐
 
-GVL_IO.aAnalogInputIO2[1]:=GVL_IO_GAS_CABINET.DI_17_DP1ChalcogenDP ;
-GVL_IO.aAnalogInputIO2[2]:=GVL_IO_GAS_CABINET.DI_17_DP2MODP ;
-
-
-//GVL_IO.aAnalogInputIO[24]:=GVL_IO_REACTOR_CABINET.AI_07_Spare_04 ;
-//GVL_IO.aAnalogInputIO[26]:=GVL_IO_REACTOR_CABINET.AI_08_Spare_02 ;
-//GVL_IO.aAnalogInputIO[27]:=GVL_IO_REACTOR_CABINET.AI_08_Spare_03 ;
-//GVL_IO.aAnalogInputIO[28]:=GVL_IO_REACTOR_CABINET.AI_08_Spare_04 ;
-
-
-//GVL_IO.aAnalogInputIO[30]:=GVL_IO_REACTOR_CABINET.AI_10_Spare_02 ;
-//GVL_IO.aAnalogInputIO[31]:=GVL_IO_REACTOR_CABINET.AI_10_Spare_03 ;
-//GVL_IO.aAnalogInputIO[32]:=GVL_IO_REACTOR_CABINET.AI_10_Spare_04 ;
-
-
-GVL_IO_GAS_CABINET.AO_10_M01_ChalcogenRunSV :=GVL_IO.aAnalogOutputIO[1];
-GVL_IO_GAS_CABINET.AO_10_M02_MORunSV :=GVL_IO.aAnalogOutputIO[2];
-GVL_IO_GAS_CABINET.AO_10_M03_H2SeSupplySV  := GVL_IO.aAnalogOutputIO[3];
-GVL_IO_GAS_CABINET.AO_10_M04_H2SSupplySV :=GVL_IO.aAnalogOutputIO[4];
-
-GVL_IO_GAS_CABINET.AO_12_M05_Source_1TMInSupplySV :=GVL_IO.aAnalogOutputIO[5];
-GVL_IO_GAS_CABINET.AO_12_M06_Source_2TMGaSupplySV :=GVL_IO.aAnalogOutputIO[6];
-GVL_IO_GAS_CABINET.AO_12_M07_Source_3DMSeSupplySV :=GVL_IO.aAnalogOutputIO[7];
-GVL_IO_GAS_CABINET.AO_12_M08_Source_4ChalcoSupplySV :=GVL_IO.aAnalogOutputIO[8];
-GVL_IO_GAS_CABINET.AO_14_M09_LinerPurgeSV :=GVL_IO.aAnalogOutputIO[9];
-GVL_IO_GAS_CABINET.AO_14_M10_HeaterPurgeSV :=GVL_IO.aAnalogOutputIO[10];
-GVL_IO_GAS_CABINET.AO_14_M11_ChalcogenVentSV :=GVL_IO.aAnalogOutputIO[11];
-GVL_IO_GAS_CABINET.AO_14_M12_MOVentSV :=GVL_IO.aAnalogOutputIO[12];
-GVL_IO_GAS_CABINET.AO_16_E01Source_1TMInPressureSV :=GVL_IO.aAnalogOutputIO[13];
-GVL_IO_GAS_CABINET.AO_16_E02Source_2TMGaPressureSV :=GVL_IO.aAnalogOutputIO[14];
-GVL_IO_GAS_CABINET.AO_16_E03Source_3DMSePressureSV :=GVL_IO.aAnalogOutputIO[15];
-GVL_IO_GAS_CABINET.AO_16_E04Source_4ChalcoPressureSV :=GVL_IO.aAnalogOutputIO[16];
-
-//GVL_IO_REACTOR_CABINET.AO_09_P03_ExhaustPressureAM215Input:=GVL_IO.aAnalogOutputIO[17];
-
-GVL_IO_REACTOR_CABINET.AO_09_P03_ExhaustPressureAM215Input:=GVL_IO_REACTOR_CABINET.AI_07_P03_ExhaustPressurePV;
+//GVL_IO.io.digital.aDigitalOutputIO[33]:=GVL_IO_REACTOR_CABINET.DO_06_DORATMButtonLamp ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[34]:=GVL_IO_REACTOR_CABINET.DO_06_ReactorCoverUpButtonLamp ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[35]:=GVL_IO_REACTOR_CABINET.DO_06_ReactorCoverDownButtonLamp ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[36]:=GVL_IO_REACTOR_CABINET.DO_06_ClampLockButtonLamp ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[37]:=GVL_IO_REACTOR_CABINET.DO_06_ClampReleaseButtonLamp ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[38]:=GVL_IO_REACTOR_CABINET.DO_06_ReactorCabinetLamp ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[39]:=GVL_IO_REACTOR_CABINET.DO_06_Spare07 ;//Sheet에서는 빠짐
+//GVL_IO.io.digital.aDigitalOutputIO[40]:=GVL_IO_REACTOR_CABINET.DO_06_Spare08 ;//Sheet에서는 빠짐
 
 
-GVL_IO_REACTOR_CABINET.AO_09_R01_SusceptorRotationSV:=GVL_IO.aAnalogOutputIO[18];
-GVL_IO_REACTOR_CABINET.AO_09_Spare_03:=GVL_IO.aAnalogOutputIO[19];
-GVL_IO_REACTOR_CABINET.AO_09_Spare_04 :=GVL_IO.aAnalogOutputIO[20];
+//GVL_IO.io.analog.aAnalogInputIO[1]:=GVL_IO_GAS_CABINET.AI_09_M01_ChalcogenRunPV ;
+//GVL_IO.io.analog.aAnalogInputIO[2]:=GVL_IO_GAS_CABINET.AI_09_M02_MORunPV ;
+//GVL_IO.io.analog.aAnalogInputIO[3]:=GVL_IO_GAS_CABINET.AI_09_M03_H2SeSupplyPV ;
+//GVL_IO.io.analog.aAnalogInputIO[4]:=GVL_IO_GAS_CABINET.AI_09_M04_H2SSupplyPV ;
+//GVL_IO.io.analog.aAnalogInputIO[5]:=GVL_IO_GAS_CABINET.AI_11_M05_Source_1TMInSupplyPV ;
+//GVL_IO.io.analog.aAnalogInputIO[6]:=GVL_IO_GAS_CABINET.AI_11_M06_Source_2TMGaSupplyPV ;
+//GVL_IO.io.analog.aAnalogInputIO[7]:=GVL_IO_GAS_CABINET.AI_11_M07_Source_3DMSeSupplyPV ;
+//GVL_IO.io.analog.aAnalogInputIO[8]:=GVL_IO_GAS_CABINET.AI_11_M08_Source_4ChalcoSupplyPV ;
+//GVL_IO.io.analog.aAnalogInputIO[9]:=GVL_IO_GAS_CABINET.AI_13_M09_LinerPurgePV ;
+//GVL_IO.io.analog.aAnalogInputIO[10]:=GVL_IO_GAS_CABINET.AI_13_M10_HeaterPurgePV ;
+//GVL_IO.io.analog.aAnalogInputIO[11]:=GVL_IO_GAS_CABINET.AI_13_M11_ChalcogenVentPV ;
+//GVL_IO.io.analog.aAnalogInputIO[12]:=GVL_IO_GAS_CABINET.AI_13_M12_MOVentPV ;
+//GVL_IO.io.analog.aAnalogInputIO[13]:=GVL_IO_GAS_CABINET.AI_15_E01Source_1TMInPressurePV ;
+//GVL_IO.io.analog.aAnalogInputIO[14]:=GVL_IO_GAS_CABINET.AI_15_E02Source_2TMGaPressurePV ;
+//GVL_IO.io.analog.aAnalogInputIO[15]:=GVL_IO_GAS_CABINET.AI_15_E03Source_3DMSePressurePV ;
+//GVL_IO.io.analog.aAnalogInputIO[16]:=GVL_IO_GAS_CABINET.AI_15_E04Source_4ChalcoPressurePV ;
+
+
+//GVL_IO.io.analog.aAnalogInputIO[17]:=GVL_IO_REACTOR_CABINET.AI_08_R01SusceptorRotationPV ;
+//GVL_IO.io.analog.aAnalogInputIO[18]:=GVL_IO_REACTOR_CABINET.AI_07_P02_ReactorPressure10TorrPV;
+//GVL_IO.io.analog.aAnalogInputIO[19]:=GVL_IO_REACTOR_CABINET.AI_07_P03_ExhaustPressurePV ;
+//GVL_IO.io.analog.aAnalogInputIO[20]:=GVL_IO_REACTOR_CABINET.AI_07_S05_DORPressurePV ;
+
+//GVL_IO.io.analog.aAnalogInputIO[21]:=GVL_IO_GAS_CABINET.DI_18_S01N2SupplyPressPV ;
+//GVL_IO.io.analog.aAnalogInputIO[22]:=GVL_IO_GAS_CABINET.DI_18_S02H2SupplyPressPV ;
+//GVL_IO.io.analog.aAnalogInputIO[23]:=GVL_IO_GAS_CABINET.DI_18_S03H2SSupplyPressPV ;
+//GVL_IO.io.analog.aAnalogInputIO[24]:=GVL_IO_GAS_CABINET.DI_18_S04H2SeSupplyPressPV ;
+//GVL_IO.io.analog.aAnalogInputIO[25]:=GVL_IO_REACTOR_CABINET.AI_10_R04S_HCoolingWaterPV ;
+
+
+//GVL_IO.io.analog.aAnalogInputIO[26]:=GVL_IO_GAS_CABINET.DI_17_DP1ChalcogenDP ;
+//GVL_IO.io.analog.aAnalogInputIO[27]:=GVL_IO_GAS_CABINET.DI_17_DP2MODP ;
+
+
+////GVL_IO.aAnalogInputIO[24]:=GVL_IO_REACTOR_CABINET.AI_07_Spare_04 ;
+////GVL_IO.aAnalogInputIO[26]:=GVL_IO_REACTOR_CABINET.AI_08_Spare_02 ;
+////GVL_IO.aAnalogInputIO[27]:=GVL_IO_REACTOR_CABINET.AI_08_Spare_03 ;
+////GVL_IO.aAnalogInputIO[28]:=GVL_IO_REACTOR_CABINET.AI_08_Spare_04 ;
+
+
+////GVL_IO.aAnalogInputIO[30]:=GVL_IO_REACTOR_CABINET.AI_10_Spare_02 ;
+////GVL_IO.aAnalogInputIO[31]:=GVL_IO_REACTOR_CABINET.AI_10_Spare_03 ;
+////GVL_IO.aAnalogInputIO[32]:=GVL_IO_REACTOR_CABINET.AI_10_Spare_04 ;
+
+
+//GVL_IO_GAS_CABINET.AO_10_M01_ChalcogenRunSV :=GVL_IO.IO.analog.aAnalogOutputIO[1];
+//GVL_IO_GAS_CABINET.AO_10_M02_MORunSV:=GVL_IO.IO.analog.aAnalogOutputIO[2];
+//GVL_IO_GAS_CABINET.AO_10_M03_H2SeSupplySV:=GVL_IO.IO.analog.aAnalogOutputIO[3];
+//GVL_IO_GAS_CABINET.AO_10_M04_H2SSupplySV :=GVL_IO.IO.analog.aAnalogOutputIO[4];
+
+//GVL_IO_GAS_CABINET.AO_12_M05_Source_1TMInSupplySV :=GVL_IO.IO.analog.aAnalogOutputIO[5];
+//GVL_IO_GAS_CABINET.AO_12_M06_Source_2TMGaSupplySV :=GVL_IO.IO.analog.aAnalogOutputIO[6];
+//GVL_IO_GAS_CABINET.AO_12_M07_Source_3DMSeSupplySV :=GVL_IO.IO.analog.aAnalogOutputIO[7];
+//GVL_IO_GAS_CABINET.AO_12_M08_Source_4ChalcoSupplySV :=GVL_IO.IO.analog.aAnalogOutputIO[8];
+//GVL_IO_GAS_CABINET.AO_14_M09_LinerPurgeSV :=GVL_IO.IO.analog.aAnalogOutputIO[9];
+//GVL_IO_GAS_CABINET.AO_14_M10_HeaterPurgeSV :=GVL_IO.IO.analog.aAnalogOutputIO[10];
+//GVL_IO_GAS_CABINET.AO_14_M11_ChalcogenVentSV :=GVL_IO.IO.analog.aAnalogOutputIO[11];
+//GVL_IO_GAS_CABINET.AO_14_M12_MOVentSV :=GVL_IO.IO.analog.aAnalogOutputIO[12];
+//GVL_IO_GAS_CABINET.AO_16_E01Source_1TMInPressureSV :=GVL_IO.IO.analog.aAnalogOutputIO[13];
+//GVL_IO_GAS_CABINET.AO_16_E02Source_2TMGaPressureSV :=GVL_IO.IO.analog.aAnalogOutputIO[14];
+//GVL_IO_GAS_CABINET.AO_16_E03Source_3DMSePressureSV :=GVL_IO.IO.analog.aAnalogOutputIO[15];
+//GVL_IO_GAS_CABINET.AO_16_E04Source_4ChalcoPressureSV :=GVL_IO.IO.analog.aAnalogOutputIO[16];
+
+////GVL_IO_REACTOR_CABINET.AO_09_P03_ExhaustPressureAM215Input:=GVL_IO.IO.analog.aAnalogOutputIO[17];
+
+//GVL_IO_REACTOR_CABINET.AO_09_P03_ExhaustPressureAM215Input:=GVL_IO_REACTOR_CABINET.AI_07_P03_ExhaustPressurePV;
+
+
+//GVL_IO_REACTOR_CABINET.AO_09_R01_SusceptorRotationSV:=GVL_IO.IO.analog.aAnalogOutputIO[18];
+//GVL_IO_REACTOR_CABINET.AO_09_Spare_03:=GVL_IO.IO.analog.aAnalogOutputIO[19];
+//GVL_IO_REACTOR_CABINET.AO_09_Spare_04 :=GVL_IO.IO.analog.aAnalogOutputIO[20];
 ]]></ST>
     </Implementation>
     <LineIds Name="F_Variable_DeviceLink">
-      <LineId Id="906" Count="190" />
-      <LineId Id="1102" Count="0" />
-      <LineId Id="1101" Count="0" />
-      <LineId Id="1104" Count="0" />
-      <LineId Id="1103" Count="0" />
-      <LineId Id="1097" Count="2" />
+      <LineId Id="1106" Count="141" />
+      <LineId Id="1307" Count="5" />
+      <LineId Id="1253" Count="52" />
       <LineId Id="479" Count="0" />
     </LineIds>
   </POU>

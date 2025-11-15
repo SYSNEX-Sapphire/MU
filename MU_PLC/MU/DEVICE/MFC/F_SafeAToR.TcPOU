@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_SafeAToR" Id="{37db2de4-ddae-4907-9c06-f52c77968eca}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_SafeAToR : REAL
+VAR_INPUT 
+	sData : STRING(80); 
+END_VAR
+VAR 
+	rData:REAL; 
+	i:INT; 
+	c:BYTE; 
+	cln:STRING(80); 
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:=1 TO LEN(sData) DO
+	c := TO_BYTE(sData[i]);
+	IF (c=45) OR (c=46) OR ((c>=48) AND (c<=57)) THEN
+		cln := CONCAT(cln, CHR(c));
+	END_IF
+END_FOR
+
+rData := STRING_TO_REAL(cln);
+F_SafeAToR := rData;]]></ST>
+    </Implementation>
+    <LineIds Name="F_SafeAToR">
+      <LineId Id="16" Count="5" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

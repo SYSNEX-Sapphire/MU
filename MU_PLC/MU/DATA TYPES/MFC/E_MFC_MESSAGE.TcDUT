@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <DUT Name="E_MFC_MESSAGE" Id="{ac6bba21-d16e-46cb-9a41-8c44f435987f}">
+    <Declaration><![CDATA[TYPE E_MFC_MESSAGE :
+(
+	E_MFC_READ_CURRENT_PV_ALL,
+	E_MFC_READ_CURRENT_SV_ALL,
+	E_MFC_READ_CURRENT_MFC_1,
+	E_MFC_READ_CURRENT_MFC_2,
+	E_MFC_WRITE_SETPOINT_ALL,
+	E_MFC_WRITE_SETPOINT_MFC_1,
+	E_MFC_WRITE_SETPOINT_MFC_2
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

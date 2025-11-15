@@ -49,52 +49,56 @@ END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Double O-Ring Vacuum Condition
-_DigitalInput();
-_DOR_ON();
-_DOR_OFF();
-_VACUUM_RELEASE();
+      <ST><![CDATA[////jhkang_251112
+////인터락 재 확인
+//// Double O-Ring Vacuum Condition
+//_DigitalInput();
+//_DOR_ON();
+//_DOR_OFF();
+//_VACUUM_RELEASE();
 
-//알람 리셋
-IF GVL_IO.aInterlockEnable[1].0 OR GVL_IO.aInterlockEnable[1].1 THEN
-	bError := 0;
-END_IF
+////알람 리셋
+//IF GVL_IO.aInterlockEnable[1].0 OR GVL_IO.aInterlockEnable[1].1 THEN
+//	bError := 0;
+//END_IF
 
-_DigitalOutput();]]></ST>
+//_DigitalOutput();]]></ST>
     </Implementation>
     <Action Name="_DigitalInput" Id="{af3bf05e-06da-431e-8ed8-ac69982b3f5c}">
       <Implementation>
-        <ST><![CDATA[(* Read from Device Value *)
-// DOR Operation Switch
-bVacSwitch 			:= GVL_IO_REACTOR_CABINET.DI_01_DORVACButton; //Switch Input
-bAtmSwitch 			:= GVL_IO_REACTOR_CABINET.DI_01_DORATMButton; //Switch Input
-nPressurePV 		:= GVL_IO_REACTOR_CABINET.AI_07_S05_DORPressurePV;
-rPressurePV_Torr 	:= F_GetDorPressure(nPressurePV);
+        <ST><![CDATA[//jhkang_251112
+//(* Read from Device Value *)
+//// DOR Operation Switch
+//bVacSwitch 			:= GVL_IO_REACTOR_CABINET.DI_01_DORVACButton; //Switch Input
+//bAtmSwitch 			:= GVL_IO_REACTOR_CABINET.DI_01_DORATMButton; //Switch Input
+//nPressurePV 		:= GVL_IO_REACTOR_CABINET.AI_07_S05_DORPressurePV;
+//rPressurePV_Torr 	:= F_GetDorPressure(nPressurePV);
 
-fTresholdPressure 	:= GVL_IO.aInterlockSet[11]; // Dor Pressure Limit
-fTresholdCount 		:= GVL_IO.aInterlockSet[12]; // Dor Retry Count
+//fTresholdPressure 	:= GVL_IO.aInterlockSet[11]; // Dor Pressure Limit
+//fTresholdCount 		:= GVL_IO.aInterlockSet[12]; // Dor Retry Count
 
-bPressureEnable 	:= GVL_IO.aInterlockEnable[1].5; // Dor Pressure Limit
-bCountEnable 		:= GVL_IO.aInterlockEnable[1].6; // Dor Retry Count
-nTresholdCount 		:= REAL_TO_INT(fTresholdCount); //Try One more Vacuum 
+//bPressureEnable 	:= GVL_IO.aInterlockEnable[1].5; // Dor Pressure Limit
+//bCountEnable 		:= GVL_IO.aInterlockEnable[1].6; // Dor Retry Count
+//nTresholdCount 		:= REAL_TO_INT(fTresholdCount); //Try One more Vacuum 
 ]]></ST>
       </Implementation>
     </Action>
     <Action Name="_DigitalOutput" Id="{c005c8c9-4f22-4829-87e7-986e1253676c}">
       <Implementation>
-        <ST><![CDATA[(* Write to Device Value *)
-// Cover Operation Switch Lamp
+        <ST><![CDATA[//jhkang_251112
+//(* Write to Device Value *)
+//// Cover Operation Switch Lamp
 
-GVL_IO.aOutputSolValve.21:= bV_DORVac; //V34
-GVL_IO.aOutputSolValve.22:= bV_DORFill; //V35
-GVL_IO.aInputState[4].10 :=bV_DORVac;
+//GVL_IO.aOutputSolValve.21:= bV_DORVac; //V34
+//GVL_IO.aOutputSolValve.22:= bV_DORFill; //V35
+//GVL_IO.aInputState[4].10 :=bV_DORVac;
 
-GVL_IO_REACTOR_CABINET.DO_05_DORVACButtonLamp := bVacLED;
-GVL_IO_REACTOR_CABINET.DO_06_DORATMButtonLamp := bAtmLED;
+//GVL_IO_REACTOR_CABINET.DO_05_DORVACButtonLamp := bVacLED;
+//GVL_IO_REACTOR_CABINET.DO_06_DORATMButtonLamp := bAtmLED;
 
-GVL_IO.nDorOperationError := bError;
-//jhkang isDOROnState 뭐냐 
-GVL_IO.bDorState := isDOROnState;
+//GVL_IO.nDorOperationError := bError;
+////jhkang isDOROnState 뭐냐 
+//GVL_IO.bDorState := isDOROnState;
 
 
 ]]></ST>
@@ -102,134 +106,139 @@ GVL_IO.bDorState := isDOROnState;
     </Action>
     <Action Name="_DOR_OFF" Id="{d41dfbd7-b986-460c-88bc-0eba874a8186}">
       <Implementation>
-        <ST><![CDATA[(* If Vacuum 'OFF' Switch Press, Change DOR Vent(Fill, Atm) State *)
-//DOR Operation Signal generation
-TimerAtmSwitch(IN:=bAtmSwitch, PT:=T#100MS);
-rTrigSwitch(CLK:=TimerAtmSwitch.Q);
+        <ST><![CDATA[//jhkang_251112
+//(* If Vacuum 'OFF' Switch Press, Change DOR Vent(Fill, Atm) State *)
+////DOR Operation Signal generation
+//TimerAtmSwitch(IN:=bAtmSwitch, PT:=T#100MS);
+//rTrigSwitch(CLK:=TimerAtmSwitch.Q);
 
-IF rTrigSwitch.Q AND P90_Interlock.bDorOffEnable THEN
-	nCase := 2;
-END_IF
+//IF rTrigSwitch.Q AND P90_Interlock.bDorOffEnable THEN
+//	nCase := 2;
+//END_IF
 
-CASE nCase OF
-	2:
-		(* Blink Switch LED *)
-		TimerOnLED(IN:=TRUE, PT:=T#500MS);
-		IF TimerOnLED.Q THEN
-			TimerOnLED(IN:=FALSE);
-			bAtmLED := NOT(bAtmLED);
-		END_IF
+//CASE nCase OF
+//	2:
+//		(* Blink Switch LED *)
+//		TimerOnLED(IN:=TRUE, PT:=T#500MS);
+//		IF TimerOnLED.Q THEN
+//			TimerOnLED(IN:=FALSE);
+//			bAtmLED := NOT(bAtmLED);
+//		END_IF
 		
-		TimerWaitCheck(IN:=TRUE, PT:=T#10S);
-		nWaitCounter := TIME_TO_INT(TimerWaitCheck.ET/1000);
-		IF TimerWaitCheck.Q THEN
-			TimerWaitCheck(IN:=FALSE);
-			bVacLED			:= FALSE;
-			bV_DORVac 		:= FALSE; //V34 Close
-			bV_DORFill		:= TRUE; //V35 Open
-			nCase			:= 20;
-		END_IF
-	20:
-		TimerWaitCheck(IN:=TRUE, PT:=T#5S);
-		IF TimerWaitCheck.Q THEN
-			bVacLED			:= FALSE;
-			bV_DORFill		:= FALSE;
-			isDOROnState 	:= FALSE;
-			bAtmLED			:= TRUE;
-			nCase			:= 0;
-		END_IF
-END_CASE
+//		TimerWaitCheck(IN:=TRUE, PT:=T#10S);
+//		nWaitCounter := TIME_TO_INT(TimerWaitCheck.ET/1000);
+//		IF TimerWaitCheck.Q THEN
+//			TimerWaitCheck(IN:=FALSE);
+//			bVacLED			:= FALSE;
+//			bV_DORVac 		:= FALSE; //V34 Close
+//			bV_DORFill		:= TRUE; //V35 Open
+//			nCase			:= 20;
+//		END_IF
+//	20:
+//		TimerWaitCheck(IN:=TRUE, PT:=T#5S);
+//		IF TimerWaitCheck.Q THEN
+//			bVacLED			:= FALSE;
+//			bV_DORFill		:= FALSE;
+//			isDOROnState 	:= FALSE;
+//			bAtmLED			:= TRUE;
+//			nCase			:= 0;
+//		END_IF
+//END_CASE
 ]]></ST>
       </Implementation>
     </Action>
     <Action Name="_DOR_ON" Id="{4565d060-1a99-4aff-b6e3-739b83af2cf9}">
       <Implementation>
-        <ST><![CDATA[(* If Vacuum 'ON' Switch Press, Change DOR Vacuum State *)
-//DOR Operation Signal generation
-//TimerVacSwitch(IN:=bVacSwitch OR bDOROn, PT:=T#100MS);
-TimerVacSwitch(IN:=bVacSwitch, PT:=T#100MS);
-rTrigSwitch(CLK:=TimerVacSwitch.Q);
+        <ST><![CDATA[//jhkang_251112
+//(* If Vacuum 'ON' Switch Press, Change DOR Vacuum State *)
+////DOR Operation Signal generation
+////TimerVacSwitch(IN:=bVacSwitch OR bDOROn, PT:=T#100MS);
+//TimerVacSwitch(IN:=bVacSwitch, PT:=T#100MS);
+//rTrigSwitch(CLK:=TimerVacSwitch.Q);
 
-IF rTrigSwitch.Q AND GVL_IO.bDorOnEnable THEN
-	nCase 		:= 1;
-	nTryCount 	:= 1; //Try One more Vacuum 
-END_IF
+//IF rTrigSwitch.Q AND GVL_IO.bDorOnEnable THEN
+//	nCase 		:= 1;
+//	nTryCount 	:= 1; //Try One more Vacuum 
+//END_IF
 
-CASE nCase OF
-	1: //Initialize
-		isDOROnState := FALSE;
-		bV_DORVac 	:= TRUE; //V34 Open
-		bV_DORFill	:= FALSE; //V35 Close
-		bAtmLED		:= FALSE;
-		TimerWaitCheck(IN:=FALSE);	
-		nCase := 10;
+//CASE nCase OF
+//	1: //Initialize
+//		isDOROnState := FALSE;
+//		bV_DORVac 	:= TRUE; //V34 Open
+//		bV_DORFill	:= FALSE; //V35 Close
+//		bAtmLED		:= FALSE;
+//		TimerWaitCheck(IN:=FALSE);	
+//		nCase := 10;
 		
-	10: //Wait and Vacuum Check
-		(* Blink Switch LED *)
-		TimerOnLED(IN:=TRUE, PT:=T#500MS);
-		IF TimerOnLED.Q THEN
-			TimerOnLED(IN:=FALSE);
-			bVacLED := NOT(bVacLED);
-		END_IF
+//	10: //Wait and Vacuum Check
+//		(* Blink Switch LED *)
+//		TimerOnLED(IN:=TRUE, PT:=T#500MS);
+//		IF TimerOnLED.Q THEN
+//			TimerOnLED(IN:=FALSE);
+//			bVacLED := NOT(bVacLED);
+//		END_IF
 
-		TimerWaitCheck(IN:=TRUE, PT:=T#5S);
-		IF TimerWaitCheck.Q THEN
-			IF rPressurePV_Torr < fTresholdPressure THEN
-				bV_DORVac 		:= FALSE; //V34 Close
-				isDOROnState 	:= TRUE;
-				bVacLED 		:= TRUE; //Switch LED
-				bError			:= 0;
-				nCase 			:= 0;
-			ELSIF nTryCount < nTresholdCount THEN
-				TimerWaitCheck(IN:=FALSE);
-				nTryCount 		:= nTryCount + 1;				
-				nCase 			:= 1;
-			ELSE
-				bV_DORVac 		:= FALSE; //V34 Close
-				isDOROnState 	:= FALSE;
-				bVacLED			:= FALSE; //Switch LED
-				bError			:= 1; // Vacuum Fail
-				nCase			:= 0;
-			END_IF
-		END_IF
-END_CASE
+//		TimerWaitCheck(IN:=TRUE, PT:=T#5S);
+//		IF TimerWaitCheck.Q THEN
+//			IF rPressurePV_Torr < fTresholdPressure THEN
+//				bV_DORVac 		:= FALSE; //V34 Close
+//				isDOROnState 	:= TRUE;
+//				bVacLED 		:= TRUE; //Switch LED
+//				bError			:= 0;
+//				nCase 			:= 0;
+//			ELSIF nTryCount < nTresholdCount THEN
+//				TimerWaitCheck(IN:=FALSE);
+//				nTryCount 		:= nTryCount + 1;				
+//				nCase 			:= 1;
+//			ELSE
+//				bV_DORVac 		:= FALSE; //V34 Close
+//				isDOROnState 	:= FALSE;
+//				bVacLED			:= FALSE; //Switch LED
+//				bError			:= 1; // Vacuum Fail
+//				nCase			:= 0;
+//			END_IF
+//		END_IF
+//END_CASE
 ]]></ST>
       </Implementation>
     </Action>
     <Action Name="_VACUUM_RELEASE" Id="{c3f82560-ac6d-4854-8451-202c41824de3}">
       <Implementation>
-        <ST><![CDATA[(* If Vacuum 'ON' State, Check the Vacuum range *)
-IF isDOROnState AND rPressurePV_Torr > fTresholdPressure AND nTryCount < 3 THEN
-	bError := 2; // Vacuum release
-	TimerVacRealease(IN:=TRUE, PT:=T#2S);
-	
-	(* Blink Vac Switch LED *)
-	TimerOnLED(IN:=TRUE, PT:=T#500MS);
-	IF TimerOnLED.Q THEN
-		TimerOnLED(IN:=FALSE);
-		bVacLED := NOT(bVacLED);
-	END_IF
+        <ST><![CDATA[//jhkang_251112
 
-	IF TimerVacRealease.Q  THEN
-		TimerVacRealease(IN:=FALSE);
-		nTryCount 		:= nTryCount + 1;
-		bV_DORVac 		:= FALSE;//Vacuum Valve OFF
-		bVacLED := TRUE;
-	ELSE
-		bV_DORVac 		:= TRUE;//Vacuum Valve ON
-	END_IF
+//(* If Vacuum 'ON' State, Check the Vacuum range *)
+//IF isDOROnState AND rPressurePV_Torr > fTresholdPressure AND nTryCount < 3 THEN
+//	bError := 2; // Vacuum release
+//	TimerVacRealease(IN:=TRUE, PT:=T#2S);
 	
-ELSIF bError = 2 THEN
-	bV_DORVac := FALSE;
-	bError := 0;
+//	(* Blink Vac Switch LED *)
+//	TimerOnLED(IN:=TRUE, PT:=T#500MS);
+//	IF TimerOnLED.Q THEN
+//		TimerOnLED(IN:=FALSE);
+//		bVacLED := NOT(bVacLED);
+//	END_IF
+
+//	IF TimerVacRealease.Q  THEN
+//		TimerVacRealease(IN:=FALSE);
+//		nTryCount 		:= nTryCount + 1;
+//		bV_DORVac 		:= FALSE;//Vacuum Valve OFF
+//		bVacLED := TRUE;
+//	ELSE
+//		bV_DORVac 		:= TRUE;//Vacuum Valve ON
+//	END_IF
 	
-ELSIF nTryCount >= 3 THEN
-	bV_DORVac := FALSE;
-	bError := 3; //Vacuum Released
-END_IF]]></ST>
+//ELSIF bError = 2 THEN
+//	bV_DORVac := FALSE;
+//	bError := 0;
+	
+//ELSIF nTryCount >= 3 THEN
+//	bV_DORVac := FALSE;
+//	bError := 3; //Vacuum Released
+//END_IF]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="P17_DOROperation">
+      <LineId Id="742" Count="1" />
       <LineId Id="21" Count="0" />
       <LineId Id="695" Count="0" />
       <LineId Id="643" Count="0" />
@@ -243,21 +252,25 @@ END_IF]]></ST>
       <LineId Id="645" Count="0" />
     </LineIds>
     <LineIds Name="P17_DOROperation._DigitalInput">
+      <LineId Id="138" Count="0" />
       <LineId Id="124" Count="6" />
       <LineId Id="132" Count="5" />
       <LineId Id="81" Count="0" />
     </LineIds>
     <LineIds Name="P17_DOROperation._DigitalOutput">
+      <LineId Id="91" Count="0" />
       <LineId Id="72" Count="1" />
       <LineId Id="77" Count="2" />
       <LineId Id="81" Count="9" />
       <LineId Id="32" Count="0" />
     </LineIds>
     <LineIds Name="P17_DOROperation._DOR_OFF">
+      <LineId Id="89" Count="0" />
       <LineId Id="52" Count="36" />
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="P17_DOROperation._DOR_ON">
+      <LineId Id="51" Count="0" />
       <LineId Id="49" Count="0" />
       <LineId Id="2" Count="1" />
       <LineId Id="50" Count="0" />
@@ -265,6 +278,7 @@ END_IF]]></ST>
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="P17_DOROperation._VACUUM_RELEASE">
+      <LineId Id="30" Count="1" />
       <LineId Id="2" Count="27" />
       <LineId Id="1" Count="0" />
     </LineIds>

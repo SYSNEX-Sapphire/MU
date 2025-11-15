@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_ParsePayload" Id="{f5d1633d-d515-49d3-a0d8-fa9724045037}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_ParsePayload : STRING(160)
+VAR_INPUT 
+	rx:STRING(255); 
+END_VAR
+VAR 
+	i:INT; 
+	sData:STRING(160); 
+	p1,p2:INT; 
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[p1:=0; 
+p2:=0;
+
+FOR i:=1 TO LEN(rx) DO
+	IF TO_BYTE(rx[i])=GVL_CONSTANT.cSTX THEN 
+		p1:=i; 
+	END_IF
+	
+	IF TO_BYTE(rx[i])=GVL_CONSTANT.cETX THEN 
+		p2:=i; 
+		EXIT; 
+	END_IF
+END_FOR
+IF (p1>0) AND (p2>p1) THEN 
+	sData := MID(rx, p1+1, p2-(p1+1)); 
+END_IF
+F_ParsePayload := sData;]]></ST>
+    </Implementation>
+    <LineIds Name="F_ParsePayload">
+      <LineId Id="15" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="21" Count="2" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="24" Count="2" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

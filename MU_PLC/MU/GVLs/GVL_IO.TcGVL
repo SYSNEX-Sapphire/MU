@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <GVL Name="GVL_IO" Id="{a5f3292d-798a-4b6c-af88-b59309d83086}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
@@ -13,38 +13,38 @@ VAR_GLOBAL
 	aMonitoring_PV 			: ARRAY[1..GVL_CONSTANT.NumMonitoring] OF REAL; //Gauge Monitoring Value to UI
 	
 	interlock 				: Interlock;
-	aInputState				: ARRAY[1..GVL_CONSTANT.NumInputState] OF BYTE; // Digital Input from Device (Switch)
-	aOutputCmd				: ARRAY[1..GVL_CONSTANT.NumOutputCmd] OF BYTE; // Digital Command from UI
+	aInputState				: ARRAY[1..GVL_CONSTANT.NumInputState] OF BOOL; // Digital Input from Device (Switch)
+	aOutputCmd				: ARRAY[1..GVL_CONSTANT.NumOutputCmd] OF BOOL; // Digital Command from UI
 	
 	ControlDevice :ST_MAIN_MODULE;
-	
 	mainPRGControl : MainPRGControl;
 	
 	recipe :Recipe;
 	
-// 	nCaseSignalTower		: INT;
-// 	nDorOperationError		: INT;
-// 	bDorState				: BOOL;
-// 	bDorOnEnable			: BOOL;
-// // 	bE3508_HeaterOn			: BOOL;
-// 	wE3508_CV				: WORD;
-// 	wE3508_PV				: WORD;
-// 	wIqPlus_CV				: WORD;
-// 	wIqPlus_CDG1_PV			: WORD;
-// 	wIqPlus_CDG2_PV			: WORD;
-// 	nRotation_Converted_PV	: REAL;
-// 	rRotation_ControlValue	: REAL;
-// 	nIQPLUS_SetType 		: INT;
-// 	nIQPLUS_Mode			: INT;
-// 	aLineHeater_rTemperaturePV : ARRAY[1..8]OF REAL;
-// 	nE3508_nInputManAutoBytes : USINT;
-// 	isCoverClosed 			: BOOL;
-// 	isPumpRunning 			: BOOL;
-// 	
-// 	UI_INTERLOCK_CHECK_RECIPE_ENABLE:WORD;(**)
-// 	UI_INTERLOCK_CHECK_OPEN_REACTOR:WORD;(**)
+//// 	nCaseSignalTower		: INT;
+//// 	nDorOperationError		: INT;
+//// 	bDorState				: BOOL;
+//// 	bDorOnEnable			: BOOL;
+//// //bE3508_HeaterOn			: BOOL;
+//// 	wE3508_CV				: WORD;
+//// 	wE3508_PV				: WORD;
+//// 	wIqPlus_CV				: WORD;
+//// 	wIqPlus_CDG1_PV			: WORD;
+//// 	wIqPlus_CDG2_PV			: WORD;
+//// 	nRotation_Converted_PV	: REAL;
+//// 	rRotation_ControlValue	: REAL;
+//// 	nIQPLUS_SetType 		: INT;
+//// 	nIQPLUS_Mode			: INT;
+//// 	aLineHeater_rTemperaturePV : ARRAY[1..8]OF REAL;
+//// 	nE3508_nInputManAutoBytes : USINT;
+//// 	isCoverClosed 			: BOOL;
+//// 	isPumpRunning 			: BOOL;
+//// 	
+//// 	UI_INTERLOCK_CHECK_RECIPE_ENABLE:WORD;(**)
+//// 	UI_INTERLOCK_CHECK_OPEN_REACTOR:WORD;(**)
 	controlModeCmd: E_ControlMode;
 	controlMode: INT;
+	nRotation_Converted_PV: INT;
 END_VAR
 ]]></Declaration>
   </GVL>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_GetMFC_Command" Id="{9a15935d-edf5-42d7-899a-8202ef2dff84}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_GetMFC_Command : STRING
+VAR_INPUT
+	e_MFC_CMD : E_MFC_MESSAGE;
+	WriteValue:INT;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+CASE e_MFC_CMD OF
+	E_MFC_MESSAGE.E_MFC_READ_CURRENT_PV_ALL:
+		F_GetMFC_Command:='RFV';
+	E_MFC_MESSAGE.E_MFC_READ_CURRENT_SV_ALL:
+		F_GetMFC_Command:='RFC';
+	E_MFC_MESSAGE.E_MFC_WRITE_SETPOINT_MFC_1:
+		F_GetMFC_Command:='AFC';
+		F_GetMFC_Command:=CONCAT(F_GetMFC_Command,WriteValue);
+		F_GetMFC_Command:=CONCAT(F_GetMFC_Command,',B');
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="F_GetMFC_Command">
+      <LineId Id="36" Count="7" />
+      <LineId Id="45" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

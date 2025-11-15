@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="F_BuildFrame" Id="{ef29aff3-8ae6-438f-a9e2-34f3a89b82ec}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_BuildFrame : STRING(200)(* 프레임 구성: @ADR + STX + CMD + ETX + BCC *)
+VAR_INPUT 
+	eaddr:E_MFC_INDEX;
+	eCommand:E_MFC_MESSAGE; 
+	Writevalue:INT;
+END_VAR
+VAR 
+	cmd:STRING(80);
+	addr:STRING(3);
+	SendMessage:STRING(160); 
+	out:STRING(200); 
+	bcc:BYTE; 
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[addr:=F_GetMFC_ADDRESS(eaddr); // Get Address 
+
+cmd:=F_GetMFC_Command(eCommand,Writevalue);
+
+SendMessage := CONCAT(CHR(GVL_CONSTANT.cSTX), cmd);
+SendMessage := CONCAT(SendMessage, CHR(GVL_CONSTANT.cETX));
+
+bcc := F_CalcBCC(SendMessage);
+out := CONCAT(addr, SendMessage);
+out := CONCAT(out, CHR(bcc));
+
+F_BuildFrame := out;
+
+
+//RFV Read Current Flow
+//RFC Read Set Flow
+//AFC Write Set Flow]]></ST>
+    </Implementation>
+    <LineIds Name="F_BuildFrame">
+      <LineId Id="62" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="18" Count="3" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="41" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="43" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -36,17 +36,17 @@ calcRotation := (wRotaion_PV / ConversionFactor) * (5.0/3.0);
 nConvertedRotation_PV := (calcRotation);
 
 // Interface with other PRGs
-GVL_IO.nRotation_Converted_PV := nConvertedRotation_PV;
-rControlValue := GVL_IO.rRotation_ControlValue;
+GVL_IO.ControlDevice.ROTATION_MOTOR.CURRENT_PV:= nConvertedRotation_PV;
+rControlValue := GVL_IO.ControlDevice.ROTATION_MOTOR.SET_CONTROL_VALUE;
 
 //Write to Motor Driver
 rConvertedCV := rControlValue * ConversionFactor; // Convert from RPM to control value
 
 
-IF GVL_io.aInterlockEnable[1].7 = TRUE THEN // UI 의 Auto Power ON 기능에 따라서 자동 On . oFF 사용 
-	IF (GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].input.targetValue > 0) OR (rConvertedCV > 0) THEN // Motor Driver RUN
+IF GVL_IO.interlock.interlockSetting.aInterlockEnableThreshold[1].enable = TRUE THEN // UI 의 Auto Power ON 기능에 따라서 자동 On . oFF 사용 
+	IF (GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].cvController.input.targetValue > 0) OR (rConvertedCV > 0) THEN // Motor Driver RUN
 		bBrake_Run := TRUE;
-	ELSIF (GVL_IO.aController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].input.targetValue = 0) AND (rConvertedCV = 0) THEN
+	ELSIF (GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].cvController.input.targetValue = 0) AND (rConvertedCV = 0) THEN
 		bBrake_Run := FALSE;
 	END_IF
 ELSE

@@ -86,61 +86,63 @@ GVL_IO_GAS_CABINET.DO_07_ControlCabinetLamp := bPowerDistributeLamp;
     </Implementation>
     <Action Name="_Action_Buzzer" Id="{1605c9dc-c74f-44f7-9218-2a1bcf21db32}">
       <Implementation>
-        <ST><![CDATA[(* Buzzer On/Off *)
-IF bBuzzer <> GVL_IO.aInterlockEnable[1].2 THEN
-	bBuzzer := GVL_IO.aInterlockEnable[1].2;
-END_IF
+        <ST><![CDATA[//jhkang_251112
+//(* Buzzer On/Off *)
+//IF bBuzzer <> GVL_IO.aInterlockEnable[1].2 THEN
+//	bBuzzer := GVL_IO.aInterlockEnable[1].2;
+//END_IF
 ]]></ST>
       </Implementation>
     </Action>
     <Action Name="_Action_SignalTower" Id="{20d2a60a-15ef-4399-9c11-f9c7ed774576}">
       <Implementation>
-        <ST><![CDATA[
-(* Blink Signal Tower *)
-CASE GVL_IO.nCaseSignalTower OF
-	1: //RED 
-		TimerSignalTower(IN:=TRUE, PT:=T#500MS);
-		IF TimerSignalTower.Q THEN
-			TimerSignalTower(IN:=FALSE);
-			IF bSignalTower = 0 THEN
-				bSignalTower := 2#0000_0001; // RED
-			ELSE
-				bSignalTower := 0;
-			END_IF
-		END_IF
+        <ST><![CDATA[//jhkang_251112
 
-	2: //YELLOW 
-		TimerSignalTower(IN:=TRUE, PT:=T#1S);
-		IF TimerSignalTower.Q THEN
-			TimerSignalTower(IN:=FALSE);
-			IF bSignalTower = 0 THEN
-				bSignalTower := 2#0000_0010; // YELLOW
-			ELSE
-				bSignalTower := 0;
-			END_IF
-		END_IF
-	3: //GREEN
-		TimerSignalTower(IN:=TRUE, PT:=T#1S);
-		IF TimerSignalTower.Q THEN
-			TimerSignalTower(IN:=FALSE);
-			IF bSignalTower = 0 THEN
-				bSignalTower := 2#0000_0100; // GREEN
-			ELSE
-				bSignalTower := 0;
-			END_IF
-		END_IF
-	4: //BLUE
-		bSignalTower := 2#0000_1000;
-	5: //WHITE
-		bSignalTower := 2#0001_0000;
-END_CASE
+//(* Blink Signal Tower *)
+//CASE GVL_IO.nCaseSignalTower OF
+//	1: //RED 
+//		TimerSignalTower(IN:=TRUE, PT:=T#500MS);
+//		IF TimerSignalTower.Q THEN
+//			TimerSignalTower(IN:=FALSE);
+//			IF bSignalTower = 0 THEN
+//				bSignalTower := 2#0000_0001; // RED
+//			ELSE
+//				bSignalTower := 0;
+//			END_IF
+//		END_IF
 
-GVL_IO_REACTOR_CABINET.DO_04_SignalTowerRed:=bSignalTower.0; //0:RED-Alarm,
-GVL_IO_REACTOR_CABINET.DO_04_SignalTowerOrange:=bSignalTower.1; //1:YELLOW,-Warning
-GVL_IO_REACTOR_CABINET.DO_04_SignalTowerGreen:=bSignalTower.2; //2:GREEN-Running
-GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBlue:=bSignalTower.3; //3:BLUE-Idle
-GVL_IO_REACTOR_CABINET.DO_04_SignalTowerWhite:=bSignalTower.4; //4:WHITE-Maint
-GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBuzzer:=bBuzzer; //5:BUZZER-Alarm
+//	2: //YELLOW 
+//		TimerSignalTower(IN:=TRUE, PT:=T#1S);
+//		IF TimerSignalTower.Q THEN
+//			TimerSignalTower(IN:=FALSE);
+//			IF bSignalTower = 0 THEN
+//				bSignalTower := 2#0000_0010; // YELLOW
+//			ELSE
+//				bSignalTower := 0;
+//			END_IF
+//		END_IF
+//	3: //GREEN
+//		TimerSignalTower(IN:=TRUE, PT:=T#1S);
+//		IF TimerSignalTower.Q THEN
+//			TimerSignalTower(IN:=FALSE);
+//			IF bSignalTower = 0 THEN
+//				bSignalTower := 2#0000_0100; // GREEN
+//			ELSE
+//				bSignalTower := 0;
+//			END_IF
+//		END_IF
+//	4: //BLUE
+//		bSignalTower := 2#0000_1000;
+//	5: //WHITE
+//		bSignalTower := 2#0001_0000;
+//END_CASE
+
+//GVL_IO_REACTOR_CABINET.DO_04_SignalTowerRed:=bSignalTower.0; //0:RED-Alarm,
+//GVL_IO_REACTOR_CABINET.DO_04_SignalTowerOrange:=bSignalTower.1; //1:YELLOW,-Warning
+//GVL_IO_REACTOR_CABINET.DO_04_SignalTowerGreen:=bSignalTower.2; //2:GREEN-Running
+//GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBlue:=bSignalTower.3; //3:BLUE-Idle
+//GVL_IO_REACTOR_CABINET.DO_04_SignalTowerWhite:=bSignalTower.4; //4:WHITE-Maint
+//GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBuzzer:=bBuzzer; //5:BUZZER-Alarm
 ]]></ST>
       </Implementation>
     </Action>
@@ -183,10 +185,12 @@ GVL_IO_REACTOR_CABINET.DO_04_SignalTowerBuzzer:=bBuzzer; //5:BUZZER-Alarm
       <LineId Id="140" Count="0" />
     </LineIds>
     <LineIds Name="P92_Maintenance._Action_Buzzer">
+      <LineId Id="6" Count="0" />
       <LineId Id="2" Count="3" />
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="P92_Maintenance._Action_SignalTower">
+      <LineId Id="49" Count="0" />
       <LineId Id="2" Count="37" />
       <LineId Id="1" Count="0" />
       <LineId Id="42" Count="6" />

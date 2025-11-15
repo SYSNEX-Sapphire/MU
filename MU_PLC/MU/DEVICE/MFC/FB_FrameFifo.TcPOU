@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_FrameFifo" Id="{f313e851-f266-44f7-911e-57cc16acbe58}" SpecialFunc="None">
+    <Declaration><![CDATA[(* Tx/Rx (string data) fifo control function block *)
+FUNCTION_BLOCK FB_FrameFifo
+VAR_INPUT
+	bLog: BOOL:= FALSE;(* TRUE => Enable log message output, FALSE => Disable *)
+	sPrefix: STRING:= 'Unknown::';(* Log message description string (allows the identification of log message source) *)
+	sPut:  STRING;
+END_VAR
+VAR_OUTPUT
+	bOk:BOOL;(* TRUE = New entry added or removed succesfully, FALSE = Fifo overflow or fifo empty *)
+	sGet: STRING;
+	nCount:UDINT:= 0;(* Number of fifo entries *)
+	cbFree:UDINT:= 0;(* Free buffer space *)
+	Load:UDINT;
+END_VAR
+VAR
+	fbBuffer 	: FB_MemRingBuffer ;
+	buffer		: ARRAY[0..1000] OF STRING;(* Internal buffer memory *)
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Action Name="AddTail" Id="{9453fa93-9184-4802-90c5-781861d54553}">
+      <Implementation>
+        <ST><![CDATA[(* Adds new fifo entry *)
+fbBuffer.A_AddTail( pBuffer:= ADR(buffer), cbBuffer:= SIZEOF(buffer),
+					pWrite := ADR( sPut ), cbWrite := SIZEOF( sPut ), 
+					bOk=>bOk, nCount=>nCount );
+IF bOk THEN
+	cbFree := 1000 - fbBuffer.cbSize;(* Calculate the free buffer space *)
+	IF bLog THEN(* Log message *)
+		ADSLOGSTR( ADSLOG_MSGTYPE_HINT OR ADSLOG_MSGTYPE_LOG, CONCAT( sPrefix, '<="%s"' ),'kk');
+	END_IF
+END_IF
+
+Load := ((sizeof(buffer) - (sizeof(buffer) -  fbBuffer.cbSize))/sizeof(buffer)) * 100;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Clear" Id="{52449281-74cd-4a83-8a85-12ed1bfd2d12}">
+      <Implementation>
+        <ST><![CDATA[(* Resets fifo = clears all data *)
+MEMSET( ADR( sGet ), 0, SIZEOF( sGet ) );
+fbBuffer.A_Reset( pBuffer:= ADR(buffer), cbBuffer:= SIZEOF(buffer),
+					pWrite := ADR( sPut ), cbWrite := SIZEOF( sPut ), 
+					pRead := ADR( sGet ), cbRead := SIZEOF( sGet ),
+					bOk=>bOk, nCount=>nCount );
+cbFree := 1000;(* Free buffer size *)
+
+Load := sizeof(buffer) - (sizeof(buffer) -  fbBuffer.cbSize) * 100;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="RemoveHead" Id="{bfdcf34c-3cd5-473d-9333-87553dd90971}">
+      <Implementation>
+        <ST><![CDATA[(* Removes oldest fifo entry *)
+MEMSET( ADR( sGet ), 0, SIZEOF( sGet ) );
+fbBuffer.A_RemoveHead( pBuffer:= ADR(buffer), cbBuffer:= SIZEOF(buffer),
+						pRead := ADR( sGet ), cbRead := SIZEOF( sGet ),
+						bOk=>bOk, nCount=>nCount );
+IF bOk THEN
+	cbFree := 1000 - fbBuffer.cbSize;(* Calculate the free buffer space *)
+END_IF
+
+Load := sizeof(buffer) - (sizeof(buffer) -  fbBuffer.cbSize) * 100;]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="FB_FrameFifo">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FrameFifo.AddTail">
+      <LineId Id="44" Count="2" />
+      <LineId Id="38" Count="5" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FrameFifo.Clear">
+      <LineId Id="9" Count="5" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FrameFifo.RemoveHead">
+      <LineId Id="7" Count="3" />
+      <LineId Id="4" Count="2" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

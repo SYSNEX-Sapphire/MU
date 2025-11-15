@@ -7,6 +7,10 @@ VAR_GLOBAL
 	fbLineHeater_Manager:FB_LINE_HEATER_MANAGER;
 	
 	RotationResetTon: TON;
+	
+	Horiba_Mfc : ARRAY[1..10] OF ST_MfcData := [
+											(Addr:='@01'),(Addr:='@02'),(Addr:='@03'),(Addr:='@04'),(Addr:='@05'),
+											(Addr:='@06'),(Addr:='@07'),(Addr:='@08'),(Addr:='@09'),(Addr:='@0A')];
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
