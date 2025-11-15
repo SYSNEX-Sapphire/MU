@@ -1,25 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <GVL Name="GVL_IO" Id="{a5f3292d-798a-4b6c-af88-b59309d83086}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
 	io : IO;
-	
-	aOutputSolValve 		: ARRAY[1..GVL_CONSTANT.NumSolValve] OF BOOL; //Solenoid Valve
-	aAnalogController 		: ARRAY[1..GVL_CONSTANT.NumAnalogController] OF AnalogController; //Flow Controller (Ramp Controller) for MFC, EPC, Reactor
-	aReactorMaxValue		: ARRAY[1..GVL_CONSTANT.NumReactor] OF REAL; //Max Value set from UI Application
-	
-	(* Present Value Meter Display*)
-	aMonitoring_PV 			: ARRAY[1..GVL_CONSTANT.NumMonitoring] OF REAL; //Gauge Monitoring Value to UI
-	
-	interlock 				: Interlock;
-	aInputState				: ARRAY[1..GVL_CONSTANT.NumInputState] OF BOOL; // Digital Input from Device (Switch)
-	aOutputCmd				: ARRAY[1..GVL_CONSTANT.NumOutputCmd] OF BOOL; // Digital Command from UI
-	
 	ControlDevice :ST_MAIN_MODULE;
-	mainPRGControl : MainPRGControl;
-	
-	recipe :Recipe;
 	
 //// 	nCaseSignalTower		: INT;
 //// 	nDorOperationError		: INT;

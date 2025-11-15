@@ -3,8 +3,8 @@
   <DUT Name="InterlockSetting" Id="{0a03a8a9-f5e4-4808-ba46-2795d80c5423}">
     <Declaration><![CDATA[TYPE InterlockSetting :
 STRUCT
-	aInterlockThreshold			: ARRAY[1..GVL_CONSTANT.NumInterlockSettingThreshold] OF REAL;
 	aInterlockEnableThreshold	: ARRAY[1..GVL_CONSTANT.NumInterlockSettingEnableThreshold] OF InterlockEnableThreshold;
+	aInterlockEnable : ARRAY[1..GVL_CONSTANT.NumInterlockSettingEnable] OF BOOL;
 	
 	aAnalogAlarmEnable		: ARRAY[1..GVL_CONSTANT.NumInterlockSettingAnalogEnable] OF BOOL; 
 	aAnalogWarningEnable		: ARRAY[1..GVL_CONSTANT.NumInterlockSettingAnalogEnable] OF BOOL; 
