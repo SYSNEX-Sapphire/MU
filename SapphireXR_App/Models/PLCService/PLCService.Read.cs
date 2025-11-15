@@ -1,5 +1,4 @@
-﻿using SapphireXR_App.DeviceDependency;
-using SapphireXR_App.Enums;
+﻿using SapphireXR_App.Enums;
 using SapphireXR_App.ViewModels;
 using System.Collections;
 using System.Windows;
@@ -15,29 +14,29 @@ namespace SapphireXR_App.Models
                 ReadCurrentValueFromPLC();
                 if (aDeviceControlValues != null)
                 {
-                    foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+                    foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
                     {
-                        dControlValueIssuers?[kv.Key].Publish(aDeviceControlValues[DependentConfiguration.dIndexController[kv.Key]]);
+                        dControlValueIssuers?[kv.Key].Publish(aDeviceControlValues[DeviceConfiguration.dIndexController[kv.Key]]);
                     }
                 }
                 if (aDeviceCurrentValues != null)
                 {
-                    foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+                    foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
                     {
-                        dCurrentValueIssuers?[kv.Key].Publish(aDeviceCurrentValues[DependentConfiguration.dIndexController[kv.Key]]);
+                        dCurrentValueIssuers?[kv.Key].Publish(aDeviceCurrentValues[DeviceConfiguration.dIndexController[kv.Key]]);
                     }
                 }
                 if (aDeviceControlValues != null && aDeviceCurrentValues != null)
                 {
-                    foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+                    foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
                     {
-                        dControlCurrentValueIssuers?[kv.Key].Publish((aDeviceCurrentValues[DependentConfiguration.dIndexController[kv.Key]], aDeviceControlValues[DependentConfiguration.dIndexController[kv.Key]]));
+                        dControlCurrentValueIssuers?[kv.Key].Publish((aDeviceCurrentValues[DeviceConfiguration.dIndexController[kv.Key]], aDeviceControlValues[DeviceConfiguration.dIndexController[kv.Key]]));
                     }
                 }
 
                 if (aMonitoring_PVs != null)
                 {
-                    foreach (KeyValuePair<string, int> kv in DependentConfiguration.dMonitoringMeterIndex)
+                    foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dMonitoringMeterIndex)
                     {
                         aMonitoringCurrentValueIssuers?[kv.Key].Publish(aMonitoring_PVs[kv.Value]);
                     }
@@ -59,7 +58,7 @@ namespace SapphireXR_App.Models
 
                 if (baReadValveStatePLC != null)
                 {
-                    foreach ((string valveID, int index) in DependentConfiguration.ValveIDtoOutputSolValveIdx)
+                    foreach ((string valveID, int index) in DeviceConfiguration.ValveIDtoOutputSolValveIdx)
                     {
                         dValveStateIssuers?[valveID].Publish(baReadValveStatePLC[index]);
                     }
@@ -72,7 +71,7 @@ namespace SapphireXR_App.Models
                 dOutputCmd1?.Publish(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
                 dThrottleValveControlMode?.Publish(outputCmd[1]);
                 dPressureControlModeIssuer?.Publish(Ads.ReadAny<ushort>(hOutputSetType));
-                dLineHeaterTemperatureIssuers?.Publish(Ads.ReadAny<float[]>(hTemperaturePV, [(int)DeviceDependency.DependentConfiguration.LineHeaterTemperature]));
+                dLineHeaterTemperatureIssuers?.Publish(Ads.ReadAny<float[]>(hTemperaturePV, [(int)DeviceConfiguration.LineHeaterTemperature]));
 
                 int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
                 dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
@@ -137,7 +136,7 @@ namespace SapphireXR_App.Models
 
         private static void ReadCurrentValueFromPLC()
         {
-            foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+            foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
             {
                 switch (kv.Key)
                 {
@@ -154,8 +153,8 @@ namespace SapphireXR_App.Models
                         {
                             throw new ArgumentException(kv.Key + "is not valid analog device ID");
                         }
-                        aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAnalogControllers[kv.Value].hCV) / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
-                        aDeviceCurrentValues[kv.Value] = Ads.ReadAny<float>(hAnalogControllers[kv.Value].hPV) / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
+                        aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAnalogControllers[kv.Value].hCV) / DeviceConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
+                        aDeviceCurrentValues[kv.Value] = Ads.ReadAny<float>(hAnalogControllers[kv.Value].hPV) / DeviceConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
                         break;
 
                 }
@@ -167,7 +166,7 @@ namespace SapphireXR_App.Models
 
         public static float ReadCurrentValue(string controllerID)
         {
-            return aDeviceCurrentValues[DependentConfiguration.dIndexController[controllerID]];
+            return aDeviceCurrentValues[DeviceConfiguration.dIndexController[controllerID]];
         }
 
         public static short ReadUserState()
@@ -256,7 +255,7 @@ namespace SapphireXR_App.Models
                 case "Temperature":
                 case "Pressure":
                 case "Rotation":
-                    return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[DependentConfiguration.dIndexController[controllerID]].hCVControllerInput).targetValue;
+                    return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[DeviceConfiguration.dIndexController[controllerID]].hCVControllerInput).targetValue;
 
                 default:
                     float? maxValue = SettingViewModel.ReadMaxValue(controllerID);
@@ -264,7 +263,7 @@ namespace SapphireXR_App.Models
                     {
                         throw new ArgumentException(controllerID + "is not valid analog device ID");
                     }
-                    return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[DependentConfiguration.dIndexController[controllerID]].hCVControllerInput).targetValue / DeviceDependency.DependentConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
+                    return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[DeviceConfiguration.dIndexController[controllerID]].hCVControllerInput).targetValue / DeviceConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
             }
         }
 

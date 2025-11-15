@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Controls;
 using System.Collections;
 using SapphireXR_App.Common;
-using SapphireXR_App.DeviceDependency.Model;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -15,7 +14,7 @@ namespace SapphireXR_App.ViewModels
         public ReportSeriesSelectionViewModel()
         {
             List<string> names = new List<string>();
-            foreach(string name in LogReportSeries.LogSeriesColor.Keys)
+            foreach(string name in Models.LogReportSeries.LogSeriesColor.Keys)
             {
                 names.Add(name);
             }

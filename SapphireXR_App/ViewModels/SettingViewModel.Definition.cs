@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Common;
-using SapphireXR_App.DeviceDependency;
 using SapphireXR_App.Models;
 using System.Collections;
 using System.Windows;
@@ -220,35 +219,35 @@ namespace SapphireXR_App.ViewModels
         private static ObservableManager<(string, string)>.Publisher AnalogIOLabelChangedPublisher = ObservableManager<(string, string)>.Get("AnalogIOLabelChanged");
         
       
-        private static readonly Dictionary<string, DeviceDependency.DependentConfiguration.InterlockEnableSetting> InterlockSettingNameToPLCInterlockEnableSettingEnum = new ()
+        private static readonly Dictionary<string, DeviceConfiguration.InterlockEnableSetting> InterlockSettingNameToPLCInterlockEnableSettingEnum = new ()
         {
-            { "CanOpenSusceptorTemperature", DeviceDependency.DependentConfiguration.InterlockEnableSetting.CanOpenSusceptorTemperature },
-            { "CanOpenReactorPressure", DeviceDependency.DependentConfiguration.InterlockEnableSetting.CanOpenReactorPressure },
-            { "PressureLimit", DeviceDependency.DependentConfiguration.InterlockEnableSetting.PressureLimit },
-            { "ReTryCount", DeviceDependency.DependentConfiguration.InterlockEnableSetting.RetryCount }
+            { "CanOpenSusceptorTemperature", DeviceConfiguration.InterlockEnableSetting.CanOpenSusceptorTemperature },
+            { "CanOpenReactorPressure", DeviceConfiguration.InterlockEnableSetting.CanOpenReactorPressure },
+            { "PressureLimit", DeviceConfiguration.InterlockEnableSetting.PressureLimit },
+            { "ReTryCount", DeviceConfiguration.InterlockEnableSetting.RetryCount }
         };
-        private static readonly Dictionary<string, DeviceDependency.DependentConfiguration.InterlockValueSetting> InterlockSettingNameToPLCInterlockValueSettingEnum = new()
+        private static readonly Dictionary<string, DeviceConfiguration.InterlockValueSetting> InterlockSettingNameToPLCInterlockValueSettingEnum = new()
         {
-            { "ProcessGasPressureAlarm", DeviceDependency.DependentConfiguration.InterlockValueSetting.ProcessGasPressureAlarm },
-            { "ProcessGasPressureWarning", DeviceDependency.DependentConfiguration.InterlockValueSetting.ProcessGasPressureWarning },
-            { "SusceptorOverTemperature", DeviceDependency.DependentConfiguration.InterlockValueSetting.SusceptorOverTemperature },
-            { "ReactorOverPressure", DeviceDependency.DependentConfiguration.InterlockValueSetting.ReactorOverPressure },
-            { "CanOpenSusceptorTemperature", DeviceDependency.DependentConfiguration.InterlockValueSetting.CanOpenSusceptorTemperature },
-            { "CanOpenReactorPressure", DeviceDependency.DependentConfiguration.InterlockValueSetting.CanOpenReactorPressure },
-            { "PressureLimit", DeviceDependency.DependentConfiguration.InterlockValueSetting.PressureLimit },
-            { "ReTryCount", DeviceDependency.DependentConfiguration.InterlockValueSetting.RetryCount }
+            { "ProcessGasPressureAlarm", DeviceConfiguration.InterlockValueSetting.ProcessGasPressureAlarm },
+            { "ProcessGasPressureWarning", DeviceConfiguration.InterlockValueSetting.ProcessGasPressureWarning },
+            { "SusceptorOverTemperature", DeviceConfiguration.InterlockValueSetting.SusceptorOverTemperature },
+            { "ReactorOverPressure", DeviceConfiguration.InterlockValueSetting.ReactorOverPressure },
+            { "CanOpenSusceptorTemperature", DeviceConfiguration.InterlockValueSetting.CanOpenSusceptorTemperature },
+            { "CanOpenReactorPressure", DeviceConfiguration.InterlockValueSetting.CanOpenReactorPressure },
+            { "PressureLimit", DeviceConfiguration.InterlockValueSetting.PressureLimit },
+            { "ReTryCount", DeviceConfiguration.InterlockValueSetting.RetryCount }
         };
-        private static readonly Dictionary<DependentConfiguration.Reactor, string> ReactorEnumToNameMap = new()
+        private static readonly Dictionary<DeviceConfiguration.Reactor, string> ReactorEnumToNameMap = new()
         {
-            { DependentConfiguration.Reactor.SusceptorTemperature, "R01" },
-            { DependentConfiguration.Reactor.ReactorPressure, "R02" },
-            { DependentConfiguration.Reactor.SusceptorRotation, "R03" }
+            { DeviceConfiguration.Reactor.SusceptorTemperature, "R01" },
+            { DeviceConfiguration.Reactor.ReactorPressure, "R02" },
+            { DeviceConfiguration.Reactor.SusceptorRotation, "R03" }
         };
-        private static readonly Dictionary<string, DependentConfiguration.Reactor> ReactorNameToEnumMap = new()
+        private static readonly Dictionary<string, DeviceConfiguration.Reactor> ReactorNameToEnumMap = new()
         {
-            { "R01", DependentConfiguration.Reactor.SusceptorTemperature },
-            { "R02", DependentConfiguration.Reactor.ReactorPressure },
-            { "R03", DependentConfiguration.Reactor.SusceptorRotation }
+            { "R01", DeviceConfiguration.Reactor.SusceptorTemperature },
+            { "R02", DeviceConfiguration.Reactor.ReactorPressure },
+            { "R03", DeviceConfiguration.Reactor.SusceptorRotation }
         };
     }
 }

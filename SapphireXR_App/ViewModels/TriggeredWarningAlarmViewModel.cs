@@ -228,7 +228,7 @@ namespace SapphireXR_App.ViewModels
             List<string> onList = new List<string>();
 
             int digitalDeviceAlarms = plcServiceReadDigitalState();
-            for(uint digitalDevice = 0; digitalDevice < DeviceDependency.DependentConfiguration.NumDigitalDevice; ++digitalDevice)
+            for(uint digitalDevice = 0; digitalDevice < DeviceConfiguration.NumDigitalDevice; ++digitalDevice)
             {
                 string? notificationName = GetDigitalDeviceNotificationName(digitalDevice);
                 if (notificationName != null)
@@ -271,7 +271,7 @@ namespace SapphireXR_App.ViewModels
             }
 
             int analogDeviceAlarms = plcServiceReadAnalogState();
-            for(uint analogDevice = 0; analogDevice < DeviceDependency.DependentConfiguration.NumControllers; ++analogDevice)
+            for(uint analogDevice = 0; analogDevice < DeviceConfiguration.NumControllers; ++analogDevice)
             {
                 string? notificationName = GetAnalogDeviceNotificationName(analogDevice);
                 if (notificationName != null)

@@ -15,7 +15,7 @@ using OxyPlot.Annotations;
 using SapphireXR_App.WindowServices;
 using System.Windows.Media;
 using OxyPlot.Wpf;
-using SapphireXR_App.DeviceDependency.Model;
+using SapphireXR_App.Models;
 
 namespace SapphireXR_App.ViewModels
 {

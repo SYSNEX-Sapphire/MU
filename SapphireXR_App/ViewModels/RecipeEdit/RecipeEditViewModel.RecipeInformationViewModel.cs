@@ -168,7 +168,7 @@ namespace SapphireXR_App.ViewModels
             {
                 if (currentStep != null)
                 {
-                    var update = (Func<Recipe, float?> selector, string mfcName, float? totalFlowRate) =>
+                    var update = (Func<Recipe, float?> selector, float? totalFlowRate) =>
                     {
                         float? currentValue = selector(currentStep);
                         if (currentValue != null)
@@ -191,19 +191,19 @@ namespace SapphireXR_App.ViewModels
                     };
 
                     float? totalFlowRate = 0;
-                    if ((totalFlowRate = update(recipe => recipe.M01, "M01", totalFlowRate)) == null)
+                    if ((totalFlowRate = update(recipe => recipe.M01, totalFlowRate)) == null)
                     {
                         TotalFlowRate = null;
                         return;
                     }
-                    if ((totalFlowRate = update(recipe => recipe.M02, "M02", totalFlowRate)) == null)
+                    if ((totalFlowRate = update(recipe => recipe.M02, totalFlowRate)) == null)
                     {
                         TotalFlowRate = null;
                         return;
                     }
                     if (currentStep.V17 == true)
                     {
-                        if ((totalFlowRate = update(recipe => recipe.M03, "M03", totalFlowRate)) == null)
+                        if ((totalFlowRate = update(recipe => recipe.M03, totalFlowRate)) == null)
                         {
                             TotalFlowRate = null;
                             return;
@@ -211,7 +211,7 @@ namespace SapphireXR_App.ViewModels
                     }
                     if (currentStep.V18 == true)
                     {
-                        if ((totalFlowRate = update(recipe => recipe.M04, "M04", totalFlowRate)) == null)
+                        if ((totalFlowRate = update(recipe => recipe.M04, totalFlowRate)) == null)
                         {
                             TotalFlowRate = null;
                             return;
@@ -219,7 +219,7 @@ namespace SapphireXR_App.ViewModels
                     }
                     if (currentStep.V14 == true)
                     {
-                        if ((totalFlowRate = update(recipe => recipe.M05, "M05", totalFlowRate)) == null)
+                        if ((totalFlowRate = update(recipe => recipe.M05, totalFlowRate)) == null)
                         {
                             TotalFlowRate = null;
                             return;
@@ -227,7 +227,7 @@ namespace SapphireXR_App.ViewModels
                     }
                     if (currentStep.V15 == true)
                     {
-                        if ((totalFlowRate = update(recipe => recipe.M06, "M06", totalFlowRate)) == null)
+                        if ((totalFlowRate = update(recipe => recipe.M06, totalFlowRate)) == null)
                         {
                             TotalFlowRate = null;
                             return;
@@ -235,7 +235,7 @@ namespace SapphireXR_App.ViewModels
                     }
                     if (currentStep.V16 == true)
                     {
-                        if ((totalFlowRate = update(recipe => recipe.M07, "M07", totalFlowRate)) == null)
+                        if ((totalFlowRate = update(recipe => recipe.M07, totalFlowRate)) == null)
                         {
                             TotalFlowRate = null;
                             return;
@@ -243,18 +243,18 @@ namespace SapphireXR_App.ViewModels
                     }
                     if (currentStep.V19 == true)
                     {
-                        if ((totalFlowRate = update(recipe => recipe.M08, "M08", totalFlowRate)) == null)
+                        if ((totalFlowRate = update(recipe => recipe.M08, totalFlowRate)) == null)
                         {
                             TotalFlowRate = null;
                             return;
                         }
                     }
-                    if ((totalFlowRate = update(recipe => recipe.M09, "M09", totalFlowRate)) == null)
+                    if ((totalFlowRate = update(recipe => recipe.M09, totalFlowRate)) == null)
                     {
                         TotalFlowRate = null;
                         return;
                     }
-                    if ((totalFlowRate = update(recipe => recipe.M10, "M10", totalFlowRate)) == null)
+                    if ((totalFlowRate = update(recipe => recipe.M10, totalFlowRate)) == null)
                     {
                         TotalFlowRate = null;
                         return;

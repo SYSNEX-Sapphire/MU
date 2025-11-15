@@ -4,7 +4,6 @@ using System.Collections;
 using System.Windows.Threading;
 using TwinCAT.Ads;
 using TwinCAT.PlcOpen;
-using SapphireXR_App.DeviceDependency;
 
 namespace SapphireXR_App.Models
 {
@@ -153,15 +152,15 @@ namespace SapphireXR_App.Models
             hOutputCmd = Ads.CreateVariableHandle("GVL_IO.aOutputCmd");
             hOutputCmd1 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[1]");
             hOutputCmd2 = Ads.CreateVariableHandle("GVL_IO.aOutputCmd[2]");
-            for (uint arrayIndex = 0; arrayIndex < DeviceDependency.DependentConfiguration.NumAlarmWarningArraySize; arrayIndex++)
+            for (uint arrayIndex = 0; arrayIndex < DeviceConfiguration.NumAlarmWarningArraySize; arrayIndex++)
             {
                 hInterlockEnable[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockEnable[" + (arrayIndex + 1) + "]");
             }
-            for (uint arrayIndex = 0; arrayIndex < DeviceDependency.DependentConfiguration.NumInterlockSet; arrayIndex++)
+            for (uint arrayIndex = 0; arrayIndex < DeviceConfiguration.NumInterlockSet; arrayIndex++)
             {
                 hInterlockset[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlockSet[" + (arrayIndex + 1) + "]");
             }
-            for (uint arrayIndex = 0; arrayIndex < DeviceDependency.DependentConfiguration.NumInterlock; ++arrayIndex)
+            for (uint arrayIndex = 0; arrayIndex < DeviceConfiguration.NumInterlock; ++arrayIndex)
             {
                 hInterlock[arrayIndex] = Ads.CreateVariableHandle("GVL_IO.aInterlock[" + (arrayIndex + 1) + "]");
             }
@@ -180,7 +179,7 @@ namespace SapphireXR_App.Models
             hUIInterlockCheckRecipeEnable = Ads.CreateVariableHandle("GVL_IO.UI_INTERLOCK_CHECK_RECIPE_ENABLE");
             hUIInterlockCheckReactorEnable = Ads.CreateVariableHandle("GVL_IO.UI_INTERLOCK_CHECK_OPEN_REACTOR");
 
-            for (uint analogDevice = 0; analogDevice < DependentConfiguration.NumControllers; ++analogDevice)
+            for (uint analogDevice = 0; analogDevice < DeviceConfiguration.NumControllers; ++analogDevice)
             {
                 string hACName = "GVL_IO.aAnalogController[" + (analogDevice + 1) + "]";
                 hAnalogControllers[analogDevice] = new()
@@ -190,7 +189,7 @@ namespace SapphireXR_App.Models
                     hCVControllerInput = Ads.CreateVariableHandle(hACName + ".cvController.input")
                 };
             }
-            for (uint reactor = 0; reactor < DeviceDependency.DependentConfiguration.NumReactor; ++reactor)
+            for (uint reactor = 0; reactor < DeviceConfiguration.NumReactor; ++reactor)
             {
                 hReactorMaxValue[reactor] = Ads.CreateVariableHandle("GVL_IO.aReactorMaxValue[" + (reactor + 1) + "]");
             }
@@ -199,32 +198,32 @@ namespace SapphireXR_App.Models
         private static void IntializePubSub()
         {
             dCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
-            foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+            foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
             {
                 dCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".CurrentValue"));
             }
             dControlValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
-            foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+            foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
             {
                 dControlValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".ControlValue"));
             }
             dTargetValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
-            foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+            foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
             {
                 dTargetValueIssuers.Add(kv.Key, ObservableManager<float>.Get("FlowControl." + kv.Key + ".TargetValue"));
             }
             dControlCurrentValueIssuers = new Dictionary<string, ObservableManager<(float, float)>.Publisher>();
-            foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+            foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
             {
                 dControlCurrentValueIssuers.Add(kv.Key, ObservableManager<(float, float)>.Get("FlowControl." + kv.Key + ".ControlTargetValue.CurrentPLCState"));
             }
             aMonitoringCurrentValueIssuers = new Dictionary<string, ObservableManager<float>.Publisher>();
-            foreach (KeyValuePair<string, int> kv in DependentConfiguration.dIndexController)
+            foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
             {
                 aMonitoringCurrentValueIssuers.Add(kv.Key, ObservableManager<float>.Get("MonitoringPresentValue." + kv.Key + ".CurrentValue"));
             }
             dValveStateIssuers = new Dictionary<string, ObservableManager<bool>.Publisher>();
-            foreach ((string valveID, int valveIndex) in DependentConfiguration.ValveIDtoOutputSolValveIdx)
+            foreach ((string valveID, int valveIndex) in DeviceConfiguration.ValveIDtoOutputSolValveIdx)
             {
                 dValveStateIssuers.Add(valveID, ObservableManager<bool>.Get("Valve.OnOff." + valveID + ".CurrentPLCState"));
             }

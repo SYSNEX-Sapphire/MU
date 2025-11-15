@@ -1,6 +1,6 @@
-﻿namespace SapphireXR_App.DeviceDependency
+﻿namespace SapphireXR_App.Models
 {
-    public static class DependentConfiguration
+    public static class DeviceConfiguration
     {
         internal enum HardWiringInterlockStateIndex
         {

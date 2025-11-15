@@ -1,9 +1,8 @@
 ﻿using CsvHelper;
 using Microsoft.Win32;
-using SapphireXR_App.DeviceDependency.Common;
 using SapphireXR_App.Models;
 using System.IO;
-using static SapphireXR_App.DeviceDependency.Common.RecipeValidator;
+using static SapphireXR_App.Models.RecipeValidator;
 
 namespace SapphireXR_App.Common
 {

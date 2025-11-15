@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SapphireXR_App.DeviceDependency;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
@@ -216,11 +215,11 @@ namespace SapphireXR_App.Common
             {
                 PLCService.WriteFlowControllerTargetValue(batch.AnalogIOUserStates.Select((AnalogIOUserState analogIOUserState) => (analogIOUserState.ID, analogIOUserState.Value)).ToArray(),
                     (short)batch.RampingTime);
-                BitArray valveStates = new BitArray(DependentConfiguration.RecipeValves.Count);
+                BitArray valveStates = new BitArray(DeviceConfiguration.RecipeValves.Count);
                 foreach (DigitalIOUserState digitalIOUserState in batch.DigitalIOUserStates)
                 {
                     int index;
-                    if (DependentConfiguration.ValveIDtoOutputSolValveIdx.TryGetValue(digitalIOUserState.ID, out index) == true && index < valveStates.Count)
+                    if (DeviceConfiguration.ValveIDtoOutputSolValveIdx.TryGetValue(digitalIOUserState.ID, out index) == true && index < valveStates.Count)
                     {
                         valveStates[index] = digitalIOUserState.On;
                     }

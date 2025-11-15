@@ -109,11 +109,11 @@ namespace SapphireXR_App.ViewModels
                         {
                             if (ControlMode == PressControlMode.Pressure)
                             {
-                                PLCService.WriteOutputCmd1(DeviceDependency.DependentConfiguration.OutputCmd1Index.PressureControlMode, true);
+                                PLCService.WriteOutputCmd1(DeviceConfiguration.OutputCmd1Index.PressureControlMode, true);
                             }
                             else
                             {
-                                PLCService.WriteOutputCmd1(DeviceDependency.DependentConfiguration.OutputCmd1Index.PressureControlMode, false);
+                                PLCService.WriteOutputCmd1(DeviceConfiguration.OutputCmd1Index.PressureControlMode, false);
                             }
                             PLCService.WriteFlowControllerTargetValue(controllerID, controlValues.targetValue.Value, ControlMode == PressControlMode.Pressure ? controlValues.rampTime.Value : (short)0);
                             //App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success));

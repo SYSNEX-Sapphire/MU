@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using SapphireXR_App.Models;
 using SapphireXR_App.ViewModels;
 using SapphireXR_App.WindowServices;
 using System.ComponentModel;
@@ -181,7 +182,7 @@ namespace SapphireXR_App.Common
                         case "Reactor Press.":
                         case "Sus. Rotation":
                             string? controllerID;
-                            if (DeviceDependency.DependentConfiguration.RecipeReactorColumnHeaderToControllerID.TryGetValue(flowControlField, out controllerID) == true)
+                            if (DeviceConfiguration.RecipeReactorColumnHeaderToControllerID.TryGetValue(flowControlField, out controllerID) == true)
                             {
                                 flowControlField = controllerID;
                             }

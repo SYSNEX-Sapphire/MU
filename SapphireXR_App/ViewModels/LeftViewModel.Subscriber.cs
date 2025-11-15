@@ -100,15 +100,15 @@ namespace SapphireXR_App.ViewModels
                     }
                 };
 
-                leftViewModel.MaintenanceKeyLampColor = convertOnOffStateColor(value[(int)DeviceDependency.DependentConfiguration.HardWiringInterlockStateIndex.MaintenanceKey]);
-                leftViewModel.DoorReactorCabinetLampColor = convertOnOffStateColor(value[(int)DeviceDependency.DependentConfiguration.HardWiringInterlockStateIndex.DoorSensorReactor]);
-                leftViewModel.DoorGasDeliveryCabinetLampColor = convertOnOffStateColor(value[(int)DeviceDependency.DependentConfiguration.HardWiringInterlockStateIndex.DoorSensorGasDelivery]);
-                leftViewModel.DoorPowerDistributeCabinetLampColor = convertOnOffStateColor(value[(int)DeviceDependency.DependentConfiguration.HardWiringInterlockStateIndex.DoorSensorElectricControl]);
-                leftViewModel.CleanDryAirLampColor = convertOnOffStateColor(value[(int)DeviceDependency.DependentConfiguration.HardWiringInterlockStateIndex.CleanDryAir]);
-                leftViewModel.CoolingWaterLampColor = convertOnOffStateColor(value[(int)DeviceDependency.DependentConfiguration.HardWiringInterlockStateIndex.CoolingWater]);
+                leftViewModel.MaintenanceKeyLampColor = convertOnOffStateColor(value[(int)DeviceConfiguration.HardWiringInterlockStateIndex.MaintenanceKey]);
+                leftViewModel.DoorReactorCabinetLampColor = convertOnOffStateColor(value[(int)DeviceConfiguration.HardWiringInterlockStateIndex.DoorSensorReactor]);
+                leftViewModel.DoorGasDeliveryCabinetLampColor = convertOnOffStateColor(value[(int)DeviceConfiguration.HardWiringInterlockStateIndex.DoorSensorGasDelivery]);
+                leftViewModel.DoorPowerDistributeCabinetLampColor = convertOnOffStateColor(value[(int)DeviceConfiguration.HardWiringInterlockStateIndex.DoorSensorElectricControl]);
+                leftViewModel.CleanDryAirLampColor = convertOnOffStateColor(value[(int)DeviceConfiguration.HardWiringInterlockStateIndex.CleanDryAir]);
+                leftViewModel.CoolingWaterLampColor = convertOnOffStateColor(value[(int)DeviceConfiguration.HardWiringInterlockStateIndex.CoolingWater]);
   
-                leftViewModel.SusceptorMotorLampColor = convertThreeStateColor(value, (int)DeviceDependency.DependentConfiguration.HardWiringInterlockStateIndex.SusceptorMotorRun);
-                leftViewModel.VacuumPumpLampColor = convertFourStateColor(value, (int)DeviceDependency.DependentConfiguration.HardWiringInterlockStateIndex.VacuumPumpFault);
+                leftViewModel.SusceptorMotorLampColor = convertThreeStateColor(value, (int)DeviceConfiguration.HardWiringInterlockStateIndex.SusceptorMotorRun);
+                leftViewModel.VacuumPumpLampColor = convertFourStateColor(value, (int)DeviceConfiguration.HardWiringInterlockStateIndex.VacuumPumpFault);
             }
 
             LeftViewModel leftViewModel;
@@ -169,22 +169,22 @@ namespace SapphireXR_App.ViewModels
             {
                 var checkAllSignalOff = (BitArray ioList) =>
                 {
-                    if( ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_RED] == false &&
-                           ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_YELLOW] == false &&
-                           ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_GREEN] == false &&
-                           ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_BLUE] == false &&
-                           ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_WHITE] == false)
+                    if( ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_RED] == false &&
+                           ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_YELLOW] == false &&
+                           ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_GREEN] == false &&
+                           ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_BLUE] == false &&
+                           ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_WHITE] == false)
                     {
                         leftViewModel.SignalTowerImage = SignalTowerDefaultPath;
                     }
                 };
-                Util.SetIfChanged(ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_RED], ref signalTowerRed, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerRedPath; } else { checkAllSignalOff(ioList); } });
-                Util.SetIfChanged(ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_YELLOW], ref signalTowerYellow, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerYellowPath; } else { checkAllSignalOff(ioList); } });
-                Util.SetIfChanged(ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_GREEN], ref signalTowerGreen, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerGreenath; } else { checkAllSignalOff(ioList); } });
-                Util.SetIfChanged(ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_BLUE], ref signalTowerBlue, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerBluePath; } else { checkAllSignalOff(ioList); } });
-                Util.SetIfChanged(ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.SingalTower_WHITE], ref signalTowerWhite, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerWhitePath; } else { checkAllSignalOff(ioList); } });
-                Util.SetIfChanged(ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.DOR_Vaccum_State], ref dorVaccumState, (bool state) => { if (state == true) { leftViewModel.DorVacuumStateLampColor = OnLampColor; } else { leftViewModel.DorVacuumStateLampColor = ReadyLampColor; } });
-                Util.SetIfChanged(ioList[(int)DeviceDependency.DependentConfiguration.IOListIndex.Temp_Controller_Alarm], ref tempControllerAlarm, (bool state) => { if (state == true) { leftViewModel.TempControllerAlarmLampColor = FaultLampColor; } else { leftViewModel.TempControllerAlarmLampColor = OffLampColor; } });
+                Util.SetIfChanged(ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_RED], ref signalTowerRed, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerRedPath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_YELLOW], ref signalTowerYellow, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerYellowPath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_GREEN], ref signalTowerGreen, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerGreenath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_BLUE], ref signalTowerBlue, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerBluePath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)DeviceConfiguration.IOListIndex.SingalTower_WHITE], ref signalTowerWhite, (bool state) => { if (state == true) { leftViewModel.SignalTowerImage = SignalTowerWhitePath; } else { checkAllSignalOff(ioList); } });
+                Util.SetIfChanged(ioList[(int)DeviceConfiguration.IOListIndex.DOR_Vaccum_State], ref dorVaccumState, (bool state) => { if (state == true) { leftViewModel.DorVacuumStateLampColor = OnLampColor; } else { leftViewModel.DorVacuumStateLampColor = ReadyLampColor; } });
+                Util.SetIfChanged(ioList[(int)DeviceConfiguration.IOListIndex.Temp_Controller_Alarm], ref tempControllerAlarm, (bool state) => { if (state == true) { leftViewModel.TempControllerAlarmLampColor = FaultLampColor; } else { leftViewModel.TempControllerAlarmLampColor = OffLampColor; } });
             }
 
             private LeftViewModel leftViewModel;

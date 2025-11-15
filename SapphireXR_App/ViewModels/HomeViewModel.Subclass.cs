@@ -54,7 +54,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<BitArray>.OnNext(BitArray value)
             {
-                Util.SetIfChanged(value[(int)DeviceDependency.DependentConfiguration.DigitalOutput3Index.RotationAlaramReset], ref prevRotationAlarmReset, (bool value) => { homeViewMode.RotationReset = (value == true ? "Reset" : "No Reset"); });
+                Util.SetIfChanged(value[(int)DeviceConfiguration.DigitalOutput3Index.RotationAlaramReset], ref prevRotationAlarmReset, (bool value) => { homeViewMode.RotationReset = (value == true ? "Reset" : "No Reset"); });
             }
 
             private HomeViewModel homeViewMode;

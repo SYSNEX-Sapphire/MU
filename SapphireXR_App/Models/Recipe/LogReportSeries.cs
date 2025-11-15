@@ -2,7 +2,7 @@
 using System.Drawing;
 using SapphireXR_App.ViewModels;
 
-namespace SapphireXR_App.DeviceDependency.Model
+namespace SapphireXR_App.Models
 {
     static class LogReportSeries
     {

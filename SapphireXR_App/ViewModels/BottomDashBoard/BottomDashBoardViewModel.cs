@@ -107,7 +107,7 @@ namespace SapphireXR_App.ViewModels
 
             void IObserver<string>.OnNext(string value)
             {
-                ControlTargetValueSeriesUpdater currentSelectedFlowControllerListener = bottomViewModel.plotModels[DeviceDependency.DependentConfiguration.dIndexController[value]];
+                ControlTargetValueSeriesUpdater currentSelectedFlowControllerListener = bottomViewModel.plotModels[DeviceConfiguration.dIndexController[value]];
                 bottomViewModel.currentSelectedFlowControllerListener = currentSelectedFlowControllerListener;
                 bottomViewModel.FlowControlLivePlot = currentSelectedFlowControllerListener.plotModel;
             }
@@ -170,7 +170,7 @@ namespace SapphireXR_App.ViewModels
         [ObservableProperty]
         public PlotModel? flowControlLivePlot;
 
-        protected readonly ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[DeviceDependency.DependentConfiguration.NumControllers];
+        protected readonly ControlTargetValueSeriesUpdater[] plotModels = new ControlTargetValueSeriesUpdater[DeviceConfiguration.NumControllers];
         private readonly IObserver<string> flowContorllerSelectionChanged;
         private ControlTargetValueSeriesUpdater? currentSelectedFlowControllerListener;
 

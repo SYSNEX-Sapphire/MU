@@ -4,7 +4,6 @@ using System.Windows.Threading;
 using TwinCAT.Ads;
 using SapphireXR_App.Enums;
 using System.Runtime.InteropServices;
-using SapphireXR_App.DeviceDependency;
 
 namespace SapphireXR_App.Models
 {
@@ -59,12 +58,12 @@ namespace SapphireXR_App.Models
 
         // Variable handles to be connected plc variables
         private static BitArray? baReadValveStatePLC = null;
-        private static float[] aDeviceCurrentValues = new float[DependentConfiguration.NumControllers];
-        private static float[] aDeviceControlValues = new float[DependentConfiguration.NumControllers];
+        private static float[] aDeviceCurrentValues = new float[DeviceConfiguration.NumControllers];
+        private static float[] aDeviceControlValues = new float[DeviceConfiguration.NumControllers];
         private static float[]? aMonitoring_PVs = null;
         private static short[]? aInputState = null;
         private static BitArray? bOutputCmd1 = null;
-        private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)DependentConfiguration.NumAlarmWarningArraySize).ToArray();
+        private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)DeviceConfiguration.NumAlarmWarningArraySize).ToArray();
         private static Memory<byte> userStateBuffer = new Memory<byte>([ 0x00, 0x00 ]);
 
         private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
@@ -154,11 +153,11 @@ namespace SapphireXR_App.Models
         private static uint hTemperaturePV;
         private static uint hUIInterlockCheckRecipeEnable;
         private static uint hUIInterlockCheckReactorEnable;
-        private static uint[] hInterlockEnable = new uint[DependentConfiguration.NumAlarmWarningArraySize];
-        private static uint[] hInterlockset = new uint[DependentConfiguration.NumInterlockSet];
-        private static uint[] hInterlock = new uint[DependentConfiguration.NumInterlock];
-        private static HAnalogController[] hAnalogControllers = new HAnalogController[DependentConfiguration.NumControllers];
-        private static uint[] hReactorMaxValue = new uint[DependentConfiguration.NumReactor];
+        private static uint[] hInterlockEnable = new uint[DeviceConfiguration.NumAlarmWarningArraySize];
+        private static uint[] hInterlockset = new uint[DeviceConfiguration.NumInterlockSet];
+        private static uint[] hInterlock = new uint[DeviceConfiguration.NumInterlock];
+        private static HAnalogController[] hAnalogControllers = new HAnalogController[DeviceConfiguration.NumControllers];
+        private static uint[] hReactorMaxValue = new uint[DeviceConfiguration.NumReactor];
 
         private static bool RecipeRunEndNotified = false;
         private static bool ShowMessageOnOnTick = true;
@@ -171,7 +170,7 @@ namespace SapphireXR_App.Models
         private static Dictionary<int, float> AnalogDeviceInterlockSetIndiceToCommit = new Dictionary<int, float>();
         private static (bool, float) DigitalDevicelnterlockSetToCommit = (false, 0.0f);
         private static Dictionary<int, float> InterlockSetIndiceToCommit = new Dictionary<int, float>();
-        static Dictionary<DependentConfiguration.Reactor, float> ReactorMaxValueToCommit = new Dictionary<DependentConfiguration.Reactor, float>();
+        static Dictionary<DeviceConfiguration.Reactor, float> ReactorMaxValueToCommit = new Dictionary<DeviceConfiguration.Reactor, float>();
 
         private static List<Action> AddOnPLCStateUpdateTask = new List<Action>();
     }

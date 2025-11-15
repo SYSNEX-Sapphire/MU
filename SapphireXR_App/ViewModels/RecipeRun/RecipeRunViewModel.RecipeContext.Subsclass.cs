@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CsvHelper;
 using SapphireXR_App.Common;
-using SapphireXR_App.DeviceDependency.Model;
 using SapphireXR_App.Models;
 using System.IO;
 using System.Windows.Threading;
