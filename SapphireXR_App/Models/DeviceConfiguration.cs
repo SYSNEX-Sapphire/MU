@@ -1,4 +1,6 @@
-﻿namespace SapphireXR_App.Models
+﻿using System.Security.RightsManagement;
+
+namespace SapphireXR_App.Models
 {
     public static class DeviceConfiguration
     {
@@ -56,16 +58,26 @@
 
         public enum Reactor { SusceptorTemperature = 0, ReactorPressure, SusceptorRotation };
 
+        public const int LogicalInterlockRecipeEnable = 10;
+        public const int LogicalInterlockAlarmTriggered = 0;
         public const uint LineHeaterTemperature = 8;
-        public const uint NumAlarmWarningArraySize = 6;
-        public const uint NumInterlockSet = 20;
-        public const uint NumInterlock = 5;
+        public const int GeneralIOStateTempManAuto = 64;
+
         public const uint NumDigitalDevice = 17;
-        public const uint NumAnalogDevice = 19;
+        public const uint NumAnalogDevice = 12;
         public const uint NumReactor = 3;
-        public const int NumRecipeEnableSubConditions = 12;
-        public const int NumReactorEnableSubConditions = 10;
-        public const float AnalogControllerOutputVoltage = 5.0f;
+        public const uint NumOutputSolValve = 28;
+        public const uint NumLogicalInterlockState = 20;
+        public const uint NumInterlockAlarmWarningState = 40;
+        public const uint NumInterlockSettingEnableThreshold = 12;
+        public const uint NumInterlockSettingEnable = 9;
+        public const uint NumInterlockSettingAnalogEnable = 20;
+        public const uint NumInterlockSettingDigitalEnable = 20;
+        public const uint NumRecipeEnableSubConditions = 12;
+        public const uint NumReactorEnableSubConditions = 10;
+        public const uint NumMonitoring = 15;
+        public const uint NumGeneralIOControl = 11;
+        public const uint NumGeneralIOState = 100;
 
         public static readonly Dictionary<string, int> ValveIDtoOutputSolValveIdx = new Dictionary<string, int>
         {

@@ -39,6 +39,49 @@ namespace SapphireXR_App.Models
             public ushort rampTime;     // UINT in PLC is a 16-bit unsigned integer, which is 'ushort' in C#
         }
 
+        private struct AnalogControllerHandle
+        {
+            public uint hPV;
+            public uint hCV;
+            public uint hCVControllerInput;
+        }
+
+        private struct InterelockHandle
+        {
+            public InterelockHandle() { }
+
+            public uint[] hInterlockEnableThresholds = new uint[DeviceConfiguration.NumInterlockSettingEnableThreshold];
+            public uint[] hInterlockEnables = new uint[DeviceConfiguration.NumInterlockSettingEnable];
+            public uint[] hAnalogAlarmEnables = new uint[DeviceConfiguration.NumInterlockSettingAnalogEnable];
+            public uint[] hAnalogWarningEnables = new uint[DeviceConfiguration.NumInterlockSettingAnalogEnable];
+            public uint[] hDigitalAlarmEnables = new uint[DeviceConfiguration.NumInterlockSettingDigitalEnable];
+            public uint[] hDigitalWarningEnables = new uint[DeviceConfiguration.NumInterlockSettingDigitalEnable];
+
+            public uint hLogicalInterlocks;
+            public uint hAlarmStates;
+            public uint hWarningStates;
+            public uint hRecipeEnableSubstate;
+            public uint hOpenReactorSubstate;
+        }
+
+        private struct RecipeHandle
+        {
+            public uint hRcp;
+            public uint hRcpTotalStep;
+            public uint hRcpStepN;
+            public uint hCmd_RcpOperation;
+            public uint hUserState;
+            public uint hRecipeRunET;
+            public uint hRecipeControlPauseTime;
+        }
+
+        private struct GeneralIOHandle
+        {
+            public uint hGeneralIOControl;
+            public uint hGeneralIOState;
+            public uint hGeneralIOStateTempManAuto;
+        }
+
         internal enum RecipeRunETMode : short
         {
             None = 0, Ramp = 1, Hold = 2
@@ -57,13 +100,13 @@ namespace SapphireXR_App.Models
         public enum TriggerType { Alarm = 0, Warning };
 
         // Variable handles to be connected plc variables
-        private static BitArray? baReadValveStatePLC = null;
+        private static bool[]? aOutputSolValve = null;
         private static float[] aDeviceCurrentValues = new float[DeviceConfiguration.NumControllers];
         private static float[] aDeviceControlValues = new float[DeviceConfiguration.NumControllers];
+        private static bool[] aLogicalInterlocks = null;
         private static float[]? aMonitoring_PVs = null;
-        private static short[]? aInputState = null;
+        private static byte[]? aGeneralIOStates = null;
         private static BitArray? bOutputCmd1 = null;
-        private static int[] InterlockEnables = Enumerable.Repeat<int>(0, (int)DeviceConfiguration.NumAlarmWarningArraySize).ToArray();
         private static Memory<byte> userStateBuffer = new Memory<byte>([ 0x00, 0x00 ]);
 
         private static Dictionary<string, ObservableManager<float>.Publisher>? dCurrentValueIssuers;
@@ -123,41 +166,18 @@ namespace SapphireXR_App.Models
         private static DispatcherTimer? currentActiveRecipeListener = null;
         private static DispatcherTimer? connectionTryTimer = null;
 
-        private struct HAnalogController
-        {
-            public uint hPV;
-            public uint hCV;
-            public uint hCVControllerInput;
-        }
         // Read from PLC State
-        private static uint hReadValveStatePLC;
-        private static uint hRcp;
-        private static uint hRcpTotalStep;
-        private static uint hCmd_RcpOperation;
-        private static uint hRcpStepN;
+        private static uint hOutputSolValve;
+        private static uint[] hOutputSolValveElem = new uint [DeviceConfiguration.NumOutputSolValve];
         private static uint hMonitoring_PV;
-        private static uint hInputState;
-        private static uint hInputState5;
         private static uint hControlModeCmd;
         private static uint hControlMode;
-        private static uint hUserState;
-        private static uint hRecipeControlPauseTime;
-        private static uint hDigitalOutput;
-        private static uint hDigitalOutput2;
-        private static uint hOutputCmd;
-        private static uint hOutputCmd1;
-        private static uint hOutputCmd2;
-        private static uint hOutputSetType;
-        private static uint hOutputMode;
-        private static uint hRecipeRunET;
         private static uint hTemperaturePV;
-        private static uint hUIInterlockCheckRecipeEnable;
-        private static uint hUIInterlockCheckReactorEnable;
-        private static uint[] hInterlockEnable = new uint[DeviceConfiguration.NumAlarmWarningArraySize];
-        private static uint[] hInterlockset = new uint[DeviceConfiguration.NumInterlockSet];
-        private static uint[] hInterlock = new uint[DeviceConfiguration.NumInterlock];
-        private static HAnalogController[] hAnalogControllers = new HAnalogController[DeviceConfiguration.NumControllers];
-        private static uint[] hReactorMaxValue = new uint[DeviceConfiguration.NumReactor];
+        private static AnalogControllerHandle[] hAnalogControllers = new AnalogControllerHandle[DeviceConfiguration.NumControllers];
+        private static InterelockHandle hInterlock = new InterelockHandle();
+        private static RecipeHandle hRecipe = new RecipeHandle();
+        private static GeneralIOHandle hGeneralIO = new GeneralIOHandle();
+        private static uint[] hMaxValues = new uint[DeviceConfiguration.NumControllers];
 
         private static bool RecipeRunEndNotified = false;
         private static bool ShowMessageOnOnTick = true;
@@ -165,8 +185,7 @@ namespace SapphireXR_App.Models
         private static Dictionary<string, string> LeftCoupled = new Dictionary<string, string>();
         private static Dictionary<string, string> RightCoupled = new Dictionary<string, string>();
 
-        private static HashSet<int> InterlockEnableUpperIndiceToCommit = new HashSet<int>();
-        private static HashSet<int> InterlockEnableLowerIndiceToCommit = new HashSet<int>();
+    
         private static Dictionary<int, float> AnalogDeviceInterlockSetIndiceToCommit = new Dictionary<int, float>();
         private static (bool, float) DigitalDevicelnterlockSetToCommit = (false, 0.0f);
         private static Dictionary<int, float> InterlockSetIndiceToCommit = new Dictionary<int, float>();

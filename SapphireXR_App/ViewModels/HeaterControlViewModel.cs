@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using SapphireXR_App.Enums;
 using SapphireXR_App.Models;
 using SapphireXR_App.WindowServices;
-using static SapphireXR_App.ViewModels.PressControlViewModel;
 
 namespace SapphireXR_App.ViewModels
 {
@@ -49,7 +48,7 @@ namespace SapphireXR_App.ViewModels
                         break;
                 }
             };
-            ControlMode = PLCService.ReadInputManAuto(10) == true ? HeaterControlMode.Manual : HeaterControlMode.Auto;
+            ControlMode = PLCService.ReadTempManAuto() == false ? HeaterControlMode.Manual : HeaterControlMode.Auto;
             DeviationEnabled = ControlMode == HeaterControlMode.Auto;
         }
 
@@ -108,7 +107,7 @@ namespace SapphireXR_App.ViewModels
                     {
                         if (controlValues.targetValue != null && controlValues.rampTime != null)
                         {
-                            PLCService.WriteOutputCmd1(DeviceConfiguration.OutputCmd1Index.TempControllerManAuto, ControlMode == HeaterControlMode.Manual ? true : false);
+                            PLCService.WriteGeneralDeviceIOControl(DeviceConfiguration.OutputCmd1Index.TempControllerManAuto, ControlMode == HeaterControlMode.Manual ? true : false);
                             PLCService.WriteFlowControllerTargetValue(controllerID, controlValues.targetValue.Value, ControlMode == HeaterControlMode.Auto ? controlValues.rampTime.Value : (short)0);
                             //App.Current.MainWindow.Dispatcher.InvokeAsync(() => ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success));
                             ToastMessage.Show("PLC로 목표 유량과 램프 시간이 성공적으로 전송되었습니다.", ToastMessage.MessageType.Success);

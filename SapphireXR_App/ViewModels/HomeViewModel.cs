@@ -174,7 +174,7 @@ namespace SapphireXR_App.ViewModels
         {
             try
             {
-                PLCService.WriteOutputCmd1(DeviceConfiguration.OutputCmd1Index.VaccumPumpControl, on);
+                PLCService.WriteGeneralDeviceIOControl(DeviceConfiguration.OutputCmd1Index.VaccumPumpControl, on);
             }
             catch (Exception exception)
             {
@@ -198,7 +198,7 @@ namespace SapphireXR_App.ViewModels
             {
                 if (ValveOperationEx.Show("Vaccum Pump Reset", "Reset 하시겠습니까?") == Enums.DialogResult.Ok)
                 {
-                    PLCService.WriteOutputCmd1(DeviceConfiguration.OutputCmd1Index.VaccumPumpReset, true);
+                    PLCService.WriteGeneralDeviceIOControl(DeviceConfiguration.OutputCmd1Index.VaccumPumpReset, true);
                 }
             }
             catch (Exception exception)
@@ -223,7 +223,7 @@ namespace SapphireXR_App.ViewModels
             {
                 if (ValveOperationEx.Show("Motor Reset", "Reset 하시겠습니까?") == Enums.DialogResult.Ok)
                 {
-                    PLCService.WriteOutputCmd1(DeviceConfiguration.OutputCmd1Index.RotationReset, true);
+                    PLCService.WriteGeneralDeviceIOControl(DeviceConfiguration.OutputCmd1Index.RotationReset, true);
                     MotorResetEnable = false;
                     
                 }

@@ -9,34 +9,25 @@ namespace SapphireXR_App.Models
         {
             uint[] sentBuffer = new uint[1];
             valveUpdate.CopyTo(sentBuffer, 0);
-            Ads.WriteAny(hReadValveStatePLC, sentBuffer, [1]);
+            Ads.WriteAny(hOutputSolValve, sentBuffer, [1]);
         }
 
         public static void WriteValveState(string valveID, bool onOff)
         {
-            int index;
-            if (baReadValveStatePLC != null && DeviceConfiguration.ValveIDtoOutputSolValveIdx.TryGetValue(valveID, out index) == true)
+            if (DeviceConfiguration.ValveIDtoOutputSolValveIdx.TryGetValue(valveID, out int index) == true)
             {
-                baReadValveStatePLC[index] = onOff;
-                DoWriteValveState(baReadValveStatePLC);
+                Ads.WriteAny(hOutputSolValveElem[index], onOff);
             }
         }
 
-        public static void WriteValveState(BitArray valveUpdate)
+        public static void WriteValveState(bool[] valveUpdate)
         {
-            if (baReadValveStatePLC != null)
-            {
-                for(int bit = 0; bit < valveUpdate.Count; ++bit)
-                {
-                    baReadValveStatePLC[bit] = valveUpdate[bit];
-                }
-                DoWriteValveState(baReadValveStatePLC);
-            }
+            Ads.WriteAny(hOutputSolValve, valveUpdate, [(int)DeviceConfiguration.NumOutputSolValve]);
         }
 
         public static void WriteRecipe(PlcRecipe[] recipe)
         {
-            Ads.WriteAny(hRcp, recipe, [recipe.Length]);
+            Ads.WriteAny(hRecipe.hRcp, recipe, [recipe.Length]);
         }
 
         public static void RefreshRecipe(PlcRecipe[] updates)
@@ -49,12 +40,12 @@ namespace SapphireXR_App.Models
 
         public static void WriteTotalStep(short totalStep)
         {
-            Ads.WriteAny(hRcpTotalStep, totalStep);
+            Ads.WriteAny(hRecipe.hRcpTotalStep, totalStep);
         }
 
         public static void WriteRCPOperationCommand(short operationState)
         {
-            Ads.WriteAny(hCmd_RcpOperation, operationState);
+            Ads.WriteAny(hRecipe.hCmd_RcpOperation, operationState);
         }
 
         public static void WriteControlModeCmd(ControlMode controlMode)
@@ -63,20 +54,14 @@ namespace SapphireXR_App.Models
             Ads.WriteAny(hControlModeCmd, (short)controlMode);
         }
 
-        public static void WriteOutputCmd1(DeviceConfiguration.OutputCmd1Index index, bool powerOn)
+        public static void WriteGeneralDeviceIOControl(DeviceConfiguration.OutputCmd1Index index, bool powerOn)
         {
-            if (bOutputCmd1 != null)
-            {
-                bOutputCmd1[(int)index] = powerOn;
-                int[] array = new int[1];
-                bOutputCmd1.CopyTo(array, 0);
-                Ads.WriteAny(hOutputCmd1, (short)array[0]);
-            }
+          
         }
 
         public static void WriteThrottleValveMode(short value)
         {
-            Ads.WriteAny(hOutputCmd2, value);
+        
         }
 
         private static int SetBit(bool bitValue, int bitField, int bit)
@@ -88,73 +73,45 @@ namespace SapphireXR_App.Models
             return bitField;
         }
 
-        private static bool WriteDeviceAlarmWarningSettingState(string deviceID, int index, bool bitValue, Dictionary<string, int> deviceIDToBit)
+        private static void WriteAnalogAlarmEnable(Dictionary<int, bool> interlockEnableIndiceToCommit)
         {
-            int bit;
-            if (deviceIDToBit.TryGetValue(deviceID, out bit) == true)
+            foreach((int index, bool enable) in interlockEnableIndiceToCommit)
             {
-                InterlockEnables[index] = SetBit(bitValue, InterlockEnables[index], bit);
-                return true;
-            }
-            else
-            {
-                return false;
+                Ads.WriteAny(hInterlock.hAnalogAlarmEnables[index], enable);
             }
         }
 
-        public static void WriteAnalogDeviceAlarmState(string deviceID, bool bitValue)
+        private static void WriteAnalogWarningEnable(Dictionary<int, bool> interlockEnableIndiceToCommit)
         {
-            WriteDeviceAlarmWarningSettingState(deviceID, 1, bitValue, DeviceConfiguration.dAnalogDeviceAlarmWarningBit);
-            InterlockEnableLowerIndiceToCommit.Add(1);
-        }
-
-        public static void WriteAnalogDeviceWarningState(string deviceID, bool bitValue)
-        {
-            WriteDeviceAlarmWarningSettingState(deviceID, 2, bitValue, DeviceConfiguration.dAnalogDeviceAlarmWarningBit);
-            InterlockEnableLowerIndiceToCommit.Add(2);
-        }
-
-        public static void WriteDigitalDeviceAlarmState(string deviceID, bool bitValue)
-        {
-            WriteDeviceAlarmWarningSettingState(deviceID, 3, bitValue, DeviceConfiguration.dDigitalDeviceAlarmWarningBit);
-            InterlockEnableUpperIndiceToCommit.Add(3);
-        }
-
-        public static void WriteDigitalDeviceWarningState(string deviceID, bool bitValue)
-        {
-            WriteDeviceAlarmWarningSettingState(deviceID, 4, bitValue, DeviceConfiguration.dDigitalDeviceAlarmWarningBit);
-            InterlockEnableUpperIndiceToCommit.Add(4);
-        }
-
-        private static void CommitAlarmWarningSettingStateToPLC(HashSet<int> interlockEnableIndiceToCommit)
-        {
-            foreach (int index in interlockEnableIndiceToCommit)
+            foreach ((int index, bool enable) in interlockEnableIndiceToCommit)
             {
-                Ads.WriteAny(hInterlockEnable[index], InterlockEnables[index]);
+                Ads.WriteAny(hInterlock.hAnalogWarningEnables[index], enable);
             }
-            interlockEnableIndiceToCommit.Clear();
         }
 
-        public static void CommitAnalogDeviceAlarmWarningSettingStateToPLC()
+        private static void WriteDigitalAlarmEnable(Dictionary<int, bool> interlockEnableIndiceToCommit)
         {
-            CommitAlarmWarningSettingStateToPLC(InterlockEnableLowerIndiceToCommit);
-            CommitAnalogDeviceInterlockSettingToPLC();
+            foreach ((int index, bool enable) in interlockEnableIndiceToCommit)
+            {
+                Ads.WriteAny(hInterlock.hDigitalAlarmEnables[index], enable);
+            }
         }
 
-        public static void CommitDigitalDeviceAlarmWarningSettingStateToPLC()
+        private static void WriteDigitalWarningEnable(Dictionary<int, bool> interlockEnableIndiceToCommit)
         {
-            CommitAlarmWarningSettingStateToPLC(InterlockEnableUpperIndiceToCommit);
-            CommitDigitalDeviceInterlockSettingToPLC();
+            foreach ((int index, bool enable) in interlockEnableIndiceToCommit)
+            {
+                Ads.WriteAny(hInterlock.hDigitalWarningEnables[index], enable);
+            }
         }
 
         public static void WriteAlarmWarningSetting(List<AnalogDeviceIO> analogDeviceIOs, List<SwitchDI> switchDIs)
         {
-            var setBit = (string deviceID, int index, bool bitValue, Dictionary<string, int> deviceIDToBit) =>
+            var setEnable = (string deviceID, bool bitValue, Dictionary<string, int> deviceIDToIndex, uint[] enableHandles) =>
             {
-                int bit;
-                if (deviceIDToBit.TryGetValue(deviceID, out bit) == true)
+                if (deviceIDToIndex.TryGetValue(deviceID, out int index) == true)
                 {
-                    InterlockEnables[index] = SetBit(bitValue, InterlockEnables[index], bit);
+                    Ads.WriteAny(enableHandles[index], bitValue);
                 }
             };
 
@@ -162,22 +119,17 @@ namespace SapphireXR_App.Models
             {
                 if (analogDeviceIO.ID != null)
                 {
-                    setBit(analogDeviceIO.ID, 1, analogDeviceIO.AlarmSet, DeviceConfiguration.dAnalogDeviceAlarmWarningBit);
-                    setBit(analogDeviceIO.ID, 2, analogDeviceIO.WarningSet, DeviceConfiguration.dAnalogDeviceAlarmWarningBit);
+                    setEnable(analogDeviceIO.ID, analogDeviceIO.AlarmSet, DeviceConfiguration.dAnalogDeviceAlarmWarningBit, hInterlock.hAnalogAlarmEnables);
+                    setEnable(analogDeviceIO.ID, analogDeviceIO.WarningSet, DeviceConfiguration.dAnalogDeviceAlarmWarningBit, hInterlock.hAnalogWarningEnables);
                 }
             }
             foreach (SwitchDI switchID in switchDIs)
             {
                 if (switchID.ID != null)
                 {
-                    setBit(switchID.ID, 3, switchID.AlarmSet, DeviceConfiguration.dDigitalDeviceAlarmWarningBit);
-                    setBit(switchID.ID, 4, switchID.WarningSet, DeviceConfiguration.dDigitalDeviceAlarmWarningBit);
+                    setEnable(switchID.ID, switchID.AlarmSet, DeviceConfiguration.dDigitalDeviceAlarmWarningBit, hInterlock.hDigitalAlarmEnables);
+                    setEnable(switchID.ID, switchID.WarningSet, DeviceConfiguration.dDigitalDeviceAlarmWarningBit, hInterlock.hDigitalWarningEnables);
                 }
-            }
-
-            for (uint alarmWarningSettingIndex = 1; alarmWarningSettingIndex < (DeviceConfiguration.NumAlarmWarningArraySize - 1); alarmWarningSettingIndex++)
-            {
-                Ads.WriteAny(hInterlockEnable[alarmWarningSettingIndex], InterlockEnables[alarmWarningSettingIndex]);
             }
         }
 
@@ -321,7 +273,7 @@ namespace SapphireXR_App.Models
         {
             foreach ((DeviceConfiguration.Reactor reactor, float maxValue) in ReactorMaxValueToCommit)
             {
-                Ads.WriteAny(hReactorMaxValue[(int)reactor], maxValue);
+                Ads.WriteAny(hMaxValues[(int)reactor], maxValue);
             }
             ReactorMaxValueToCommit.Clear();
         }

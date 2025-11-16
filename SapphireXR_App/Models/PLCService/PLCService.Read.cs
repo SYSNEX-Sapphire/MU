@@ -1,6 +1,4 @@
 ﻿using SapphireXR_App.Enums;
-using SapphireXR_App.ViewModels;
-using System.Collections;
 using System.Windows;
 
 namespace SapphireXR_App.Models
@@ -12,76 +10,8 @@ namespace SapphireXR_App.Models
             try
             {
                 ReadCurrentValueFromPLC();
-                if (aDeviceControlValues != null)
-                {
-                    foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
-                    {
-                        dControlValueIssuers?[kv.Key].Publish(aDeviceControlValues[DeviceConfiguration.dIndexController[kv.Key]]);
-                    }
-                }
-                if (aDeviceCurrentValues != null)
-                {
-                    foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
-                    {
-                        dCurrentValueIssuers?[kv.Key].Publish(aDeviceCurrentValues[DeviceConfiguration.dIndexController[kv.Key]]);
-                    }
-                }
-                if (aDeviceControlValues != null && aDeviceCurrentValues != null)
-                {
-                    foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
-                    {
-                        dControlCurrentValueIssuers?[kv.Key].Publish((aDeviceCurrentValues[DeviceConfiguration.dIndexController[kv.Key]], aDeviceControlValues[DeviceConfiguration.dIndexController[kv.Key]]));
-                    }
-                }
+                PublishCurrentPLCState();
 
-                if (aMonitoring_PVs != null)
-                {
-                    foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dMonitoringMeterIndex)
-                    {
-                        aMonitoringCurrentValueIssuers?[kv.Key].Publish(aMonitoring_PVs[kv.Value]);
-                    }
-                }
-
-                if (aInputState != null)
-                {
-                    short value = aInputState[0];
-                    baHardWiringInterlockStateIssuers?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(value) : BitConverter.GetBytes(value).Reverse().ToArray()));
-                    dThrottleValveStatusIssuer?.Publish(aInputState[4]);
-
-                    bool[] ioList = new bool[80];
-                    for (int inputState = 1; inputState < aInputState.Length; ++inputState)
-                    {
-                        new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(aInputState[inputState]) : BitConverter.GetBytes(aInputState[inputState]).Reverse().ToArray()).CopyTo(ioList, (inputState - 1) * sizeof(short) * 8);
-                    }
-                    dIOStateList?.Publish(new BitArray(ioList));
-                }
-
-                if (baReadValveStatePLC != null)
-                {
-                    foreach ((string valveID, int index) in DeviceConfiguration.ValveIDtoOutputSolValveIdx)
-                    {
-                        dValveStateIssuers?[valveID].Publish(baReadValveStatePLC[index]);
-                    }
-                }
-
-                byte[] digitalOutput = Ads.ReadAny<byte[]>(hDigitalOutput, [4]);
-                dDigitalOutput2?.Publish(new BitArray(new byte[1] { digitalOutput[1] }));
-                dDigitalOutput3?.Publish(new BitArray(new byte[1] { digitalOutput[2] }));
-                short[] outputCmd = Ads.ReadAny<short[]>(hOutputCmd, [3]);
-                dOutputCmd1?.Publish(bOutputCmd1 = new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd[0]) : BitConverter.GetBytes(outputCmd[0]).Reverse().ToArray()));
-                dThrottleValveControlMode?.Publish(outputCmd[1]);
-                dPressureControlModeIssuer?.Publish(Ads.ReadAny<ushort>(hOutputSetType));
-                dLineHeaterTemperatureIssuers?.Publish(Ads.ReadAny<float[]>(hTemperaturePV, [(int)DeviceConfiguration.LineHeaterTemperature]));
-
-                int iterlock1 = Ads.ReadAny<int>(hInterlock[0]);
-                dLogicalInterlockStateIssuer?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(iterlock1) : BitConverter.GetBytes(iterlock1).Reverse().ToArray()));
-
-                short recipeEnableSubconditions = Ads.ReadAny<short>(hUIInterlockCheckRecipeEnable);
-                recipeEnableSubConditionPublisher?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(recipeEnableSubconditions) : BitConverter.GetBytes(recipeEnableSubconditions).Reverse().ToArray()));
-
-                short reactorEnableSubconditions = Ads.ReadAny<short>(hUIInterlockCheckReactorEnable);
-                reactorEnableSubConditionPublisher?.Publish(new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(reactorEnableSubconditions) : BitConverter.GetBytes(reactorEnableSubconditions).Reverse().ToArray()));
-              
                 foreach (Action task in AddOnPLCStateUpdateTask)
                 {
                     task();
@@ -96,7 +26,7 @@ namespace SapphireXR_App.Models
                     }
                     exceptionStr += "aMonitoring_PVs is null in OnTick PLCService";
                 }
-                if (baReadValveStatePLC == null)
+                if (aOutputSolValve == null)
                 {
                     if (exceptionStr != string.Empty)
                     {
@@ -123,45 +53,17 @@ namespace SapphireXR_App.Models
             }
         }
 
-        private static void ReadValveStateFromPLC()
-        {
-            baReadValveStatePLC = new BitArray([(int)Ads.ReadAny(hReadValveStatePLC, typeof(int))]);
-        }
-
-        private static void ReadInitialStateValueFromPLC()
-        {
-            ReadValveStateFromPLC();
-            ReadCurrentValueFromPLC();
-        }
-
         private static void ReadCurrentValueFromPLC()
         {
             foreach (KeyValuePair<string, int> kv in DeviceConfiguration.dIndexController)
             {
-                switch (kv.Key)
-                {
-                    case "Temperature":
-                    case "Pressure":
-                    case "Rotation":
-                        aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAnalogControllers[kv.Value].hCV);
-                        aDeviceCurrentValues[kv.Value] = Ads.ReadAny<float>(hAnalogControllers[kv.Value].hPV);
-                        break;
-
-                    default:
-                        float? maxValue = SettingViewModel.ReadMaxValue(kv.Key);
-                        if (maxValue == null)
-                        {
-                            throw new ArgumentException(kv.Key + "is not valid analog device ID");
-                        }
-                        aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAnalogControllers[kv.Value].hCV) / DeviceConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
-                        aDeviceCurrentValues[kv.Value] = Ads.ReadAny<float>(hAnalogControllers[kv.Value].hPV) / DeviceConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
-                        break;
-
-                }
+                aDeviceControlValues[kv.Value] = (float)Ads.ReadAny<double>(hAnalogControllers[kv.Value].hCV);
+                aDeviceCurrentValues[kv.Value] = Ads.ReadAny<float>(hAnalogControllers[kv.Value].hPV);
             }
-            aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [18]);
-            aInputState = Ads.ReadAny<short[]>(hInputState, [6]);
-            ReadValveStateFromPLC();
+            aMonitoring_PVs = Ads.ReadAny<float[]>(hMonitoring_PV, [(int)DeviceConfiguration.NumMonitoring]);
+            aGeneralIOStates = Ads.ReadAny<byte[]>(hGeneralIO.hGeneralIOState, [(int)DeviceConfiguration.NumGeneralIOState]);
+            aOutputSolValve = Ads.ReadAny<bool[]>(hOutputSolValve, [(int)DeviceConfiguration.NumOutputSolValve]);
+            aLogicalInterlocks = Ads.ReadAny<bool[]>(hInterlock.hLogicalInterlocks, [(int)DeviceConfiguration.NumLogicalInterlockState]);
         }
 
         public static float ReadCurrentValue(string controllerID)
@@ -172,34 +74,42 @@ namespace SapphireXR_App.Models
         public static short ReadUserState()
         {
             int length = userStateBuffer.Length;
-            Ads.Read(hUserState, userStateBuffer);
+            Ads.Read(hRecipe.hUserState, userStateBuffer);
             return BitConverter.ToInt16(userStateBuffer.Span);
         }
 
-        public static BitArray ReadOutputCmd1()
+        public static bool ReadLineHeaterPowerState()
         {
-            short outputCmd1 = Ads.ReadAny<short>(hOutputCmd1);
-            return new BitArray(BitConverter.IsLittleEndian == true ? BitConverter.GetBytes(outputCmd1) : BitConverter.GetBytes(outputCmd1).Reverse().ToArray());
+
+        }
+        public static bool ReadInductionHeaterPowerState()
+        {
+
+        }
+        public static bool ReadThermalBathPowerState()
+        {
+
         }
 
-        public static ushort ReadPressureControlMode()
+        public static bool ReadVaccumPumpPowerState()
         {
-            return Ads.ReadAny<ushort>(hOutputSetType);
+           
         }
 
-        public static ushort ReadThrottleValveMode()
+  
+        public static bool ReadPressureControlMode()
         {
-            return Ads.ReadAny<ushort>(hOutputMode);
+           
         }
 
-        public static bool ReadInputManAuto(int index)
+        public static byte ReadThrottleValveMode()
         {
-            return ReadBit(Ads.ReadAny<ushort>(hInputState5), index);
+           
         }
 
-        public static bool ReadDigitalOutputIO2(int bitIndex)
+        public static bool ReadTempManAuto()
         {
-            return new BitArray(new byte[1] { Ads.ReadAny<byte>(hDigitalOutput2) })[bitIndex];
+           
         }
 
         public static bool ReadBit(int bitField, int bit)
@@ -210,37 +120,35 @@ namespace SapphireXR_App.Models
 
         public static bool ReadBuzzerOnOff()
         {
-            return ReadBit(Ads.ReadAny<int>(hInterlockEnable[0]), 2);
+            return Ads.ReadAny<bool>(hInterlock.hInterlockEnables[2]);
         }
 
-        public static int ReadDigitalDeviceAlarms()
+        public static bool[] ReadDeviceAlarms()
         {
-            return Ads.ReadAny<int>(hInterlock[1]);
+            return Ads.ReadAny<bool[]>(hInterlock.hAlarmStates, [(int)DeviceConfiguration.NumInterlockAlarmWarningState]);
         }
 
-        public static int ReadAnalogDeviceAlarms()
+        public static bool[] ReadDeviceWarnings()
         {
-            return Ads.ReadAny<int>(hInterlock[2]);
-        }
-
-        public static int ReadDigitalDeviceWarnings()
-        {
-            return Ads.ReadAny<int>(hInterlock[3]);
-        }
-
-        public static int ReadAnalogDeviceWarnings()
-        {
-            return Ads.ReadAny<int>(hInterlock[4]);
+            return Ads.ReadAny<bool[]>(hInterlock.hWarningStates, [(int)DeviceConfiguration.NumInterlockAlarmWarningState]);
         }
 
         public static bool ReadRecipeStartAvailable()
         {
-            return ReadBit(Ads.ReadAny<int>(hInterlock[0]), 10);
+            if(aLogicalInterlocks == null)
+            {
+                throw new InvalidOperationException("Failed in reading Logical interlocks from PLC yet.");
+            }
+            return aLogicalInterlocks[DeviceConfiguration.LogicalInterlockRecipeEnable];
         }
 
         public static bool ReadAlarmTriggered()
         {
-            return ReadBit(Ads.ReadAny<int>(hInterlock[0]), 0);
+            if (aLogicalInterlocks == null)
+            {
+                throw new InvalidOperationException("Failed in reading Logical interlocks from PLC yet.");
+            }
+            return aLogicalInterlocks[DeviceConfiguration.LogicalInterlockAlarmTriggered];
         }
 
         public static ControlMode ReadControlMode()
@@ -250,26 +158,12 @@ namespace SapphireXR_App.Models
 
         public static float ReadFlowControllerTargetValue(string controllerID)
         {
-            switch (controllerID)
-            {
-                case "Temperature":
-                case "Pressure":
-                case "Rotation":
-                    return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[DeviceConfiguration.dIndexController[controllerID]].hCVControllerInput).targetValue;
-
-                default:
-                    float? maxValue = SettingViewModel.ReadMaxValue(controllerID);
-                    if (maxValue == null)
-                    {
-                        throw new ArgumentException(controllerID + "is not valid analog device ID");
-                    }
-                    return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[DeviceConfiguration.dIndexController[controllerID]].hCVControllerInput).targetValue / DeviceConfiguration.AnalogControllerOutputVoltage * maxValue.Value;
-            }
+            return Ads.ReadAny<RampGeneratorInput>(hAnalogControllers[DeviceConfiguration.dIndexController[controllerID]].hCVControllerInput).targetValue;
         }
 
         public static short ReadCurrentStep()
         {
-            return Ads.ReadAny<short>(hRcpStepN);
+            return Ads.ReadAny<short>(hRecipe.hRcpStepN);
         }
     }
 }

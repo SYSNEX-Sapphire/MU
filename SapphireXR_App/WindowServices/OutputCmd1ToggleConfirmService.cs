@@ -8,7 +8,7 @@ namespace SapphireXR_App.WindowServices
         {
             if (ValveOperationEx.Show(title, message) == Enums.DialogResult.Ok)
             {
-                PLCService.WriteOutputCmd1(index, !(currentState == stateOnTrue ? true : false));
+                PLCService.WriteGeneralDeviceIOControl(index, !(currentState == stateOnTrue ? true : false));
                 return true;
             }
             else
