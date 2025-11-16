@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P60_UpdatePV" Id="{d6a27823-c566-4b73-bf9c-5859236d8cc2}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P60_UpdatePV
 VAR
@@ -9,12 +9,12 @@ END_VAR
     <Implementation>
       <ST><![CDATA[//jhkang_251112
 //FOR i:=1 TO E_aAnalogInputIO_Index.E_PV_EPC_04 DO
-//	GVL_IO.aAnalogController[i].pv := INT_TO_REAL(GVL_IO.GVL_IO.io.analog.aAnalogInputIO[i]) / GVL_CONSTANT.EL3064MaxValueH * GVL_CONSTANT.AnalogControllerOutputVoltage;
+//	GVL_INTERFACE_UI.aAnalogController[i].pv := INT_TO_REAL(GVL_IO.GVL_IO.io.analog.aAnalogInputIO[i]) / GVL_CONSTANT.EL3064MaxValueH * GVL_CONSTANT.AnalogControllerOutputVoltage;
 //END_FOR
 
-//GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].pv := WORD_TO_REAL(GVL_IO.wE3508_PV);
-//GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure].pv := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
-//GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].pv := GVL_IO.nRotation_Converted_PV;
+//GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].pv := WORD_TO_REAL(GVL_IO.wE3508_PV);
+//GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure].pv := WORD_TO_REAL(GVL_IO.wIqPlus_CDG2_PV);
+//GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].pv := GVL_IO.nRotation_Converted_PV;
 
 
 ]]></ST>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P12_IQ_PLUS" Id="{e511b755-5d71-4ab9-9c97-639ef910a29b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P12_IQ_PLUS
 VAR
@@ -85,7 +85,7 @@ END_VAR
 //GVL_IO.nIQPLUS_SetType 	:= GVL_DEVICE_NET_IQ_PLUS.nOutputSetType;
 //GVL_IO.nIQPLUS_Mode 	:= GVL_DEVICE_NET_IQ_PLUS.nOutputMode;
 //GVL_DEVICE_NET_IQ_PLUS.nOutputMode := GVL_COMMAND_FROM_UI.CMD_THROTTLE_OUTPUT_MODE;
-//GVL_IO.aMonitoring_PV[E_Morning_Index.E_Morning_TV_Position] := wByteValvePosition_PV/SetPointFactor;
+//GVL_INTERFACE_UI.aMonitoring_PV[E_Morning_Index.E_Morning_TV_Position] := wByteValvePosition_PV/SetPointFactor;
 
 //(* Read from Device Value *)
 //// 2USINT to WORD
@@ -93,7 +93,7 @@ END_VAR
 //wByteCDG2_PV 		:= USINT_TO_WORD_jh(GVL_DEVICE_NET_IQ_PLUS.aInputPressurePV_CDG2);
 //wByteValvePosition_PV:= USINT_TO_WORD_jh(GVL_DEVICE_NET_IQ_PLUS.aInputValvePosionPV);
 //wByteValvePosition_PV_Monitoring:=REAL_TO_WORD(wByteValvePosition_PV/SetPointFactor);
-//GVL_IO.aMonitoring_PV[12] := wByteValvePosition_PV_Monitoring;
+//GVL_INTERFACE_UI.aMonitoring_PV[12] := wByteValvePosition_PV_Monitoring;
 
 
 

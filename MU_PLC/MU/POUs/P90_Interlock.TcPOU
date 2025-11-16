@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="P90_Interlock" Id="{c8b81d81-de46-4c7a-a894-4387b2cd9bf7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM P90_Interlock
 VAR
@@ -262,7 +262,7 @@ END_VAR
 //	GVL_SEQUENCE.fbSensorLimitCheck[i](
 //		bAlarmEnable := wLimitAlarmEnable.0,  // Enable 
 //		bWarningEnable := wLimitWarningEnable.0,
-//		fCurrentValue := GVL_IO.aMonitoring_PV[(i+3)], // 현재 값 
+//		fCurrentValue := GVL_INTERFACE_UI.aMonitoring_PV[(i+3)], // 현재 값 
 //		fAlarmTreshold := GVL_IO.aInterlockSet[5],
 //		fWarningTreshold := GVL_IO.aInterlockSet[6],
 //		tAlarmDelay := tAlarmDelay_D,
@@ -327,8 +327,8 @@ END_VAR
 //		GVL_SEQUENCE.fbDeviationCheck[i](
 //			bAlarmEnable := wDeviceAlarmEnable.0,
 //			bWarningEnable := wDeviceWarningEnable.0,
-//			fCurrentValue := GVL_IO.aAnalogController[i].pv,
-//			fControlValue := LREAL_TO_REAL(GVL_IO.aAnalogController[i].cvController.rControlValue),
+//			fCurrentValue := GVL_INTERFACE_UI.aAnalogController[i].pv,
+//			fControlValue := LREAL_TO_REAL(GVL_INTERFACE_UI.aAnalogController[i].cvController.rControlValue),
 //			fMaxValue := GVL_CONSTANT.AnalogControllerOutputVoltage,
 //			fAlarmTreshold := GVL_IO.aInterlockSet[1],
 //			fWarningTreshold := GVL_IO.aInterlockSet[2],
@@ -374,8 +374,8 @@ END_VAR
 //		GVL_SEQUENCE.fbDeviationCheck_Reactor[i](
 //			bAlarmEnable := wDeviceAlarmEnable.0,
 //			bWarningEnable := wDeviceWarningEnable.0,
-//			fCurrentValue := GVL_IO.aAnalogController[fReactorIndexToAnalogControllerIndex(i)].pv,
-//			fControlValue := LREAL_TO_REAL(GVL_IO.aAnalogController[fReactorIndexToAnalogControllerIndex(i)].cvController.rControlValue),
+//			fCurrentValue := GVL_INTERFACE_UI.aAnalogController[fReactorIndexToAnalogControllerIndex(i)].pv,
+//			fControlValue := LREAL_TO_REAL(GVL_INTERFACE_UI.aAnalogController[fReactorIndexToAnalogControllerIndex(i)].cvController.rControlValue),
 //			fMaxValue := GVL_IO.aReactorMaxValue[i],
 //			fAlarmTreshold := GVL_IO.aInterlockSet[1],
 //			fWarningTreshold := GVL_IO.aInterlockSet[2],

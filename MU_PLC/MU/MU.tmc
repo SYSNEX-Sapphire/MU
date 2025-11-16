@@ -12583,7 +12583,7 @@
             <BitOffs>3404480</BitOffs>
           </Symbol>
           <Symbol>
-            <Name>GVL_IO.aOutputSolValve</Name>
+            <Name>GVL_INTERFACE_UI.aOutputSolValve</Name>
             <Comment><![CDATA[Solenoid Valve]]></Comment>
             <BitSize>32</BitSize>
             <BaseType>DWORD</BaseType>
@@ -21211,7 +21211,7 @@ Light]]></Comment>
             <BitOffs>3442912</BitOffs>
           </Symbol>
           <Symbol>
-            <Name>GVL_IO.aMonitoring_PV</Name>
+            <Name>GVL_INTERFACE_UI.aMonitoring_PV</Name>
             <Comment><![CDATA[Gauge Monitoring Value to UI]]></Comment>
             <BitSize>576</BitSize>
             <BaseType>REAL</BaseType>

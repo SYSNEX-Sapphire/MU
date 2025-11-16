@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <DUT Name="E_aAnalogInputIO_Index" Id="{6e9d6f4e-d1ac-4d03-bd75-0f709fef1494}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
@@ -17,14 +17,10 @@ TYPE E_aAnalogInputIO_Index :
 	E_PV_MFC_09 :=9,
 	E_PV_MFC_10 :=10,
 	E_PV_MFC_11 :=11,
-	E_PV_MFC_12 :=12,
-	E_PV_EPC_01 :=13,
-	E_PV_EPC_02 :=14,
-	E_PV_EPC_03 :=15,
-	E_PV_EPC_04 :=16,
-	E_PV_Susceptor_Temp:=17,
-	E_PV_Reactor_Pressure:=18,
-	E_PV_susceptorRotation:=19,
+	E_PV_EPC_01 :=12,
+	E_PV_Susceptor_Temp:=13,
+	E_PV_Reactor_Pressure:=14,
+	E_PV_susceptorRotation:=15,
 	E_PV_Ultimate_Pressure:=20,
 	E_PV_Exhaust_Pressure:=21,
 	E_PV_DOR_PRESSURE:=22,

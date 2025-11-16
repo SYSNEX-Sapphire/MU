@@ -28,11 +28,11 @@ P22_Background_ThermalBath();
 
 
 IF controlMode <> E_ControlMode.Priority THEN
-	IF controlMode <> GVL_IO.controlModeCmd THEN
-		IF GVL_IO.controlModeCmd = E_ControlMode.Priority THEN
+	IF controlMode <> GVL_INTERFACE_UI.mainPRGControl.controlModeCmd THEN
+		IF GVL_INTERFACE_UI.mainPRGControl.controlModeCmd = E_ControlMode.Priority THEN
 			prevControlMode := controlMode;
 		END_IF
-		GVL_IO.controlMode := controlMode := GVL_IO.controlModeCmd;
+		GVL_INTERFACE_UI.mainPRGControl.controlMode := controlMode := GVL_INTERFACE_UI.mainPRGControl.controlModeCmd;
 	END_IF
 END_IF
 
@@ -46,8 +46,8 @@ CASE controlMode OF
 	E_ControlMode.Priority:
 		P31_PriorityControl();
 		IF P31_PriorityControl.complete = TRUE THEN
-			GVL_IO.controlMode := controlMode := prevControlMode;
-			GVL_IO.controlModeCmd := controlMode;
+			GVL_INTERFACE_UI.mainPRGControl.controlMode := controlMode := prevControlMode;
+			GVL_INTERFACE_UI.mainPRGControl.controlModeCmd := controlMode;
 		END_IF
 END_CASE
 

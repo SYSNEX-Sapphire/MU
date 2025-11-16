@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
+  <DUT Name="GeneralIO" Id="{83072aa1-f8f8-443a-bc33-8a6bc893198e}">
+    <Declaration><![CDATA[TYPE GeneralIO :
+STRUCT
+	control: ARRAY [1..GVL_CONSTANT.NumGeneralIOControl] OF BYTE;
+	state: ARRAY [1..GVL_CONSTANT.NumGeneralIOState] OF BYTE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

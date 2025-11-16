@@ -135,6 +135,9 @@
     <Compile Include="DUTs\E_TowerLamp.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\GeneralIO.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Interlock\Interlock.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -400,7 +403,6 @@
     <Folder Include="GVLs" />
     <Folder Include="FUNCTION" />
     <Folder Include="DATA TYPES" />
-    <Folder Include="NewFolder1" />
     <Folder Include="POUs" />
     <Folder Include="POUs\FUNCTION" />
     <Folder Include="POUs\VARIABLE_LINK" />

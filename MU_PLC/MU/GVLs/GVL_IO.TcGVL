@@ -27,8 +27,6 @@ VAR_GLOBAL
 //// 	
 //// 	UI_INTERLOCK_CHECK_RECIPE_ENABLE:WORD;(**)
 //// 	UI_INTERLOCK_CHECK_OPEN_REACTOR:WORD;(**)
-	controlModeCmd: E_ControlMode;
-	controlMode: INT;
 	nRotation_Converted_PV: INT;
 END_VAR
 ]]></Declaration>

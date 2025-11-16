@@ -14,9 +14,9 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[FOR i := 1 TO GVL_CONSTANT.NumAnalogController DO
-	GVL_IO.aAnalogController[i].cvController.input.restart := TRUE;
-	GVL_IO.aAnalogController[i].cvController.input.rampTime := rampTime; 
-	GVL_IO.aAnalogController[i].cvController.input.targetValue := rRecipe[i];
+	GVL_INTERFACE_UI.aAnalogController[i].cvController.input.restart := TRUE;
+	GVL_INTERFACE_UI.aAnalogController[i].cvController.input.rampTime := rampTime; 
+	GVL_INTERFACE_UI.aAnalogController[i].cvController.input.targetValue := rRecipe[i];
 END_FOR]]></ST>
     </Implementation>
     <LineIds Name="FB_RecipeAnalogControlInputSequencer">

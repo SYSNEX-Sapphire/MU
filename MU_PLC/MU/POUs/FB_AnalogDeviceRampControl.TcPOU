@@ -1,32 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.11">
   <POU Name="FB_AnalogDeviceRampControl" Id="{901ef948-d319-4e50-9c34-c06b07342954}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AnalogDeviceRampControl
 VAR
-	i : INT;
+	i : UINT;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR i:=1 TO E_aAnalogInputIO_Index.E_PV_EPC_04 DO
-	GVL_IO.io.analog.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_IO.aAnalogController[i].cvController.rControlValue / GVL_CONSTANT.AnalogControllerOutputVoltage * GVL_CONSTANT.EL3064MaxValueH); //Write to Device
-	GVL_IO.aAnalogController[i].cvController();
+      <ST><![CDATA[FOR i:=1 TO GVL_CONSTANT.NumFlowController DO
+	GVL_IO.io.analog.aAnalogOutputIO[i] := LREAL_TO_INT(GVL_INTERFACE_UI.aAnalogController[i].cvController.rControlValue); //Write to Device
+	GVL_INTERFACE_UI.aAnalogController[i].cvController();
 END_FOR
 
 
 //Temp Controller
 
-GVL_IO.ControlDevice.TEMP_CONTROLLER.SET_TEMP_SV := LREAL_TO_WORD(GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].cvController.rControlValue * 10 )  ; //Write to Temperature Controller
-GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].cvController();
+GVL_IO.ControlDevice.TEMP_CONTROLLER.SET_TEMP_SV := LREAL_TO_WORD(GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].cvController.rControlValue * 10 )  ; //Write to Temperature Controller
+GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_Susceptor_Temp].cvController();
 
 //Temp Pressure Controller				
-GVL_IO.ControlDevice.THROTTLE_VALVE.SET_PRESSURE := LREAL_TO_WORD(GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure].cvController.rControlValue); //Write to Pressure Controller
-GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure].cvController();
+GVL_IO.ControlDevice.THROTTLE_VALVE.SET_PRESSURE := LREAL_TO_WORD(GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure].cvController.rControlValue); //Write to Pressure Controller
+GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_Reactor_Pressure].cvController();
 
 //jhkang_251112
 //아래 항목 누락
 //Rotation Controller		
-//GVL_IO.ControlDevice.rRotation_ControlValue := LREAL_TO_REAL(GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].cvController.rControlValue); //Write to Rotation Controller (rpm)
-//GVL_IO.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].cvController();	]]></ST>
+//GVL_IO.ControlDevice.rRotation_ControlValue := LREAL_TO_REAL(GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].cvController.rControlValue); //Write to Rotation Controller (rpm)
+//GVL_INTERFACE_UI.aAnalogController[E_aAnalogInputIO_Index.E_PV_susceptorRotation].cvController();	]]></ST>
     </Implementation>
     <LineIds Name="FB_AnalogDeviceRampControl">
       <LineId Id="85" Count="0" />

@@ -20,8 +20,8 @@ VAR_GLOBAL CONSTANT
 	NumDigitalInput : UINT := 80; //jhkang Spare 포함
 	NumDigitalOutput : UINT := 50;//jhkang Spare 포함
 	
-	NumOutputCmd : UINT := 3;
-	NumInputState : UINT := 6;
+	NumGeneralIOControl : UINT := 11;
+	NumGeneralIOState : UINT := 100;
 	
 	NumInterlockSettingEnable : UINT := 9;
 	NumInterlockSettingEnableThreshold : UINT := 12;

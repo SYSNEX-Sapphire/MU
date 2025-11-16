@@ -11,9 +11,7 @@ VAR_GLOBAL
 	aMonitoring_PV 			: ARRAY[1..GVL_CONSTANT.NumMonitoring] OF REAL; //Gauge Monitoring Value to UI
 	
 	interlock 				: Interlock;
-	aInputState				: ARRAY[1..GVL_CONSTANT.NumInputState] OF BOOL; // Digital Input from Device (Switch)
-	aOutputCmd				: ARRAY[1..GVL_CONSTANT.NumOutputCmd] OF BOOL; // Digital Command from UI
-	
+	generalIO				: GeneralIO;
 	mainPRGControl : MainPRGControl;
 	recipe :Recipe;
 END_VAR]]></Declaration>
